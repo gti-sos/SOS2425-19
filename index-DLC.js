@@ -12,7 +12,7 @@ fs.createReadStream(FILE_PATH)
   .pipe(csv({ separator: ';' }))
   .on('data', (row) => {
     if (row['autonomous_community'] === TARGET_REGION) {
-      let value = parseFloat(row[NUMERIC_FIELD]);
+      let value = Number(row[NUMERIC_FIELD]);
       if (!isNaN(value)) {
         data.push(value);
       }
