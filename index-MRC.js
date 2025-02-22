@@ -1,29 +1,25 @@
 const fs = require('fs');
-const path = require('path');
 const csv = require('csv-parser');
 
-const FILE_PATH = path.join(__dirname, 'data/DatosMunicipalesSiniestralidad_2023.csv');
+const path = 'data/DatosMunicipalesSiniestralidad_2023.csv';
 
-let data = [];
+let datos = [];
 
-fs.createReadStream(FILE_PATH)
+fs.createReadStream(path)
     .pipe(csv({ separator: ';' }))
     .on('data', (row) => {
         if (row['ccaa'] === 'País Vasco') {
         let value = Number(row['deceased']);
         if (!isNaN(value)) {
-            data.push(value);
+            datos.push(value);
         }
         }
     })
     .on('end', () => {
-        if (data.length > 0) {
-            let sum=0;
-            for(let i=0;i<data.length;i++){
-                sum+=data[i];
-            }
-            console.log(`Muertos por accidentes en País Vasco:`, sum);
-        } else {
-        console.log(`No hay datos para País Vasco.`);
+        let sum=0;
+        for(let i=0;i<datos.length;i++){
+            sum+=datos[i];
         }
+        console.log(`Muertos por accidentes en País Vasco:`, sum);
+        
     });
