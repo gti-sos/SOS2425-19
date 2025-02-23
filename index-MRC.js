@@ -20,6 +20,6 @@ fs.createReadStream(path)
         for(let i=0;i<datos.length;i++){
             sum+=datos[i];
         }
-        console.log(`Muertos por accidentes en País Vasco:`, sum);
+        console.log(`Media muertos por accidentes en País Vasco:`, sum/datos.length);
         
     });
