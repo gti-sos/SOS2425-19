@@ -2,8 +2,8 @@ const express = require("express");
 const cool = require("cool-ascii-faces");
 const app = express();
 const PORT = process.env.PORT || 16078;
-const generateAboutPage = require("./generateAbout"); // Importa y ejecuta
-const calculatePointsDeducted = require("./index-DLC"); // Importamos la función corregida
+const generateAboutPage = require("./js/generateAbout"); // Importa y ejecuta
+const calculatePointsDeducted = require("./js/index-DLC"); // Importamos la función corregida
 
 
 // Generar about.html antes de iniciar el servidor
