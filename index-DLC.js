@@ -45,4 +45,3 @@ fs.createReadStream(FILE_PATH)
     processData();
   });
 
-console.log(data)
