@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
 
-const FILE_PATH = path.join(__dirname, 'data/DatosProvincialesSancionesPuntos_2022.csv');
+const FILE_PATH = path.join(__dirname, '../data/DatosProvincialesSancionesPuntos_2022.csv');
 const TARGET_REGION = 'Andalucía'; // Cambia esto según la comunidad autónoma deseada
 const NUMERIC_FIELD = 'total_points_deducted'; // Campo numérico a promediar
 
