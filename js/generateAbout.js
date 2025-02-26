@@ -4,7 +4,7 @@ const marked = require("marked");
 
 // Función para generar about.html desde README.md
 function generateAboutPage() {
-    const readmePath = path.join(__dirname, "README.md");
+    const readmePath = path.join(__dirname, "../README.md");
     const outputPath = path.join(__dirname, "public", "about.html");
 
     try {
