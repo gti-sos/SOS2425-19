@@ -3,6 +3,7 @@ const cool = require("cool-ascii-faces");
 const app = express();
 const PORT = process.env.PORT || 16078;
 const generateAboutPage = require("./generateAbout"); // Importa y ejecuta
+const calculatePointsDeducted = require("./index-DLC"); // Importamos la función corregida
 
 
 // Generar about.html antes de iniciar el servidor
@@ -19,6 +20,13 @@ app.get("/about", (req, res) => {
 // Ruta para "/cool"
 app.get("/cool", (req, res) => {
     res.send(cool());
+});
+
+// Nueva ruta "/samples/DLC" para ejecutar el algoritmo y devolver el resultado
+app.get("/samples/DLC", (req, res) => {
+    calculatePointsDeducted((resultado) => {
+        res.send(`<h1>Resultado del cálculo</h1><p>${resultado}</p>`);
+    });
 });
 
 // Iniciar el servidor
