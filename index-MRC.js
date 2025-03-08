@@ -8,18 +8,18 @@ let datos = [];
 fs.createReadStream(path)
     .pipe(csv({ separator: ';' }))
     .on('data', (row) => {
-        if (row['ccaa'] === 'País Vasco') {
-        let value = Number(row['deceased']);
-        if (!isNaN(value)) {
-            datos.push(value);
+        
+            datos.push(row);
         }
-        }
-    })
+    )
     .on('end', () => {
+        //console.log(datos);
+        let filtrado = datos.filter((x)=> x.ccaa=='País Vasco');
+        console.log(filtrado);
         let sum=0;
-        for(let i=0;i<datos.length;i++){
-            sum+=datos[i];
-        }
-        console.log(`Media muertos por accidentes en País Vasco:`, sum/datos.length);
+        let x= filtrado.map((x)=>Number(x.deceased)).reduce((sum,value)=>sum+value,sum);
+        console.log(`Media muertos por accidentes en País Vasco:`, x/filtrado.length);
         
     });
+
+   
