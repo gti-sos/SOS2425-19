@@ -5,7 +5,7 @@ const marked = require("marked");
 // Función para generar about.html desde README.md
 function generateAboutPage() {
     const readmePath = path.join(__dirname, "../README.md");
-    const outputPath = path.join(__dirname, "public", "about.html");
+    const outputPath = path.join(__dirname, "../public", "about.html");
 
     try {
         const markdown = fs.readFileSync(readmePath, "utf-8");
@@ -27,9 +27,9 @@ function generateAboutPage() {
         `;
 
         fs.writeFileSync(outputPath, htmlPage);
-        console.log("✅ Página about.html generada correctamente.");
+        console.log(" Página about.html generada correctamente.");
     } catch (error) {
-        console.error("❌ Error generando about.html:", error);
+        console.error(" Error generando about.html:", error);
     }
 }
 

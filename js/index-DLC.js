@@ -1,35 +1,37 @@
-const fs = require('fs');
-const path = require('path');
-const csv = require('csv-parser');
+const TARGET_REGION = 'Comunitat Valenciana'; // Cambia esto según la comunidad autónoma deseada
 
-const FILE_PATH = path.join(__dirname, '../data/DatosProvincialesSancionesPuntos_2022.csv');
-const TARGET_REGION = 'Andalucía'; // Cambia esto según la comunidad autónoma deseada
-const NUMERIC_FIELD = 'total_points_deducted'; // Campo numérico a promediar
 
-function calculatePointsDeducted(callback) {
-    let data = [];
 
-    fs.createReadStream(FILE_PATH)
-        .pipe(csv({ separator: ';' }))
-        .on('data', (row) => {
-            data.push(row);
-        })
-        .on('end', () => {
-            let filteredData = data.filter(row => row['autonomous_community'] === TARGET_REGION);
-            let numericValues = filteredData.map(row => parseFloat(row[NUMERIC_FIELD])).filter(val => !isNaN(val));
 
-            let result;
-            if (numericValues.length > 0) {
-                let sum = numericValues.reduce((acc, val) => acc + val, 0);
-                let average = sum / numericValues.length;
-                result = `Media de ${NUMERIC_FIELD} en ${TARGET_REGION}: ${average.toFixed(2)}`;
-            } else {
-                result = `No hay datos para ${TARGET_REGION}.`;
-            }
+function calculatePointsDeducted() {
+    const sanctionsData = [
+        {ine_code: 3037, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3038, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3039, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3040, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3041, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 148, total_points_deducted: 696, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 124, alcohol_six_points: 132, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 18, helmet_seatbelt_child_restraint_system_four_points: 32, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 32, other_three_points: 0, other_four_points: 36, other_six_points: 88},
+        {ine_code: 3042, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 4, total_points_deducted: 18, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 4, alcohol_six_points: 6, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 4, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 4, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3043, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3044, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3045, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3046, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
+        {ine_code: 3047, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 72, total_points_deducted: 330, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 20, alcohol_six_points: 102, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 36, helmet_seatbelt_child_restraint_system_four_points: 36, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 18, other_three_points: 40, other_four_points: 78},
+        {ine_code: 3048, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 11, total_points_deducted: 51, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 8, alcohol_six_points: 18, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 6, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 3, other_four_points: 4, other_six_points: 12},
+        {ine_code: 3049, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 179, total_points_deducted: 809, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 152, alcohol_six_points: 156, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 45, helmet_seatbelt_child_restraint_system_four_points: 40, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 88, traffic_light_four_points: 0, traffic_light_six_points: 24, other_three_points: 112, other_four_points: 192, other_six_points: 0},
+        {ine_code: 3050, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 262, total_points_deducted: 1121, speeding_two_points: 16, speeding_three_points: 0, speeding_four_points: 4, speeding_six_points: 6, alcohol_four_points: 192, alcohol_six_points: 180, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 45, helmet_seatbelt_child_restraint_system_four_points: 96, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 100, traffic_light_four_points: 0, traffic_light_six_points: 108, other_three_points: 140, other_four_points: 23, other_six_points: 0}
+        
+    ];
+    
+let filtered = sanctionsData.filter((x)=> x.autonomous_community == TARGET_REGION)
 
-            callback(result); // Llamamos al callback con el resultado
-        });
+let totalPoints = filtered.reduce((sum, points) => sum + points.total_points_deducted, 0);
+let average = filtered.length > 0 ? totalPoints / filtered.length : 0;
+
+
+console.log(`Media de total_points_deducted en ${TARGET_REGION} :`, average.toFixed(2));
+return average
 }
 
-// Exportamos la función para usarla en index.js
 module.exports = calculatePointsDeducted;
+
+calculatePointsDeducted()
