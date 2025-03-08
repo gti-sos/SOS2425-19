@@ -3,13 +3,9 @@ const path = require("path");
 const cool = require("cool-ascii-faces");
 const app = express();
 const PORT = process.env.PORT || 16078;
-const generateAboutPage = require("./js/generateAbout"); // Importa y ejecuta
 const calculatePointsDeducted = require("./js/index-DLC"); // Importamos la función corregida
 const CalculateChanges = require("./js/index-JVF");
 
-
-// Generar about.html antes de iniciar el servidor
-generateAboutPage();
 
 // Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "/public")));
