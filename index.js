@@ -8,11 +8,11 @@ const CalculateChanges = require("./js/index-JVF");
 
 
 // Servir archivos estáticos desde la carpeta "public"
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, "../public")));
 
 // Ruta para servir "about.html" en "/about"
 app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/about.html"));
+    res.sendFile(path.join(__dirname, "../public/about.html"));
 });
 
 // Ruta para "/cool"
@@ -23,7 +23,7 @@ app.get("/cool", (req, res) => {
 // Nueva ruta "/samples/DLC" para ejecutar el algoritmo y devolver el resultado
 app.get("/samples/DLC", (req, res) => {
     let ress = calculatePointsDeducted()    
-        res.send(`<h1>Resultado del cálculo</h1><p>${ress}</p>`);
+        res.send(`<h1>Resultado del cálculo</h1><p>${ress.toFixed(2)}</p>`);
 });
 
 // Nueva ruta "samples/JVF" para ejecutar el algoritmo y devolver el resultado 
