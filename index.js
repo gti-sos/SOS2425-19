@@ -5,6 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 16078;
 const calculatePointsDeducted = require("./js/index-DLC"); // Importamos la función corregida
 const CalculateChanges = require("./js/index-JVF");
+const calculateDeceased = require("./js/index-MRC");
 
 
 // Servir archivos estáticos desde la carpeta "public"
@@ -29,6 +30,12 @@ app.get("/samples/DLC", (req, res) => {
 // Nueva ruta "samples/JVF" para ejecutar el algoritmo y devolver el resultado 
 app.get("/samples/JVF", (req,res) => {
     CalculateChanges( (resultado) => {
+        res.send(`<h1>Resultado del calculo</h1><p>${resultado}</p>`)
+    });
+});
+
+app.get("/samples/MRC", (req,res) => {
+    calculateDeceased( (resultado) => {
         res.send(`<h1>Resultado del calculo</h1><p>${resultado}</p>`)
     });
 });

@@ -13,7 +13,6 @@ fs.createReadStream(path)
         }
     )
     .on('end', () => {
-        //console.log(datos);
         let filtrado = datos.filter((x)=> x.ccaa=='País Vasco');
         console.log(filtrado);
         let sum=0;
