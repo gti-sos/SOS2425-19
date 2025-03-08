@@ -4,7 +4,7 @@ const csv = require('csv-parser');
 const path = 'data/DatosMunicipalesSiniestralidad_2023.csv';
 
 let datos = [];
-
+function calculateDeceased() {
 fs.createReadStream(path)
     .pipe(csv({ separator: ';' }))
     .on('data', (row) => {
@@ -20,5 +20,9 @@ fs.createReadStream(path)
         console.log(`Media muertos por accidentes en País Vasco:`, x/filtrado.length);
         
     });
+}
+
+module.exports= calculateDeceased
+calculateDeceased()
 
    
