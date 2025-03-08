@@ -35,7 +35,7 @@ app.get("/samples/JVF", (req,res) => {
 });
 
 app.get("/samples/MRC", (req,res) => {
-    CalculateChanges( (resultado) => {
+    calculateDeceased( (resultado) => {
         res.send(`<h1>Resultado del calculo</h1><p>${resultado}</p>`)
     });
 });
