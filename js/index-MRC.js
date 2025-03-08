@@ -5,7 +5,7 @@ const path = 'data/DatosMunicipalesSiniestralidad_2023.csv';
 
 let datos = [];
 
-fs.createReadStream(path)
+fs.calculateDeceased(path)
     .pipe(csv({ separator: ';' }))
     .on('data', (row) => {
         
