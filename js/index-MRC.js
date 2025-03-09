@@ -10,7 +10,7 @@ function calculateDeceased() {
         let sum=0;
         let x= filtrado.map((x)=>Number(x['injured-not-hospitalized'])).reduce((sum,value)=>sum+value,sum);
         console.log(`Media heridos no hosptalizados en País Vasco:`, x/filtrado.length);
-        
+        return x/filtrado.length;
     ;
 }
 

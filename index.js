@@ -34,9 +34,9 @@ app.get("/samples/JVF", (req,res) => {
 });
 
 app.get("/samples/MRC", (req,res) => {
-    calculateDeceased( (resultado) => {
-        res.send(`<h1>Resultado del calculo</h1><p>${resultado}</p>`)
-    });
+    let resp=calculateDeceased() 
+        res.send(`<h1>Resultado del calculo</h1><p>${resp}</p>`);
+    
 });
 
 // Iniciar el servidor
