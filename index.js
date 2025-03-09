@@ -9,7 +9,7 @@ const calculateDeceased = require("./js/index-MRC");
 
 
 // Servir archivos estáticos desde la carpeta "public"
-app.use(express.static(path.join(__dirname, "c/../public")));
+app.use(express.static(path.join(__dirname, "../../public")));
 
 // Ruta para servir "about.html" en "/about"
 app.get("/about", (req, res) => {
