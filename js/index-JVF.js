@@ -1,6 +1,6 @@
 const TARGET_REGION = "andalucia";
 
-function CalculateChanges(callback){
+function CalculateChanges(){
 
     let datos= [{autonomous_community:"andalucia", province:"jaen", truck:2620, van:3710, bus:55, car:19639, motocycle:3297, industrial_truck:459, trailer_and_semitrailer:460, other_vehicle:774, total:31014, year:2023},
         {autonomous_community:"andalucia", province:"granada", truck:3127, van:3787, bus:99, car:33356, motocycle:9888, industrial_truck:680, trailer_and_semitrailer:616, other_vehicle:1099, total:52652, year:2023},
@@ -22,12 +22,9 @@ function CalculateChanges(callback){
     let averageChanges = filtrado.length > 0 ? totalChanges / filtrado.length : 0;
 
     console.log(`Media de cambios de coches en ${TARGET_REGION}:`, averageChanges);
-
-    if (callback){
-        callback(averageChanges);
-    }
-
     return averageChanges;
 }
 
 module.exports = CalculateChanges;
+
+CalculateChanges();

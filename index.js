@@ -29,9 +29,8 @@ app.get("/samples/DLC", (req, res) => {
 
 // Nueva ruta "samples/JVF" para ejecutar el algoritmo y devolver el resultado 
 app.get("/samples/JVF", (req,res) => {
-    CalculateChanges( (resultado) => {
-        res.send(`<h1>Resultado del calculo</h1><p>${resultado}</p>`)
-    });
+    let respond=CalculateChanges()
+        res.send(`<h1>Resultado del cálculo</h1>${respond}<p></p>`);
 });
 
 app.get("/samples/MRC", (req,res) => {
