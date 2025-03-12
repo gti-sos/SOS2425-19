@@ -1,9 +1,42 @@
+const fs = require('fs');
+const path = require('path');
+
 const TARGET_REGION = 'Comunitat Valenciana'; // Cambia esto según la comunidad autónoma deseada
+const FILE_PATH = path.join(__dirname, '../data/DatosProvincialesSancionesPuntos_2022.csv')
+
+function csvToArray(csvString, delimiter = ";") {
+    const lines = csvString.trim().split("\n");
+    const headers = lines[0].split(delimiter).map(header => header.trim());
+
+    return lines.slice(1).map(line => {
+        const values = line.split(delimiter).map(value => value.trim());
+        return headers.reduce((obj, header, index) => {
+            obj[header] = isNaN(values[index]) ? values[index] : Number(values[index]);
+            return obj;
+        }, {});
+    });
+}
+
+const csvContent = fs.readFileSync(FILE_PATH, 'utf8');
+
+const sanctionsData = csvToArray(csvContent);
+
+function calculatePointsDeducted(target) {
+    
+    
+    
+let filtered = sanctionsData.filter((x)=> x.autonomous_community === target)
+
+let totalPoints = filtered.reduce((sum, points) => sum + points.total_points_deducted, 0);
+let average = filtered.length > 0 ? totalPoints / filtered.length : 0;
 
 
+console.log(`Media de total_points_deducted en ${TARGET_REGION} :`, average.toFixed(2));
+return [target,average];
+}
 
 
-function calculatePointsDeducted() {
+function loadInitialDataDLC(){
     const sanctionsData = [
         {ine_code: 3037, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
         {ine_code: 3038, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 0, total_points_deducted: 0, speeding_two_points: 0, speeding_three_points: 0, speeding_four_points: 0, speeding_six_points: 0, alcohol_four_points: 0, alcohol_six_points: 0, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 0, helmet_seatbelt_child_restraint_system_four_points: 0, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 0, traffic_light_four_points: 0, traffic_light_six_points: 0, other_three_points: 0, other_four_points: 0, other_six_points: 0},
@@ -21,17 +54,7 @@ function calculatePointsDeducted() {
         {ine_code: 3050, province: "Alicante/Alacant", autonomous_community: "Comunitat Valenciana", year: 2022, total_sanctions_with_points: 262, total_points_deducted: 1121, speeding_two_points: 16, speeding_three_points: 0, speeding_four_points: 4, speeding_six_points: 6, alcohol_four_points: 192, alcohol_six_points: 180, drugs_six_points: 0, helmet_seatbelt_child_restraint_system_three_points: 45, helmet_seatbelt_child_restraint_system_four_points: 96, helmet_seatbelt_child_restraint_system_six_points: 0, mobile_phone_three_points: 0, mobile_phone_four_points: 0, mobile_phone_six_points: 0, traffic_light_three_points: 100, traffic_light_four_points: 0, traffic_light_six_points: 108, other_three_points: 140, other_four_points: 23, other_six_points: 0}
         
     ];
-    
-let filtered = sanctionsData.filter((x)=> x.autonomous_community == TARGET_REGION)
-
-let totalPoints = filtered.reduce((sum, points) => sum + points.total_points_deducted, 0);
-let average = filtered.length > 0 ? totalPoints / filtered.length : 0;
-
-
-console.log(`Media de total_points_deducted en ${TARGET_REGION} :`, average.toFixed(2));
-return average
+    return sanctionsData
 }
 
-module.exports = calculatePointsDeducted;
-
-calculatePointsDeducted()
+module.exports = {calculatePointsDeducted,sanctionsData,loadInitialDataDLC};
