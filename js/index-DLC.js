@@ -18,6 +18,7 @@ function csvToArray(csvString, delimiter = ";") {
 }
 
 const csvContent = fs.readFileSync(FILE_PATH, 'utf8');
+
 const sanctionsData = csvToArray(csvContent);
 
 function calculatePointsDeducted(target) {
