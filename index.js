@@ -25,34 +25,40 @@ app.get("/cool", (req, res) => {
 });
 
 // APIs de DLC
+app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
+    const result = loadInitialDataDLC();
+    sanctionsAndPoints2022Stats = result;
+    res.send(JSON.stringify(result));
+});
+
 
 //GET todos los datos
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     let {ine_code,province,autonomous_community,year,from,to} = req.query
-    if (province){
+    if (province!==undefined){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
             .filter(stat=>stat.province.toLowerCase()=== province.toLowerCase())
     }
-    if (autonomous_community){
+    if (autonomous_community!==undefined){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
             .filter(stat=>stat.autonomous_community.toLowerCase()=== autonomous_community.toLowerCase())
     }
-    if (year){
+    if (year!==undefined){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
             .filter(stat=>stat.year=== Number(year))
     }
-    if (ine_code){
+    if (ine_code!==undefined){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
         .filter(stat=>stat.ine_code=== Number(ine_code))
         if(sanctionsAndPoints2022Stats.length ===1){
             sanctionsAndPoints2022Stats = sanctionsAndPoints2022Stats[0]            
         }
     }    
-    if (from){
+    if (from!==undefined){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
             .filter(stat=>stat.year>= Number(from))
     }
-    if (to){
+    if (to!==undefined){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
             .filter(stat=>stat.year<= Number(to))
     }
@@ -130,7 +136,6 @@ app.put(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
 
 //DELETE de un dato especifico
 app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
-    let { ine_code, province, autonomous_community, year, total_sanctions_with_points, total_points_deducted } = req.body;
     let paramIneCode = req.params.ine_code;    
     
     // Comprobar si el recurso existe
@@ -144,11 +149,6 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
 });
 
 
-app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
-    const result = loadInitialDataDLC();
-    sanctionsAndPoints2022Stats = result;
-    res.send(JSON.stringify(result));
-});
 
 // Nueva ruta "/samples/DLC" para ejecutar el algoritmo y devolver el resultado
 app.get("/samples/DLC", (req, res) => {
