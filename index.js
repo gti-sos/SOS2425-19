@@ -12,6 +12,7 @@ let sanctionsAndPoints2022Stats = sanctionsData;
 
 // Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.json())
 
 // Ruta para servir "about.html" en "/about"
 app.get("/about", (req, res) => {
@@ -24,16 +25,17 @@ app.get("/cool", (req, res) => {
 });
 
 // APIs de DLC
+
+//GET todos los datos
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
-    sanctionsAndPoints2022Stats = sanctionsData;
-    const {ine_code,province,autonomous_community,year,from,to} = req.query
+    let {ine_code,province,autonomous_community,year,from,to} = req.query
     if (province){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
-            .filter(stat=>stat.province=== province)
+            .filter(stat=>stat.province.toLowerCase()=== province.toLowerCase())
     }
     if (autonomous_community){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
-            .filter(stat=>stat.autonomous_community=== autonomous_community)
+            .filter(stat=>stat.autonomous_community.toLowerCase()=== autonomous_community.toLowerCase())
     }
     if (year){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
@@ -43,11 +45,9 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
         .filter(stat=>stat.ine_code=== Number(ine_code))
         if(sanctionsAndPoints2022Stats.length ===1){
-            sanctionsAndPoints2022Stats = sanctionsAndPoints2022Stats[0]
-            
+            sanctionsAndPoints2022Stats = sanctionsAndPoints2022Stats[0]            
         }
-    }
-    
+    }    
     if (from){
         sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
             .filter(stat=>stat.year>= Number(from))
@@ -60,10 +60,93 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     res.send(console.log(Array.isArray(sanctionsAndPoints2022Stats))); // Comprueba si es de verdad un array
     (console.log(typeof(sanctionsAndPoints2022Stats))); // Comprueba si es de verdad un objeto
 });
+//POST a todos los datos
+app.post(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{   
+    let {ine_code,province,autonomous_community,year,total_sanctions_with_points,total_points_deducted} = req.body
+    if (ine_code === undefined || province === undefined || autonomous_community === undefined || 
+        year === undefined || total_sanctions_with_points === undefined || total_points_deducted === undefined) {
+        return res.sendStatus(400);
+    }
+    
+    if(sanctionsAndPoints2022Stats.some(sanction=>sanction.ine_code===ine_code)){
+        return res.sendStatus(409);
+        }
+    let newSanction = req.body
+    sanctionsAndPoints2022Stats.push(newSanction)
+    res.sendStatus(201);
+    
+});
+
+//FALLO DE PUT a todos los datos
+app.put(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{    
+    
+    res.sendStatus(405);
+});
+
+//DELETE de todos los datos
+app.delete(BASE_API + "/sanctions-and-points-stats", (req, res) => {
+    sanctionsAndPoints2022Stats = []; // Vaciar el array
+    console.log("Todos los datos han sido eliminados."); // Para ver en consola
+    res.sendStatus(204); // 204 No Content (indica que se procesó, pero sin respuesta)
+});
+
+//GET de un dato especifico
+app.get(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
+    let paramIneCode = Number(req.params.ine_code); // Convertir a número
+    // Buscar el objeto por ine_code
+    let sanction = sanctionsAndPoints2022Stats.find(sanction => sanction.ine_code === paramIneCode);
+    // Si no se encuentra, devolver 404
+    if (!sanction) {
+        return res.sendStatus(404);
+    }
+    // Enviar la sanción encontrada
+    res.send(JSON.stringify(sanction,null,2))
+    res.status(200);
+});
+
+//FALLO DE POST de un dato especifico
+app.post(BASE_API + "/sanctions-and-points-stats/:ine_code",(req,res)=>{    
+    
+    res.sendStatus(405);
+});
+
+//PUT de un dato especifico
+app.put(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
+    let { ine_code, province, autonomous_community, year, total_sanctions_with_points, total_points_deducted } = req.body;
+    let paramIneCode = req.params.ine_code;    
+    // Verificar si el ID de la URL coincide con el del cuerpo
+    if (ine_code !== Number(paramIneCode)) {
+        return res.sendStatus(400);
+    }    
+    // Comprobar si el recurso existe
+    let index = sanctionsAndPoints2022Stats.findIndex(sanction => sanction.ine_code === Number(paramIneCode));
+    if (index === -1) {
+        return res.sendStatus(404);
+    }    
+    // Actualizar el recurso
+    sanctionsAndPoints2022Stats[index] = req.body;
+    res.sendStatus(200);
+});
+
+//DELETE de un dato especifico
+app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
+    let { ine_code, province, autonomous_community, year, total_sanctions_with_points, total_points_deducted } = req.body;
+    let paramIneCode = req.params.ine_code;    
+    
+    // Comprobar si el recurso existe
+    let index = sanctionsAndPoints2022Stats.findIndex(sanction => sanction.ine_code === Number(paramIneCode));
+    if (index === -1) {
+        return res.sendStatus(404);
+    }    
+    // Actualizar el recurso
+    sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats.filter(sanction => sanction.ine_code !== Number(paramIneCode));
+    res.sendStatus(200);
+});
+
 
 app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
     const result = loadInitialDataDLC();
-    sanctionsAndPoints2022Stats = result.data;
+    sanctionsAndPoints2022Stats = result;
     res.send(JSON.stringify(result));
 });
 
