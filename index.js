@@ -34,35 +34,36 @@ app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => 
 
 //GET todos los datos
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
+    let sanctionsAndPoints2022StatsFiltered= sanctionsAndPoints2022Stats
     let {ine_code,province,autonomous_community,year,from,to} = req.query
     if (province!==undefined){
-        sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
+        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
             .filter(stat=>stat.province.toLowerCase()=== province.toLowerCase())
     }
     if (autonomous_community!==undefined){
-        sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
+        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
             .filter(stat=>stat.autonomous_community.toLowerCase()=== autonomous_community.toLowerCase())
     }
     if (year!==undefined){
-        sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
+        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
             .filter(stat=>stat.year=== Number(year))
     }
     if (ine_code!==undefined){
-        sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
+        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
         .filter(stat=>stat.ine_code=== Number(ine_code))
         if(sanctionsAndPoints2022Stats.length ===1){
-            sanctionsAndPoints2022Stats = sanctionsAndPoints2022Stats[0]            
+            sanctionsAndPoints2022StatsFiltered = sanctionsAndPoints2022Stats[0]            
         }
     }    
     if (from!==undefined){
-        sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
+        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
             .filter(stat=>stat.year>= Number(from))
     }
     if (to!==undefined){
-        sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats
+        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
             .filter(stat=>stat.year<= Number(to))
     }
-    res.send(JSON.stringify(sanctionsAndPoints2022Stats,null,2));
+    res.send(JSON.stringify(sanctionsAndPoints2022StatsFiltered,null,2));
     res.send(console.log(Array.isArray(sanctionsAndPoints2022Stats))); // Comprueba si es de verdad un array
     (console.log(typeof(sanctionsAndPoints2022Stats))); // Comprueba si es de verdad un objeto
 });
