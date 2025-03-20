@@ -1,8 +1,48 @@
+const fs =require(fs);
+const path=require(path);
+
 const TARGET_REGION = "andalucia";
+const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad2023');
 
-function CalculateChanges(){
 
-    let datos= [{autonomous_community:"andalucia", province:"jaen", truck:2620, van:3710, bus:55, car:19639, motocycle:3297, industrial_truck:459, trailer_and_semitrailer:460, other_vehicle:774, total:31014, year:2023},
+function CsvToArray(csvFile,delimiter =';' ){
+    //separamos las lineas yla cabecera del csv
+    const lines=csvFile.trim().split('\n');
+    const headers=lines[0].split(delimiter).map(header => header.trim());
+
+    //a cada linea le aplicamos un parseo para devolverlo como un map header=valor
+    return lines.slice(1).map( line=> {
+        const valores = line.split(delimiter).map(valor => valor.trim());
+        const obj={};
+        for(let i=0;i < headers.length;i++){
+            obj[headers[i]]=isNaN(valores[i]) ? valores[i] : Number(valores[i]);
+        };
+        return obj;
+
+    });
+}
+
+const csvContent= fs.readFileSync(File_path,'utf8');
+
+const ChangesData=CsvToArray(csvContent);
+
+
+function CalculateChanges(target){
+
+    // filtrado por la comunidad autonoma 
+    let filtrado = ChangesData.filter((x)=> x.autonomous_community === target);
+
+    let totalChanges= filtrado.reduce((sum,changes) => sum+ changes.car,0);
+
+    let averageChanges = filtrado.length > 0 ? totalChanges / filtrado.length : 0;
+
+    console.log(`Media de cambios de coches en ${TARGET_REGION}:`, averageChanges);
+    return [target,averageChanges];
+}
+
+function InitialData(){
+
+    let ChangesData= [{autonomous_community:"andalucia", province:"jaen", truck:2620, van:3710, bus:55, car:19639, motocycle:3297, industrial_truck:459, trailer_and_semitrailer:460, other_vehicle:774, total:31014, year:2023},
         {autonomous_community:"andalucia", province:"granada", truck:3127, van:3787, bus:99, car:33356, motocycle:9888, industrial_truck:680, trailer_and_semitrailer:616, other_vehicle:1099, total:52652, year:2023},
         {autonomous_community:"andalucia", province:"malaga", truck:6254, van:8913, bus:133, car:80556, motocycle:19402, industrial_truck:874, trailer_and_semitrailer:1270, other_vehicle:1435, total:118837, year:2023},
         {autonomous_community:"aragon", province:"zaragoza", truck:2988, van:4402, bus:55, car:39804, motocycle:6791, industrial_truck:919, trailer_and_semitrailer:2113, other_vehicle:1008, total:58080, year:2023},
@@ -13,18 +53,9 @@ function CalculateChanges(){
         {autonomous_community:"castilla y leon", province:"segovia", truck:493, van:490, bus:11, car:4473, motocycle:2143, industrial_truck:93, trailer_and_semitrailer:202, other_vehicle:197, total:8102, year:2023},
         {autonomous_community:"castilla y leon", province:"salamanca", truck:973, van:1064, bus:48, car:13084, motocycle:1429, industrial_truck:164, trailer_andsemitrailer:260, other_vehicle:327, total:17349, year:2023}
         ];
-    
-    // filtrado por la comunidad autonoma 
-    let filtrado = datos.filter((x)=> x.autonomous_community == TARGET_REGION)
 
-    let totalChanges= filtrado.reduce((sum,changes) => sum+ changes.car,0);
-
-    let averageChanges = filtrado.length > 0 ? totalChanges / filtrado.length : 0;
-
-    console.log(`Media de cambios de coches en ${TARGET_REGION}:`, averageChanges);
-    return averageChanges;
+    return ChangesData;
 }
-
-module.exports = CalculateChanges;
+module.exports = {CalculateChanges,InitialData,CsvToArray};
 
 CalculateChanges();
