@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 16078;
 const {calculatePointsDeducted,sanctionsData,loadInitialDataDLC} = require("./js/index-DLC"); 
 const CalculateChanges = require("./js/index-JVF");
-const calculateDeceased = require("./js/index-MRC");
+const calculateInjured = require("./js/index-MRC");
 const BASE_API = "/api/v1"
 
 let sanctionsAndPoints2022Stats = sanctionsData;
@@ -164,7 +164,7 @@ app.get("/samples/JVF", (req,res) => {
 });
 
 app.get("/samples/MRC", (req,res) => {
-    let resp=calculateDeceased() 
+    let resp=calculateInjured() 
         res.send(`<h1>Resultado del calculo</h1><p>${resp}</p>`);
     
 });

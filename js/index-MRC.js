@@ -15,7 +15,7 @@ function cargarDatosDesdeCSV() {
         })
         .on('end', () => {
             console.log('CSV file successfully processed');
-            console.log(data.length); // Aquí puedes ver los datos cargados
+            //console.log(data.length); // Aquí puedes ver los datos cargados
             calculateDeceased();
         })
         .on('error', (error) => {
@@ -33,7 +33,7 @@ function calculateDeceased() {
     ;
 }
 
-module.exports= calculateDeceased
+module.exports= {cargarDatosDesdeCSV,calculateDeceased};
 //cargarDatosDesdeCSV()
 //calculateDeceased()
 
