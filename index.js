@@ -95,7 +95,7 @@ app.put(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{
 app.delete(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     sanctionsAndPoints2022Stats = []; // Vaciar el array
     console.log("Todos los datos han sido eliminados."); // Para ver en consola
-    res.sendStatus(204); // 204 No Content (indica que se procesó, pero sin respuesta)
+    res.sendStatus(200); 
 });
 
 //GET de un dato especifico
