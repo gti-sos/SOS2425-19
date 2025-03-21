@@ -163,8 +163,8 @@ app.get("/samples/JVF", (req,res) => {
         res.send(`<h1>Resultado del cálculo</h1>${respond}<p></p>`);
 });
 
-app.get("/samples/MRC", async (req,res) => {
-    let resp=await calculateDeceased() 
+app.get("/samples/MRC", (req,res) => {
+    let resp= calculateDeceased("Comunitat Valenciana") 
         res.send(`<h1>Resultado del calculo</h1><p>${resp}</p>`);
     
 });

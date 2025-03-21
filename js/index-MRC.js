@@ -7,30 +7,34 @@ let datos = [{'ine-code': 1001, 'municipality': 'Alegría-Dulantzi', 'province':
 
 
 let data = [];
+function csvToArray(csvString, delimiter = ";") {
+    const lines = csvString.trim().split("\n");
+    const headers = lines[0].split(delimiter).map(header => header.trim());
 
-function calculateDeceased() {
-    return new Promise((resolve, reject) => {
-        fs.createReadStream(path)
-            .pipe(csv({ separator: ';' }))
-            .on('data', (row) => {
-                data.push(row);
-            })
-            .on('end', () => {
-                let filtrado = data.filter((x) => x.ccaa === 'País Vasco');
-                if (filtrado.length === 0) {
-                    resolve("No hay datos para el País Vasco");
-                    return;
-                }
-                let sum = filtrado
-                    .map((x) => Number(x['injured-not-hospitalized']) || 0) // Convierte a número o usa 0 si no es válido
-                    .reduce((sum, value) => sum + value, 0);
-                let media = sum / filtrado.length;
-                resolve(`Media heridos no hospitalizados en País Vasco: ${media}`);
-            })
-            .on('error', (error) => {
-                reject(`Error leyendo el archivo CSV: ${error.message}`);
-            });
+    return lines.slice(1).map(line => {
+        const values = line.split(delimiter).map(value => value.trim());
+        return headers.reduce((obj, header, index) => {
+            obj[header] = isNaN(values[index]) ? values[index] : Number(values[index]);
+            return obj;
+        }, {});
     });
+}
+
+const csvContent = fs.readFileSync(path, 'utf8');
+
+const siniestralidadData = csvToArray(csvContent);
+console.log(siniestralidadData);
+function calculateDeceased(ccaa) {
+    
+           
+    let filtrado = siniestralidadData.filter((x) => x.ccaa === ccaa);
+    
+    let sum = filtrado
+        .map((x) => Number(x['injured-not-hospitalized']) || 0) // Convierte a número o usa 0 si no es válido
+        .reduce((sum, value) => sum + value, 0);
+    let media = sum / filtrado.length;
+    console.log(`Media heridos no hospitalizados en la Comunidad Valenciana: ${media}`);   
+    return media;
 }
 
 module.exports = calculateDeceased;
