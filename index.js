@@ -151,6 +151,12 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
 });
 
 
+app.get(BASE_API + "/accident-rate-2023-stats/loadInitialData", (req, res) => {
+    const result = loadInitialDataMRC();
+    siniestralidadData2023 = result;
+    res.send(JSON.stringify(result));
+});
+
 
 app.get(BASE_API + "/accident-rate-2023-stats", (req, res) => {
     console.log("GET to /accident-rate-2023-stats");
