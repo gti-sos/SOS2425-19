@@ -3,11 +3,15 @@ const path = require("path");
 const cool = require("cool-ascii-faces");
 const app = express();
 const PORT = process.env.PORT || 16078;
+
+//Exports de los index-XXX
 const {calculatePointsDeducted,sanctionsData,loadInitialDataDLC} = require("./js/index-DLC"); 
-const CalculateChanges = require("./js/index-JVF");
+const {CalculateChanges,InitialData,ChangesData} = require("./js/index-JVF");
 const calculateDeceased = require("./js/index-MRC");
 const BASE_API = "/api/v1"
 
+//Datos de los CSV
+let ownershipsChangesYear2023Stats = ChangesData;
 let sanctionsAndPoints2022Stats = sanctionsData;
 
 // Servir archivos estáticos desde la carpeta "public"
@@ -32,7 +36,7 @@ app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => 
 });
 
 
-//GET todos los datos
+//GET todos los datos - Dani
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     let sanctionsAndPoints2022StatsFiltered= sanctionsAndPoints2022Stats
     let {ine_code,province,autonomous_community,year,from,to} = req.query
@@ -149,6 +153,16 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
     res.sendStatus(200);
 });
 
+
+//APIs - JVF
+app.get(BASE_API + "/ownerships-changes-stats/LoadInitialData", (req, res) =>{
+
+    const result = InitialData();
+    ownershipsChangesYear2023Stats = result;
+    res.send(JSON.stringify(result));
+});
+
+//
 
 
 // Nueva ruta "/samples/DLC" para ejecutar el algoritmo y devolver el resultado

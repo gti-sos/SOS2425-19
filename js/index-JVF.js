@@ -1,8 +1,8 @@
-const fs =require(fs);
-const path=require(path);
+const fs =require('fs');
+const path=require('path');
 
 const TARGET_REGION = "andalucia";
-const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad2023');
+const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad2023.csv');
 
 
 function CsvToArray(csvFile,delimiter =';' ){
@@ -51,11 +51,9 @@ function InitialData(){
         {autonomous_community:"canarias", province:"santa cruz de tenerife", truck:7614, van:5544, bus:212, car:47106, motocycle:9429, industrial_truck:131, trailer_and_semitrailer:232, other_vehicle:1203, total:71471, year:2023},
         {autonomous_community:"cantabria", province:"cantabria", truck:1966, van:1936, bus:24, car:23810, motocycle:4081, industrial_truck:580, trailer_and_semitrailer:1074, other_vehicle:533, total:34004, year:2023},
         {autonomous_community:"castilla y leon", province:"segovia", truck:493, van:490, bus:11, car:4473, motocycle:2143, industrial_truck:93, trailer_and_semitrailer:202, other_vehicle:197, total:8102, year:2023},
-        {autonomous_community:"castilla y leon", province:"salamanca", truck:973, van:1064, bus:48, car:13084, motocycle:1429, industrial_truck:164, trailer_andsemitrailer:260, other_vehicle:327, total:17349, year:2023}
+        {autonomous_community:"castilla y leon", province:"salamanca", truck:973, van:1064, bus:48, car:13084, motocycle:1429, industrial_truck:164, trailer_and_semitrailer:260, other_vehicle:327, total:17349, year:2023}
         ];
 
     return ChangesData;
 }
-module.exports = {CalculateChanges,InitialData,CsvToArray};
-
-CalculateChanges();
+module.exports = {CalculateChanges,InitialData,ChangesData};
