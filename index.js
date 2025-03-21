@@ -5,10 +5,11 @@ const app = express();
 const PORT = process.env.PORT || 16078;
 const {calculatePointsDeducted,sanctionsData,loadInitialDataDLC} = require("./js/index-DLC"); 
 const CalculateChanges = require("./js/index-JVF");
-const calculateDeceased = require("./js/index-MRC");
+const {calculateDeceased,siniestralidadData} = require("./js/index-MRC");
 const BASE_API = "/api/v1"
 
 let sanctionsAndPoints2022Stats = sanctionsData;
+let siniestralidadData2023 = siniestralidadData;
 
 // Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "/public")));
@@ -148,7 +149,9 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
     sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats.filter(sanction => sanction.ine_code !== Number(paramIneCode));
     res.sendStatus(200);
 });
-
+app.get(BASE_API + "/accident-rate-2023-stats", (req, res) => {
+    console.log("GET to /accident-rate-2023-stats");
+    res.send(JSON.stringify(siniestralidadData2023,null,2))});
 
 
 // Nueva ruta "/samples/DLC" para ejecutar el algoritmo y devolver el resultado

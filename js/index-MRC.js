@@ -23,7 +23,7 @@ function csvToArray(csvString, delimiter = ";") {
 const csvContent = fs.readFileSync(path, 'utf8');
 
 const siniestralidadData = csvToArray(csvContent);
-console.log(siniestralidadData);
+//console.log(siniestralidadData);
 function calculateDeceased(ccaa) {
     
            
@@ -37,5 +37,5 @@ function calculateDeceased(ccaa) {
     return media;
 }
 
-module.exports = calculateDeceased;
+module.exports = {calculateDeceased,siniestralidadData};
 calculateDeceased();
