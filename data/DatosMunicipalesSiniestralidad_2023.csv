@@ -1,4 +1,4 @@
-ine-code;municipality;province;ccaa;year;deceased;injured-hospitalized;injured-not-hospitalized
+ine_code;municipality;province;ccaa;year;deceased;injured-hospitalized;injured-not-hospitalized
 01001;Alegría-Dulantzi;Araba/Álava;País Vasco;2023;0;0;0
 01002;Amurrio;Araba/Álava;País Vasco;2023;0;0;1
 01003;Aramaio;Araba/Álava;País Vasco;2023;0;0;0

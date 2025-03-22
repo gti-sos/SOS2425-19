@@ -108,16 +108,15 @@ function loadInitialDataMRC(){
     return datos;
 }
 
-let data = [];
 function csvToArray(csvString, delimiter = ";") {
     const lines = csvString.trim().split("\n");
     const headers = lines[0].split(delimiter).map(header => header.trim());
 
     return lines.slice(1).map(line => {
         const values = line.split(delimiter).map(value => value.trim());
-        return headers.reduce((obj, header, index) => {
-            obj[header] = isNaN(values[index]) ? values[index] : Number(values[index]);
-            return obj;
+        return headers.reduce((object, header, i) => {
+            object[header] = isNaN(values[i]) ? values[i] : Number(values[i]);
+            return object;
         }, {});
     });
 }
