@@ -13,12 +13,10 @@ function CsvToArray(csvFile,delimiter =';' ){
     //a cada linea le aplicamos un parseo para devolverlo como un map header=valor
     return lines.slice(1).map( line=> {
         const valores = line.split(delimiter).map(valor => valor.trim());
-        const obj={};
         return headers.reduce((obj, header, index) => {
             obj[header] = isNaN(valores[index]) ? valores[index] : Number(valores[index]);
             return obj;
         }, {});
-
     });
 }
 
