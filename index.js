@@ -3,11 +3,15 @@ const path = require("path");
 const cool = require("cool-ascii-faces");
 const app = express();
 const PORT = process.env.PORT || 16078;
+
+//Exports de los index-XXX
 const {calculatePointsDeducted,sanctionsData,loadInitialDataDLC} = require("./js/index-DLC"); 
-const CalculateChanges = require("./js/index-JVF");
+const {CalculateChanges,InitialData,ChangesData} = require("./js/index-JVF");
 const {calculateDeceased,siniestralidadData,loadInitialDataMRC} = require("./js/index-MRC");
 const BASE_API = "/api/v1"
 
+//Datos de los CSV
+let ownershipsChangesYear2023Stats = ChangesData;
 let sanctionsAndPoints2022Stats = sanctionsData;
 let siniestralidadData2023 = siniestralidadData;
 
@@ -33,7 +37,7 @@ app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => 
 });
 
 
-//GET todos los datos
+//GET todos los datos - Dani
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     let sanctionsAndPoints2022StatsFiltered= sanctionsAndPoints2022Stats
     let {ine_code,province,autonomous_community,year,from,to} = req.query
@@ -151,6 +155,141 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
 });
 
 
+
+//APIs - JVF
+app.get(BASE_API + "/ownerships-changes-stats/loadInitialData", (req, res) =>{
+
+    const result = InitialData();
+    ownershipsChangesYear2023Stats = result;
+    res.send(JSON.stringify(result));
+});
+
+//GET todos los datos - julián
+app.get( BASE_API + "/ownerships-changes-stats", (req,res) =>{
+    let ownershipsChangesYear2023Stats_Filtered = ownershipsChangesYear2023Stats;
+    let{autonomous_community,province,truck,van,bus,car,motocycle,other_vehicle,from,to,year} = req.query;
+    if (province !== undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.province.toLowerCase() === province.toLowerCase());
+    }
+    if(autonomous_community !== undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.autonomous_community.toLowerCase() === autonomous_community.toLowerCase());
+    }
+    if(truck !== undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.truck === Number(truck));
+    }
+    if(car !== undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.car === Number(car));
+    }
+    if(motocycle!==undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.motocycle=== Number(motocycle));}
+    if(van!==undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.van === Number(van));
+    }
+    if(bus!==undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.bus === Number(bus));
+    }
+    if(other_vehicle !== undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.other_vehicle === Number(other_vehicle));
+    }
+    if(year !== undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.year === Number(year));
+    }
+    if(from !== undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.year >= Number(from))
+    }
+    if(to !== undefined){
+        ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
+        .filter(dato => dato.year <= Number(to))
+    }
+res.send(JSON.stringify(ownershipsChangesYear2023Stats_Filtered,null,2));
+res.send(console.log(Array.isArray(ownershipsChangesYear2023Stats)));
+(console.log(typeof(ownershipsChangesYear2023Stats)));
+});
+
+//POSTs
+app.post(BASE_API + "/ownerships-changes-stats/",(req,res) => {
+    let {autonomous_community,province,truck,van,bus,car,motocycle,other_vehicle,year}=req.body
+    if  (autonomous_community ===undefined || province ===undefined || truck ===undefined || van ===undefined ||
+         bus ===undefined || car ===undefined || motocycle===undefined || other_vehicle ===undefined || year ===undefined){
+            return res.sendStatus(400)
+         }
+    if (ownershipsChangesYear2023Stats.some(datin => datin.province === province)) {
+        return res.sendStatus(409)
+    }
+    let newChange=req.body;
+    ownershipsChangesYear2023Stats.push(newChange);
+    res.sendStatus(201);
+});
+
+//FALLO DE PUT Todo
+app.put(BASE_API + "/ownerships-changes-stats/", (req,res) => {
+    res.sendStatus(405);
+});
+
+//Delete Todo
+app.delete(BASE_API + "/ownerships-changes-stats", (req,res) =>{
+    ownershipsChangesYear2023Stats = [];
+    console.log("Todos los datos han sido eliminados.");
+    res.sendStatus(204);
+})
+
+// GET de un dato
+app.get(BASE_API + "/ownerships-changes-stats/:province", (req,res) => {
+    let parametro= req.params.province;
+    let change = ownershipsChangesYear2023Stats.find(change => change.province===parametro);
+    if (!change){
+        return res.sendStatus(404);
+    } 
+    res.send(JSON.stringify(change,null,2))
+    res.status(200);
+});
+
+//FALLO de post dat específico
+app.post(BASE_API + "/ownerships-changes-stats/:province" , (req,res)=>{
+    res.sendStatus(405);
+});
+
+//PUT dato especifico
+app.put(BASE_API + "/ownerships-changes-stats/:province" , (req,res) => {
+    let {autonomous_community,province,truck,van,bus,car,motocycle,other_vehicle,year}=req.body;
+    let parametro= req.params.province.toLowerCase();
+    if(province !== parametro){
+        res.sendStatus(400);
+    }
+    let index = ownershipsChangesYear2023Stats.findIndex(change => change.province.toLowerCase() === parametro);
+
+    if (index=== -1){
+        return res.sendStatus(404);
+    }
+
+    ownershipsChangesYear2023Stats[index]=req.body;
+    res.sendStatus(200);    
+});
+
+//DELETE dato especifico 
+app.delete(BASE_API + "//" , (req,res)=> {
+    let parametro= req.params.province.toLowerCase()
+    let index = ownershipsChangesYear2023Stats.findIndex(change => change.province.toLowerCase() === parametro);
+
+    if (index=== -1){
+        return res.sendStatus(404);
+    }
+
+    ownershipsChangesYear2023Stats=ownershipsChangesYear2023Stats.filter(change => change.province ===parametro);
+    res.sendStatus(200); 
+});
+
+//APIs MARIO
 app.get(BASE_API + "/accident-rate-2023-stats/loadInitialData", (req, res) => {
     const result = loadInitialDataMRC();
     siniestralidadData2023 = result;
@@ -246,6 +385,7 @@ app.delete(BASE_API + "/accident-rate-2023-stats/:ine_code", (req, res) => {
     }siniestralidadData2023=siniestralidadData2023.filter(sanction => sanction.ine_code !== Number(ineCode));
     res.sendStatus(200);
 });
+
 
 // Nueva ruta "/samples/DLC" para ejecutar el algoritmo y devolver el resultado
 app.get("/samples/DLC", (req, res) => {
