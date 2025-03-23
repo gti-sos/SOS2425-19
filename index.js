@@ -275,7 +275,7 @@ app.put(BASE_API + "/ownerships-changes-stats/:province" , (req,res) => {
 });
 
 //DELETE dato especifico 
-app.delete(BASE_API + "//" , (res,res)=> {
+app.delete(BASE_API + "//" , (req,res)=> {
     let parametro= req.params.province.toLowerCase()
     let index = ownershipsChangesYear2023Stats.findIndex(change => change.province.toLowerCase() === parametro);
 
