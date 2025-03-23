@@ -42,7 +42,7 @@ function CalculateChanges(target){
 
 function InitialData(){
 
-    let ChangesData= [{autonomous_community:"andalucia", province:"jaen", truck:2620, van:3710, bus:55, car:19639, motocycle:3297, industrial_truck:459, trailer_and_semitrailer:460, other_vehicle:774, total:31014, year:2023},
+    let Data= [{autonomous_community:"andalucia", province:"jaen", truck:2620, van:3710, bus:55, car:19639, motocycle:3297, industrial_truck:459, trailer_and_semitrailer:460, other_vehicle:774, total:31014, year:2023},
         {autonomous_community:"andalucia", province:"granada", truck:3127, van:3787, bus:99, car:33356, motocycle:9888, industrial_truck:680, trailer_and_semitrailer:616, other_vehicle:1099, total:52652, year:2023},
         {autonomous_community:"andalucia", province:"malaga", truck:6254, van:8913, bus:133, car:80556, motocycle:19402, industrial_truck:874, trailer_and_semitrailer:1270, other_vehicle:1435, total:118837, year:2023},
         {autonomous_community:"aragon", province:"zaragoza", truck:2988, van:4402, bus:55, car:39804, motocycle:6791, industrial_truck:919, trailer_and_semitrailer:2113, other_vehicle:1008, total:58080, year:2023},
@@ -54,6 +54,6 @@ function InitialData(){
         {autonomous_community:"castilla y leon", province:"salamanca", truck:973, van:1064, bus:48, car:13084, motocycle:1429, industrial_truck:164, trailer_and_semitrailer:260, other_vehicle:327, total:17349, year:2023}
         ];
 
-    return ChangesData;
+    return Data;
 }
 module.exports = {CalculateChanges,InitialData,ChangesData};
