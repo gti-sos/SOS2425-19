@@ -15,7 +15,7 @@ function CsvToArray(csvFile,delimiter =';' ){
         const valores = line.split(delimiter).map(valor => valor.trim());
         const obj={};
         return headers.reduce((obj, header, index) => {
-            obj[header] = isNaN(values[index]) ? values[index] : Number(values[index]);
+            obj[header] = isNaN(valores[index]) ? valores[index] : Number(valores[index]);
             return obj;
         }, {});
 
