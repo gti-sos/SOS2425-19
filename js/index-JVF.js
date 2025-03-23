@@ -1,7 +1,7 @@
 const fs =require('fs');
 const path=require('path');
 
-const TARGET_REGION = "andalucia";
+const TARGET_REGION = "Andalucia";
 const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad.csv');
 
 
@@ -14,10 +14,10 @@ function CsvToArray(csvFile,delimiter =';' ){
     return lines.slice(1).map( line=> {
         const valores = line.split(delimiter).map(valor => valor.trim());
         const obj={};
-        for(let i=0;i < headers.length;i++){
-            obj[headers[i]]=isNaN(valores[i]) ? valores[i] : Number(valores[i]);
-        };
-        return obj;
+        return headers.reduce((obj, header, index) => {
+            obj[header] = isNaN(values[index]) ? values[index] : Number(values[index]);
+            return obj;
+        }, {});
 
     });
 }
