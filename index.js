@@ -173,12 +173,6 @@ app.get(BASE_API + "/accident-rate-2023-stats", (req, res) => {
     }if (year!==undefined){
         siniestralidadData2023Filter=siniestralidadData2023Filter
             .filter(stat=>stat.year=== Number(year))
-    }if (ine_code!==undefined){
-        siniestralidadData2023Filter=siniestralidadData2023Filter
-        .filter(stat=>stat.ine_code=== Number(ine_code))
-        if(siniestralidadData2023.length ===1){
-            siniestralidadData2023Filter = siniestralidadData2023Filter[0]            
-        }
     }if (from!==undefined){
         siniestralidadData2023Filter=siniestralidadData2023Filter
             .filter(stat=>stat.year>= Number(from))
@@ -196,11 +190,11 @@ app.post(BASE_API + "/accident-rate-2023-stats/",(req,res)=>{
     if (ine_code === undefined || municipality ===undefined || province === undefined || ccaa === undefined || 
         year === undefined || deceased === undefined || injured_hospitalized === undefined || injured_not_hospitalized===undefined) {
         return res.sendStatus(400);
-    }if(siniestralidadData2023.some(row=>row.ine_code===ine_code)){
+    }if(siniestralidadData2023.some(row=>row.ine_code===Number(ine_code))){
         return res.sendStatus(409);
     }
-    let newRow = req.body
-    siniestralidadData2023.push(newRow)
+    let newRow = req.body;
+    siniestralidadData2023.push(newRow);
     res.sendStatus(201);
     
 });
