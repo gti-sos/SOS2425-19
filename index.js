@@ -32,7 +32,6 @@ app.get("/cool", (req, res) => {
 // APIs de DLC
 app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
     const result = loadInitialDataDLC();
-    sanctionsAndPoints2022Stats = result;
     res.send(JSON.stringify(result));
 });
 
