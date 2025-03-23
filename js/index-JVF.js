@@ -2,7 +2,7 @@ const fs =require('fs');
 const path=require('path');
 
 const TARGET_REGION = "andalucia";
-const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad2023.csv');
+const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad.csv');
 
 
 function CsvToArray(csvFile,delimiter =';' ){
