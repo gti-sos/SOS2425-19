@@ -7,12 +7,13 @@ const PORT = process.env.PORT || 16078;
 //Exports de los index-XXX
 const {calculatePointsDeducted,sanctionsData,loadInitialDataDLC} = require("./js/index-DLC"); 
 const {CalculateChanges,InitialData,ChangesData} = require("./js/index-JVF");
-const calculateDeceased = require("./js/index-MRC");
+const {calculateDeceased,siniestralidadData,loadInitialDataMRC} = require("./js/index-MRC");
 const BASE_API = "/api/v1"
 
 //Datos de los CSV
 let ownershipsChangesYear2023Stats = ChangesData;
 let sanctionsAndPoints2022Stats = sanctionsData;
+let siniestralidadData2023 = siniestralidadData;
 
 // Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "/public")));
@@ -98,7 +99,7 @@ app.put(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{
 app.delete(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     sanctionsAndPoints2022Stats = []; // Vaciar el array
     console.log("Todos los datos han sido eliminados."); // Para ver en consola
-    res.sendStatus(204); // 204 No Content (indica que se procesó, pero sin respuesta)
+    res.sendStatus(200); 
 });
 
 //GET de un dato especifico
@@ -152,6 +153,7 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
     sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats.filter(sanction => sanction.ine_code !== Number(paramIneCode));
     res.sendStatus(200);
 });
+
 
 
 //APIs - JVF
@@ -287,6 +289,103 @@ app.delete(BASE_API + "//" , (req,res)=> {
     res.sendStatus(200); 
 });
 
+//APIs MARIO
+app.get(BASE_API + "/accident-rate-2023-stats/loadInitialData", (req, res) => {
+    const result = loadInitialDataMRC();
+    siniestralidadData2023 = result;
+    res.send(JSON.stringify(result));
+});
+
+
+app.get(BASE_API + "/accident-rate-2023-stats", (req, res) => {
+    let siniestralidadData2023Filter= siniestralidadData2023
+    let {ine_code,municipality,province,ccaa,year,from,to} = req.query
+    if (municipality!==undefined){
+        siniestralidadData2023Filter=siniestralidadData2023Filter
+            .filter(stat=>stat.municipality.toLowerCase()=== municipality.toLowerCase())
+    }if (province!==undefined){
+        siniestralidadData2023Filter=siniestralidadData2023Filter
+            .filter(stat=>stat.province.toLowerCase()=== province.toLowerCase())
+    }if (ccaa!==undefined){
+        siniestralidadData2023Filter=siniestralidadData2023Filter
+            .filter(stat=>stat.ccaa.toLowerCase()=== ccaa.toLowerCase())
+    }if (year!==undefined){
+        siniestralidadData2023Filter=siniestralidadData2023Filter
+            .filter(stat=>stat.year=== Number(year))
+    }if (from!==undefined){
+        siniestralidadData2023Filter=siniestralidadData2023Filter
+            .filter(stat=>stat.year>= Number(from))
+    }if (to!==undefined){
+        siniestralidadData2023Filter=siniestralidadData2023Filter
+            .filter(stat=>stat.year<= Number(to))
+    }
+    res.send(JSON.stringify(siniestralidadData2023Filter,null,2));
+    res.send(console.log(Array.isArray(siniestralidadData2023))); // Comprueba si es de verdad un array
+    (console.log(typeof(siniestralidadData2023))); 
+});
+
+app.post(BASE_API + "/accident-rate-2023-stats/",(req,res)=>{   
+    let {ine_code,municipality,province,ccaa,year,deceased,injured_hospitalized,injured_not_hospitalized} = req.body
+    if (ine_code === undefined || municipality ===undefined || province === undefined || ccaa === undefined || 
+        year === undefined || deceased === undefined || injured_hospitalized === undefined || injured_not_hospitalized===undefined) {
+        return res.sendStatus(400);
+    }if(siniestralidadData2023.some(row=>row.ine_code===Number(ine_code))){
+        return res.sendStatus(409);
+    }
+    let newRow = req.body;
+    siniestralidadData2023.push(newRow);
+    res.sendStatus(201);
+    
+});
+
+app.delete(BASE_API + "/accident-rate-2023-stats", (req, res) => {
+    siniestralidadData2023 = []; // Vaciamos el array
+    console.log("Todos los datos han sido eliminados.");
+    res.sendStatus(200); 
+});
+
+
+app.put(BASE_API + "/accident-rate-2023-stats/",(req,res)=>{    
+    res.sendStatus(405);
+});
+
+app.get(BASE_API + "/accident-rate-2023-stats/:ine_code", (req, res) => {
+    let ineCode = Number(req.params.ine_code); 
+    let object = siniestralidadData2023.find(object => object.ine_code === ineCode);
+    if (!object) {
+        return res.sendStatus(404);
+    }
+    res.send(JSON.stringify(object,null,2))
+    res.status(200);
+});
+
+app.post(BASE_API + "/accident-rate-2023-stats/:ine_code",(req,res)=>{    
+    res.sendStatus(405);
+});
+
+app.put(BASE_API + "/accident-rate-2023-stats/:ine_code", (req, res) => {
+    let {ine_code,municipality,province,ccaa,year,deceased,injured_hospitalized,injured_not_hospitalized} = req.body;
+    let ineCode = req.params.ine_code;    
+    // Verificar si el ID de la URL coincide con el del cuerpo
+    if (ine_code !== Number(ineCode)) {
+        return res.sendStatus(400);
+    }let i = siniestralidadData2023.findIndex(object => object.ine_code === Number(ineCode));
+    if (i === -1) {
+        return res.sendStatus(404);
+    }siniestralidadData2023[i] = req.body;
+    res.sendStatus(200);
+});
+
+//DELETE de un dato especifico
+app.delete(BASE_API + "/accident-rate-2023-stats/:ine_code", (req, res) => {
+    let ineCode = req.params.ine_code;    
+    let i = siniestralidadData2023.findIndex(object => object.ine_code === Number(ineCode));
+    if (i === -1) {
+        return res.sendStatus(404);
+    }siniestralidadData2023=siniestralidadData2023.filter(sanction => sanction.ine_code !== Number(ineCode));
+    res.sendStatus(200);
+});
+
 
 // Nueva ruta "/samples/DLC" para ejecutar el algoritmo y devolver el resultado
 app.get("/samples/DLC", (req, res) => {
@@ -301,7 +400,7 @@ app.get("/samples/JVF", (req,res) => {
 });
 
 app.get("/samples/MRC", (req,res) => {
-    let resp=calculateDeceased() 
+    let resp= calculateDeceased("Comunitat Valenciana") 
         res.send(`<h1>Resultado del calculo</h1><p>${resp}</p>`);
     
 });
