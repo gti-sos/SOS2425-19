@@ -292,7 +292,6 @@ app.delete(BASE_API + "//" , (req,res)=> {
 //APIs MARIO
 app.get(BASE_API + "/accident-rate-2023-stats/loadInitialData", (req, res) => {
     const result = loadInitialDataMRC();
-    siniestralidadData2023 = result;
     res.send(JSON.stringify(result));
 });
 
