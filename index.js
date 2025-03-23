@@ -165,7 +165,7 @@ app.get(BASE_API + "/ownerships-changes-stats/loadInitialData", (req, res) =>{
 //GET todos los datos - julián
 app.get( BASE_API + "/ownerships-changes-stats", (req,res) =>{
     let ownershipsChangesYear2023Stats_Filtered = ownershipsChangesYear2023Stats;
-    let{autonomous_community,province,truck,van,bus,car,motocycle,other_vehicle,year} = req.query;
+    let{autonomous_community,province,truck,van,bus,car,motocycle,other_vehicle,from,to,year} = req.query;
     if (province !== undefined){
         ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
         .filter(dato => dato.province.toLowerCase() === province.toLowerCase());
@@ -203,11 +203,11 @@ app.get( BASE_API + "/ownerships-changes-stats", (req,res) =>{
     }
     if(from !== undefined){
         ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
-        .filter(dato => dato.year >= Number(from));
+        .filter(dato => dato.year >= Number(from))
     }
     if(to !== undefined){
         ownershipsChangesYear2023Stats_Filtered=ownershipsChangesYear2023Stats_Filtered
-        .filter(dato => dato.year <= Number(to));
+        .filter(dato => dato.year <= Number(to))
     }
 res.send(JSON.stringify(ownershipsChangesYear2023Stats_Filtered,null,2));
 res.send(console.log(Array.isArray(ownershipsChangesYear2023Stats)));
