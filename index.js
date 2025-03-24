@@ -159,7 +159,11 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
 app.get(BASE_API + "/ownerships-changes-stats/loadInitialData", (req, res) =>{
 
     const result = InitialData();
-    res.send(JSON.stringify(result));
+    if(ownershipsChangesYear2023Stats==[]){
+        ownershipsChangesYear2023Stats=result;
+    }
+    
+    res.send(JSON.stringify(ownershipsChangesYear2023Stats));
 });
 
 //GET todos los datos - julián
