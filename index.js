@@ -31,8 +31,13 @@ app.get("/cool", (req, res) => {
 
 // APIs de DLC
 app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
-    const result = loadInitialDataDLC();
-    res.send(JSON.stringify(result));
+    if (sanctionsAndPoints2022Stats.length<=0){
+        sanctionsAndPoints2022Stats=loadInitialDataDLC();
+    }
+    else{
+        return res.status(400).json({message: "Ya tiene datos"})
+    }
+    res.send(JSON.stringify(sanctionsAndPoints2022Stats));
 });
 
 
@@ -158,11 +163,12 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
 //APIs - JVF
 app.get(BASE_API + "/ownerships-changes-stats/loadInitialData", (req, res) =>{
 
-    const result = InitialData();
-    if(ownershipsChangesYear2023Stats==[]){
-        ownershipsChangesYear2023Stats=result;
+    if (ownershipsChangesYear2023Stats.length<=0){
+        ownershipsChangesYear2023Stats=InitialData();
     }
-    
+    else{
+        return res.status(400).json({message: "Ya tiene datos"})
+    }
     res.send(JSON.stringify(ownershipsChangesYear2023Stats));
 });
 
