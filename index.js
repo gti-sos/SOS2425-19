@@ -239,7 +239,7 @@ app.delete(BASE_API + "/ownerships-changes-stats", (req,res) =>{
     ownershipsChangesYear2023Stats = [];
     console.log("Todos los datos han sido eliminados.");
     res.sendStatus(204);
-})
+});
 
 // GET de un dato
 app.get(BASE_API + "/ownerships-changes-stats/:province", (req,res) => {
@@ -275,7 +275,7 @@ app.put(BASE_API + "/ownerships-changes-stats/:province" , (req,res) => {
 });
 
 //DELETE dato especifico 
-app.delete(BASE_API + "//" , (req,res)=> {
+app.delete(BASE_API + "/ownerships-changes-stats/:province" , (req,res)=> {
     let parametro= req.params.province.toLowerCase()
     let index = ownershipsChangesYear2023Stats.findIndex(change => change.province.toLowerCase() === parametro);
 
