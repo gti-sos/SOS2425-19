@@ -1,6 +1,5 @@
 const express = require("express"); 
 const path = require("path");
-const cool = require("cool-ascii-faces");
 const app = express();
 const PORT = process.env.PORT || 16078;
 
@@ -23,11 +22,11 @@ app.use(express.json())
 app.get("/about", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/about.html"));
 });
-
-// Ruta para "/cool"
-app.get("/cool", (req, res) => {
-    res.send(cool());
+// Ruta para servir "index.html" en "/"
+app.get("/about", (req, res) => {
+    res.sendFile(path.join(__dirname, "/public/index.html"));
 });
+
 
 // APIs de DLC
 app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
