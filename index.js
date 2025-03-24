@@ -289,8 +289,13 @@ app.delete(BASE_API + "/ownerships-changes-stats/:province" , (req,res)=> {
 
 //APIs MARIO
 app.get(BASE_API + "/accident-rate-2023-stats/loadInitialData", (req, res) => {
-    const result = loadInitialDataMRC();
-    res.send(JSON.stringify(result));
+    if (siniestralidadData2023.length<=0){
+        siniestralidadData2023=loadInitialDataMRC();
+    }
+    else{
+        return res.status(400).json({message: "Ya tiene datos"})
+    }
+    res.send(JSON.stringify(siniestralidadData2023));
 });
 
 
