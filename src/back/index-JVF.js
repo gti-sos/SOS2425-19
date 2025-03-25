@@ -1,5 +1,9 @@
-const fs =require('fs');
-const path=require('path');
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 
 const TARGET_REGION = "Andalucia";
 const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad.csv');

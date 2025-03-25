@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "- **Team**   - Daniel Lebrero Carcela (https://github.com/DaniLebrero)   - Julián Villaescusa Fernández(https://github.com/julvilfer1)   - Mario Rodríguez Carrillo (https://github.com/marrodcar35) - **Project description**: Our sources of information are focused on analyzing the sanctions that occurred in different municipalities of Spain during 2022, the changes in vehicle ownership during 2023 and the accident rate during 2023. - **Repository**: [gti-sos/SOS2425-19](https://github.com/gti-sos/SOS2425-19) - **URL**: TBD -  **APIs**:     - TBD     - TBD     - TBD",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +13,7 @@
     "cool-ascii-faces": "^1.3.4",
     "csv-parser": "^3.2.0",
     "express": "^4.21.2",
-    "marked": "^15.0.7"
+    "marked": "^15.0.7",
+    "nedb": "^1.8.0"
   }
 }
