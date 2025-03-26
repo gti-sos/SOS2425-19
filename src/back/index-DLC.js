@@ -1,6 +1,8 @@
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from 'url';
+import dataStore from "nedb";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
@@ -36,6 +38,7 @@ console.log(`Media de total_points_deducted en ${TARGET_REGION} :`, average.toFi
 return [target,average];
 }
 
+const database = new dataStore();
 
 function loadInitialDataDLC(){
     const sanctionsData = [
@@ -59,135 +62,185 @@ function loadInitialDataDLC(){
 }
 
 const BASE_API = "/api/v1"
-function loadBackendDLC(app,db){
+
+database.insert(sanctionsData, (err, newDocs) => {
+    if (err) {
+        return res.status(500).send("Error al insertar los datos.");
+    }
+})
+
+function loadBackendDLC(app){
+
     
-let db = sanctionsData;
     // APIs de DLC
-app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
-    if (db.length<=0){
-        db=loadInitialDataDLC();
-    }
-    else{
-        return res.status(400).send("Ya tiene datos")
-    }
-    res.send(JSON.stringify(db));
-});
+    app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
+        database.count({}, (err, count) => {
+            if (err) {
+                return res.status(500).send("Error al comprobar la base de datos.");
+            }
 
+            if (count > 0) {
+                return res.status(400).json({ message: "Ya tiene datos" });
+            }
 
-//GET todos los datos - Dani
-app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
-    let dbFiltered= db
-    let {ine_code,province,autonomous_community,year,from,to} = req.query
-    if (province!==undefined){
-        dbFiltered=dbFiltered
-            .filter(stat=>stat.province.toLowerCase()=== province.toLowerCase())
-    }
-    if (autonomous_community!==undefined){
-        dbFiltered=dbFiltered
-            .filter(stat=>stat.autonomous_community.toLowerCase()=== autonomous_community.toLowerCase())
-    }
-    if (year!==undefined){
-        dbFiltered=dbFiltered
-            .filter(stat=>stat.year=== Number(year))
-    }
-    if (ine_code!==undefined){
-        dbFiltered=dbFiltered
-        .filter(stat=>stat.ine_code=== Number(ine_code))
-        if(db.length ===1){
-            dbFiltered = db[0]            
-        }
-    }    
-    if (from!==undefined){
-        dbFiltered=dbFiltered
-            .filter(stat=>stat.year>= Number(from))
-    }
-    if (to!==undefined){
-        dbFiltered=dbFiltered
-            .filter(stat=>stat.year<= Number(to))
-    }
-    res.send(JSON.stringify(dbFiltered,null,2));
+            const initialData = loadInitialDataDLC();
+            database.insert(initialData, (err, newDocs) => {
+                if (err) {
+                    return res.status(500).send("Error al insertar los datos.");
+                }
+
+                database.find({}, (err, sanctions) => {
+                    if (err) {
+                        return res.status(500).send("Error al recuperar los datos.");
+                    }
+                    res.send(JSON.stringify(sanctions.map((x)=>{
+                        delete x._id;
+                        return x;
+                    }),null,2));
+                });
+            });
+        });
     });
-//POST a todos los datos
-app.post(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{   
-    let {ine_code,province,autonomous_community,year,total_sanctions_with_points,total_points_deducted} = req.body
-    if (ine_code === undefined || province === undefined || autonomous_community === undefined || 
-        year === undefined || total_sanctions_with_points === undefined || total_points_deducted === undefined) {
-        return res.sendStatus(400);
-    }
+
+    //GET todos los datos - Dani
+    app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
+        let { ine_code, province, autonomous_community, year, from, to } = req.query;
     
-    if(db.some(sanction=>sanction.ine_code===ine_code)){
-        return res.sendStatus(409);
+        // Construimos un objeto de consulta para Nedatabase
+        let query = {};
+    
+        if (province !== undefined) {
+            query.province = new RegExp("^" + province + "$", "i"); // búsqueda insensible a mayúsculas
         }
-    let newSanction = req.body
-    db.push(newSanction)
-    res.sendStatus(201);
+        if (autonomous_community !== undefined) {
+            query.autonomous_community = new RegExp("^" + autonomous_community + "$", "i");
+        }
+        if (year !== undefined) {
+            query.year = Number(year);
+        }
+        if (ine_code !== undefined) {
+            query.ine_code = Number(ine_code);
+        }
+        if (from !== undefined || to !== undefined) {
+            query.year = {};
+            if (from !== undefined) query.year.$gte = Number(from);
+            if (to !== undefined) query.year.$lte = Number(to);
+        }
     
-});
+        database.find(query, (err, sanctions) => {
+            if (err) {
+                return res.status(500).send("Error al acceder a la base de datos.");
+            }
+            res.send(JSON.stringify(sanctions.map((x)=>{
+                delete x._id;
+                return x;
+            }),null,2));
+        });
+    });
 
-//FALLO DE PUT a todos los datos
-app.put(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{    
+    //POST a todos los datos
+    app.post(BASE_API + "/sanctions-and-points-stats", (req, res) => {
+        const { ine_code, province, autonomous_community, year, total_sanctions_with_points, total_points_deducted } = req.body;
+        // Validar campos obligatorios
+        if (
+            ine_code === undefined || province === undefined || autonomous_community === undefined ||
+            year === undefined || total_sanctions_with_points === undefined || total_points_deducted === undefined
+        ) {
+            return res.sendStatus(400); // Bad Request
+        }
+        // Comprobar si ya existe un registro con mismo ine_code (puedes añadir year si es clave compuesta)
+        database.findOne({ ine_code: ine_code }, (err, existingDoc) => {
+            if (err) {
+                return res.status(500).send("Error al acceder a la base de datos.");
+            }
+            if (existingDoc) {
+                return res.sendStatus(409); // Conflict
+            }
+            database.insert(req.body, (err, newDoc) => {
+                if (err) {
+                    return res.status(500).send("Error al insertar el recurso.");
+                }
+                res.sendStatus(201); // Created
+            });
+        });
+    });
     
-    res.sendStatus(405);
-});
 
-//DELETE de todos los datos
-app.delete(BASE_API + "/sanctions-and-points-stats", (req, res) => {
-    db = []; // Vaciar el array
-    console.log("Todos los datos han sido eliminados."); // Para ver en consola
-    res.sendStatus(200); 
-});
+    //FALLO DE PUT a todos los datos
+    app.put(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{    
+        
+        res.sendStatus(405);
+    });
 
-//GET de un dato especifico
-app.get(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
-    let paramIneCode = Number(req.params.ine_code); // Convertir a número
-    // Buscar el objeto por ine_code
-    let sanction = db.find(sanction => sanction.ine_code === paramIneCode);
-    // Si no se encuentra, devolver 404
-    if (!sanction) {
-        return res.sendStatus(404);
-    }
-    // Enviar la sanción encontrada
-    res.send(JSON.stringify(sanction,null,2))
-    res.status(200);
-});
+    //DELETE de todos los datos
+    app.delete(BASE_API + "/sanctions-and-points-stats", (req, res) => {
+        database.remove({},{multi:true}); 
+        console.log("Todos los datos han sido eliminados."); // Para ver en consola
+        res.sendStatus(200); 
+    });
 
-//FALLO DE POST de un dato especifico
-app.post(BASE_API + "/sanctions-and-points-stats/:ine_code",(req,res)=>{    
+    //GET de un dato especifico
+    app.get(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
+        const paramIneCode = Number(req.params.ine_code);
     
-    res.sendStatus(405);
-});
+        database.findOne({ ine_code: paramIneCode }, (err, sanction) => {
+            if (err) {
+                return res.status(500).send("Error al acceder a la base de datos.");
+            }
+            if (!sanction) {
+                return res.sendStatus(404);
+            }
+            // Eliminar la propiedad _id antes de enviar
+        const { _id, ...sanctionWithoutId } = sanction;
+        res.status(200).json(sanctionWithoutId);
+        });
+    });
 
-//PUT de un dato especifico
-app.put(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
-    let { ine_code, province, autonomous_community, year, total_sanctions_with_points, total_points_deducted } = req.body;
-    let paramIneCode = req.params.ine_code;    
-    // Verificar si el ID de la URL coincide con el del cuerpo
-    if (ine_code !== Number(paramIneCode)) {
-        return res.sendStatus(400);
-    }    
-    // Comprobar si el recurso existe
-    let index = db.findIndex(sanction => sanction.ine_code === Number(paramIneCode));
-    if (index === -1) {
-        return res.sendStatus(404);
-    }    
-    // Actualizar el recurso
-    db[index] = req.body;
-    res.sendStatus(200);
-});
+    //FALLO DE POST de un dato especifico
+    app.post(BASE_API + "/sanctions-and-points-stats/:ine_code",(req,res)=>{    
+        
+        res.sendStatus(405);
+    });
 
-//DELETE de un dato especifico
-app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
-    let paramIneCode = req.params.ine_code;    
+    //PUT de un dato especifico
+    app.put(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
+        const paramIneCode = Number(req.params.ine_code);
+        const updatedData = req.body;
+
+        // Verificar que el ine_code en el body coincida con el de la URL
+        if (updatedData.ine_code !== paramIneCode) {
+            return res.sendStatus(400); // Bad Request
+        }    
+        database.update({ ine_code: paramIneCode }, updatedData, {}, (err, numReplaced) => {
+            if (err) {
+                return res.status(500).send("Error al actualizar el recurso.");
+            }
     
-    // Comprobar si el recurso existe
-    let index = db.findIndex(sanction => sanction.ine_code === Number(paramIneCode));
-    if (index === -1) {
-        return res.sendStatus(404);
-    }    
-    // Actualizar el recurso
-    db=db.filter(sanction => sanction.ine_code !== Number(paramIneCode));
-    res.sendStatus(200);
-});
+            if (numReplaced === 0) {
+                return res.sendStatus(404); // No encontrado
+            }
+    
+            res.sendStatus(200); // OK
+        });
+    });
+
+    //DELETE de un dato especifico
+    app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
+        const paramIneCode = Number(req.params.ine_code);
+    
+        database.remove({ ine_code: paramIneCode }, {}, (err, numRemoved) => {
+            if (err) {
+                return res.status(500).send("Error al eliminar el recurso.");
+            }
+    
+            if (numRemoved === 0) {
+                return res.sendStatus(404); // No encontrado
+            }
+    
+            res.sendStatus(200); // OK
+        });
+    });
+    
 }
 
 export {loadBackendDLC,calculatePointsDeducted,sanctionsData,loadInitialDataDLC};

@@ -1,15 +1,15 @@
 import express from "express";
 import path from "path";
-import {loadBackend} from "./src/back/index-DLC.js";
+import {loadBackendDLC} from "./src/back/index-DLC.js";
 import { fileURLToPath } from 'url';
-import nedb from "nedb";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 const app = express();
 const PORT = process.env.PORT || 16078;
 
-let db = new dataStore();
+
 
 //Exports de los index-XXX..
 //const {CalculateChanges,InitialData,ChangesData} = require("./src/js/index-JVF.js");
@@ -34,9 +34,7 @@ app.get("/about", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-
-
-loadBackendDLC(app,db);
+loadBackendDLC(app);
 
 
 /*
