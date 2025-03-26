@@ -27,16 +27,7 @@ const csvContent = fs.readFileSync(FILE_PATH, 'utf8');
 
 const sanctionsData = csvToArray(csvContent);
 
-function calculatePointsDeducted(target) {
-let filtered = sanctionsData.filter((x)=> x.autonomous_community === target)
 
-let totalPoints = filtered.reduce((sum, points) => sum + points.total_points_deducted, 0);
-let average = filtered.length > 0 ? totalPoints / filtered.length : 0;
-
-
-console.log(`Media de total_points_deducted en ${TARGET_REGION} :`, average.toFixed(2));
-return [target,average];
-}
 
 const database = new dataStore();
 
@@ -103,40 +94,52 @@ function loadBackendDLC(app){
     });
 
     //GET todos los datos - Dani
-    app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
-        let { ine_code, province, autonomous_community, year, from, to } = req.query;
-    
-        // Construimos un objeto de consulta para Nedatabase
-        let query = {};
-    
-        if (province !== undefined) {
-            query.province = new RegExp("^" + province + "$", "i"); // búsqueda insensible a mayúsculas
+    // GET todos los datos con paginación
+app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
+    let { ine_code, province, autonomous_community, year, from, to, limit, offset } = req.query;
+
+    let query = {};
+
+    if (province) {
+        query.province = new RegExp("^" + province + "$", "i");
+    }
+    if (autonomous_community) {
+        query.autonomous_community = new RegExp("^" + autonomous_community + "$", "i");
+    }
+    if (year) {
+        query.year = Number(year);
+    }
+    if (ine_code) {
+        query.ine_code = Number(ine_code);
+    }
+    if (from || to) {
+        query.year = {};
+        if (from) query.year.$gte = Number(from);
+        if (to) query.year.$lte = Number(to);
+    }
+
+    let q = database.find(query);
+
+    // Aplicar paginación si viene por query
+    if (offset !== undefined) {
+        q = q.skip(Number(offset));
+    }
+    if (limit !== undefined) {
+        q = q.limit(Number(limit));
+    }
+
+    q.exec((err, sanctions) => {
+        if (err) {
+            return res.status(500).send("Error al acceder a la base de datos.");
         }
-        if (autonomous_community !== undefined) {
-            query.autonomous_community = new RegExp("^" + autonomous_community + "$", "i");
-        }
-        if (year !== undefined) {
-            query.year = Number(year);
-        }
-        if (ine_code !== undefined) {
-            query.ine_code = Number(ine_code);
-        }
-        if (from !== undefined || to !== undefined) {
-            query.year = {};
-            if (from !== undefined) query.year.$gte = Number(from);
-            if (to !== undefined) query.year.$lte = Number(to);
-        }
-    
-        database.find(query, (err, sanctions) => {
-            if (err) {
-                return res.status(500).send("Error al acceder a la base de datos.");
-            }
-            res.send(JSON.stringify(sanctions.map((x)=>{
-                delete x._id;
-                return x;
-            }),null,2));
-        });
+
+        // Eliminar _id de cada objeto
+        const sanitized = sanctions.map(({ _id, ...rest }) => rest);
+
+        res.json(sanitized);
     });
+});
+
 
     //POST a todos los datos
     app.post(BASE_API + "/sanctions-and-points-stats", (req, res) => {
@@ -224,7 +227,7 @@ function loadBackendDLC(app){
         });
     });
 
-    
+
     //DELETE de un dato especifico
     app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
         const paramIneCode = Number(req.params.ine_code);
@@ -244,4 +247,4 @@ function loadBackendDLC(app){
     
 }
 
-export {loadBackendDLC,calculatePointsDeducted,sanctionsData,loadInitialDataDLC};
+export {loadBackendDLC,sanctionsData,loadInitialDataDLC};
