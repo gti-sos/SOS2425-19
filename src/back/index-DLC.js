@@ -59,54 +59,53 @@ function loadInitialDataDLC(){
 }
 
 const BASE_API = "/api/v1"
-function loadBackendDLC(app){
+function loadBackendDLC(app,db){
     
-let sanctionsAndPoints2022Stats = sanctionsData;
-
+let db = sanctionsData;
     // APIs de DLC
 app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
-    if (sanctionsAndPoints2022Stats.length<=0){
-        sanctionsAndPoints2022Stats=loadInitialDataDLC();
+    if (db.length<=0){
+        db=loadInitialDataDLC();
     }
     else{
-        return res.status(400).json({message: "Ya tiene datos"})
+        return res.status(400).send("Ya tiene datos")
     }
-    res.send(JSON.stringify(sanctionsAndPoints2022Stats));
+    res.send(JSON.stringify(db));
 });
 
 
 //GET todos los datos - Dani
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
-    let sanctionsAndPoints2022StatsFiltered= sanctionsAndPoints2022Stats
+    let dbFiltered= db
     let {ine_code,province,autonomous_community,year,from,to} = req.query
     if (province!==undefined){
-        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
+        dbFiltered=dbFiltered
             .filter(stat=>stat.province.toLowerCase()=== province.toLowerCase())
     }
     if (autonomous_community!==undefined){
-        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
+        dbFiltered=dbFiltered
             .filter(stat=>stat.autonomous_community.toLowerCase()=== autonomous_community.toLowerCase())
     }
     if (year!==undefined){
-        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
+        dbFiltered=dbFiltered
             .filter(stat=>stat.year=== Number(year))
     }
     if (ine_code!==undefined){
-        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
+        dbFiltered=dbFiltered
         .filter(stat=>stat.ine_code=== Number(ine_code))
-        if(sanctionsAndPoints2022Stats.length ===1){
-            sanctionsAndPoints2022StatsFiltered = sanctionsAndPoints2022Stats[0]            
+        if(db.length ===1){
+            dbFiltered = db[0]            
         }
     }    
     if (from!==undefined){
-        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
+        dbFiltered=dbFiltered
             .filter(stat=>stat.year>= Number(from))
     }
     if (to!==undefined){
-        sanctionsAndPoints2022StatsFiltered=sanctionsAndPoints2022StatsFiltered
+        dbFiltered=dbFiltered
             .filter(stat=>stat.year<= Number(to))
     }
-    res.send(JSON.stringify(sanctionsAndPoints2022StatsFiltered,null,2));
+    res.send(JSON.stringify(dbFiltered,null,2));
     });
 //POST a todos los datos
 app.post(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{   
@@ -116,11 +115,11 @@ app.post(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{
         return res.sendStatus(400);
     }
     
-    if(sanctionsAndPoints2022Stats.some(sanction=>sanction.ine_code===ine_code)){
+    if(db.some(sanction=>sanction.ine_code===ine_code)){
         return res.sendStatus(409);
         }
     let newSanction = req.body
-    sanctionsAndPoints2022Stats.push(newSanction)
+    db.push(newSanction)
     res.sendStatus(201);
     
 });
@@ -133,7 +132,7 @@ app.put(BASE_API + "/sanctions-and-points-stats/",(req,res)=>{
 
 //DELETE de todos los datos
 app.delete(BASE_API + "/sanctions-and-points-stats", (req, res) => {
-    sanctionsAndPoints2022Stats = []; // Vaciar el array
+    db = []; // Vaciar el array
     console.log("Todos los datos han sido eliminados."); // Para ver en consola
     res.sendStatus(200); 
 });
@@ -142,7 +141,7 @@ app.delete(BASE_API + "/sanctions-and-points-stats", (req, res) => {
 app.get(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
     let paramIneCode = Number(req.params.ine_code); // Convertir a número
     // Buscar el objeto por ine_code
-    let sanction = sanctionsAndPoints2022Stats.find(sanction => sanction.ine_code === paramIneCode);
+    let sanction = db.find(sanction => sanction.ine_code === paramIneCode);
     // Si no se encuentra, devolver 404
     if (!sanction) {
         return res.sendStatus(404);
@@ -167,12 +166,12 @@ app.put(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
         return res.sendStatus(400);
     }    
     // Comprobar si el recurso existe
-    let index = sanctionsAndPoints2022Stats.findIndex(sanction => sanction.ine_code === Number(paramIneCode));
+    let index = db.findIndex(sanction => sanction.ine_code === Number(paramIneCode));
     if (index === -1) {
         return res.sendStatus(404);
     }    
     // Actualizar el recurso
-    sanctionsAndPoints2022Stats[index] = req.body;
+    db[index] = req.body;
     res.sendStatus(200);
 });
 
@@ -181,12 +180,12 @@ app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
     let paramIneCode = req.params.ine_code;    
     
     // Comprobar si el recurso existe
-    let index = sanctionsAndPoints2022Stats.findIndex(sanction => sanction.ine_code === Number(paramIneCode));
+    let index = db.findIndex(sanction => sanction.ine_code === Number(paramIneCode));
     if (index === -1) {
         return res.sendStatus(404);
     }    
     // Actualizar el recurso
-    sanctionsAndPoints2022Stats=sanctionsAndPoints2022Stats.filter(sanction => sanction.ine_code !== Number(paramIneCode));
+    db=db.filter(sanction => sanction.ine_code !== Number(paramIneCode));
     res.sendStatus(200);
 });
 }
