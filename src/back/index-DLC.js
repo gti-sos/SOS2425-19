@@ -224,6 +224,7 @@ function loadBackendDLC(app){
         });
     });
 
+    
     //DELETE de un dato especifico
     app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
         const paramIneCode = Number(req.params.ine_code);
