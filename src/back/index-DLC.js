@@ -136,7 +136,7 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
         // Eliminar _id de cada objeto
         const sanitized = sanctions.map(({ _id, ...rest }) => rest);
 
-        res.json(sanitized);
+        res.send(JSON.stringify(sanitized));
     });
 });
 
