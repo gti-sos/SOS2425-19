@@ -7,7 +7,6 @@ import dataStore from "nedb";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 
-const TARGET_REGION = 'Comunitat Valenciana'; // Cambia esto según la comunidad autónoma deseada
 const FILE_PATH = path.join(__dirname, '../../data/DatosProvincialesSancionesPuntos_2022.csv')
 
 function csvToArray(csvString, delimiter = ";") {
@@ -93,7 +92,6 @@ function loadBackendDLC(app){
         });
     });
 
-    //GET todos los datos - Dani
     // GET todos los datos con paginación
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     let { ine_code, province, autonomous_community, year, from, to, limit, offset } = req.query;
@@ -199,6 +197,21 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
         });
     });
 
+//POST para resetear la base de datos a la version original
+app.post(BASE_API + "/sanctions-and-points-stats/reset", (req, res) => {
+    database.remove({}, { multi: true }, (err) => {
+        if (err) {
+            return res.status(500).send("Error al limpiar la base de datos.");
+        }    
+        database.insert(sanctionsData, (err) => {
+            if (err) {
+                return res.status(500).send("Error al restaurar los datos iniciales.");
+            }    
+            res.status(200).send("Base de datos restaurada.");
+        });
+    });
+});
+
     //FALLO DE POST de un dato especifico
     app.post(BASE_API + "/sanctions-and-points-stats/:ine_code",(req,res)=>{    
         
@@ -234,16 +247,20 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     
         database.remove({ ine_code: paramIneCode }, {}, (err, numRemoved) => {
             if (err) {
-                return res.status(500).send("Error al eliminar el recurso.");
-            }
-    
-            if (numRemoved === 0) {
-                return res.sendStatus(404); // No encontrado
-            }
-    
-            res.sendStatus(200); // OK
+                res.status(500).send("Error al eliminar el recurso.");
+                console.error(`ERROR: ${err}`)
+            }else{
+                if (numRemoved === 0) {
+                    res.sendStatus(404); // No encontrado
+                }else{
+                    res.sendStatus(200); // OK
+                }               
+            }    
+            
         });
     });
+
+    
     
 }
 
