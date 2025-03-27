@@ -1,0 +1,964 @@
+{
+	"info": {
+		"_postman_id": "08caac86-afb4-46bc-a609-c438b02d11d2",
+		"name": "sanctions-and-points-stats-tests",
+		"description": "This API handles StartFragmentsanctions-and-points-stats",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42153958"
+	},
+	"item": [
+		{
+			"name": "Cargar todos los datos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an array of objects\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('array');\r",
+							"    responseBody.forEach(item => {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar dato especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an object\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('object');\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/3037",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						"3037"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar datos con filtro provincia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an array of objects\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('array');\r",
+							"    responseBody.forEach(item => {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats?province=sevilla",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "sevilla"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar datos con filtro comunidad autonoma",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an array of objects\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('array');\r",
+							"    responseBody.forEach(item => {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats?autonomous_community=comunitat valenciana",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					],
+					"query": [
+						{
+							"key": "autonomous_community",
+							"value": "comunitat valenciana"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar datos con filtro año",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an array of objects\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('array');\r",
+							"    responseBody.forEach(item => {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats?year=2022",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2022"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar datos con filtro rango de años",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an array of objects\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('array');\r",
+							"    responseBody.forEach(item => {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats?from=2022&to=2024",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2022"
+						},
+						{
+							"key": "to",
+							"value": "2024"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post a todos los datos 41906",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ine_code\": 41906,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"year\": 2024,\"total_sanctions_with_points\": 29,\"total_points_deducted\": 108\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fallo POST por conflicto 41906",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ine_code\": 41906,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"year\": 2024,\"total_sanctions_with_points\": 29,\"total_points_deducted\": 108\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fallo POST por falta campos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ine_code\": 41905,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"total_sanctions_with_points\": 28,\"total_points_deducted\": 109\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete de todos los datos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar todos los datos Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an array of objects\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('array');\r",
+							"    responseBody.forEach(item => {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post a todos los datos 41905",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ine_code\": 41905,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"year\": 2023,\"total_sanctions_with_points\": 28,\"total_points_deducted\": 109\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put a dato especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ine_code\": 41905,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"year\": 2023,\"total_sanctions_with_points\": 28,\"total_points_deducted\": 110\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/41905",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						"41905"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete dato especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/41905",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						"41905"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar datos iniciales",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an array of objects\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('array');\r",
+							"    responseBody.forEach(item => {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/loadInitialData",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar todos los datos Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify if the data of the response is an array of objects\r",
+							"pm.test(\"Response body is an array of objects\", function () {\r",
+							"    // Parse the response body into JSON\r",
+							"    let responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.be.an('array');\r",
+							"    responseBody.forEach(item => {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fallo de PUT a todos los datos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\"ine_code\": 41906,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"year\": 2024,\"total_sanctions_with_points\": 29,\"total_points_deducted\": 108\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fallo POST dato especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ine_code\": 41906,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"year\": 2024,\"total_sanctions_with_points\": 29,\"total_points_deducted\": 108\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/41906",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						"41906"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fallo PUT distinto id recurso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ine_code\": 41905,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"year\": 2023,\"total_sanctions_with_points\": 28,\"total_points_deducted\": 110\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/41906",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						"41906"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fallo PUT recurso inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ine_code\": 41907,\"province\": \"Sevilla\",\"autonomous_community\": \"Andalucía\",\"year\": 2025,\"total_sanctions_with_points\": 30,\"total_points_deducted\": 110\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/41907",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						"41907"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Resetear datos acomo al inicio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/reset",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sanctions-and-points-stats",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

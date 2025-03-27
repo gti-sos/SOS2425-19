@@ -60,9 +60,12 @@ database.insert(sanctionsData, (err, newDocs) => {
 })
 
 function loadBackendDLC(app){
-
     
     // APIs de DLC
+    app.get(BASE_API + "/sanctions-and-points-stats/docs", (req, res) => {
+        res.redirect("https://documenter.getpostman.com/view/42153958/2sAYkLncz8"); 
+    });
+
     app.get(BASE_API + "/sanctions-and-points-stats/loadInitialData", (req, res) => {
         database.count({}, (err, count) => {
             if (err) {
@@ -259,9 +262,6 @@ app.post(BASE_API + "/sanctions-and-points-stats/reset", (req, res) => {
             
         });
     });
-
-    
-    
 }
 
 export {loadBackendDLC,sanctionsData,loadInitialDataDLC};
