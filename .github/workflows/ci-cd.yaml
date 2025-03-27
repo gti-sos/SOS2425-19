@@ -1,7 +1,7 @@
 name: CI/CD
 on: [push,pull_request]
 jobs:
-  ci:
+  ci-cd:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -11,7 +11,7 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Deploy to Render
-        run: johnbeynon/render-deploy-action@v0.0.8
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with: 
           service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
           api-key: ${{ secrets.MY_RENDER_API_KEY }}
