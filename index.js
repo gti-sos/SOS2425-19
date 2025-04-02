@@ -279,11 +279,7 @@ app.delete(BASE_API + "/accident-rate-2023-stats/:ine_code", (req, res) => {
 });
 
 */
-// Nueva ruta "/samples/DLC" para ejecutar el algoritmo y devolver el resultado
-app.get("/samples/DLC", (req, res) => {
-    let ress = calculatePointsDeducted("Comunitat Valenciana")    
-        res.send(`<h1>Resultado del cálculo</h1><p>Media de total_points_deducted en ${ress[0]}: ${ress[1].toFixed(2)}</p>`);
-});
+
 
 // Nueva ruta "samples/JVF" para ejecutar el algoritmo y devolver el resultado 
 app.get("/samples/JVF", (req,res) => {
