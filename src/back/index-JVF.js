@@ -77,7 +77,8 @@ function loadBackendJVF( app ){
         { 
             res.redirect();
         });
-
+        
+    //load initial data
     app.get(BASE_API + "/ownerships-changes-stats/loadInitialData", (req,res) => 
         {
             database.count({},(err,count) =>
@@ -118,9 +119,97 @@ function loadBackendJVF( app ){
     //GET todos los datos con paginación
     app.get(BASE_API + "/ownerships-changes-stats" , (req,res) => 
         {
+            let { autonomous_community,province,truck,van,bus,car,motocycle,other_vehicle,year,from,to,limit,offset} = req.query;
+            
+            let query = {};
+
+            if(province) {
+                query.province= new RegExp("^" + province +"$","i")
+            }
+            if(autonomous_community) {
+                query.autonomous_community= new RegExp("^" + autonomous_community +"$","i")
+            }
+            if(truck) {
+                query.truck= Number(truck);
+            }
+            if(van) {
+                query.van= Number(van);
+            }
+            if(car) {
+                query.car= Number(car);
+            }
+            if(motocycle) {
+                query.motocycle= Number(motocycle);
+            }
+            if(bus) {
+                query.bus= Number(bus);
+            }
+            if(other_vehicle) {
+                query.other_vehicle= Number(other_vehicle);
+            }
+            if(year) {
+                query.year= Number(year);
+            }
+            
+            if(to || from){
+                query.year={}
+                if (from) query.year.$gte= Number(from);
+                if (to) query.year.$lte= Number(to);
+            }
+
+            let x= database.find(query);
+
+            if (offset !== undefined){
+                x=x.skip(Number(offset));
+            }
+            if(limit !== undefined){
+                x=x.limit(Number(limit));
+            }
+
+            x.exec((err,ownerships) =>{
+                if (err){
+                    return res.status(500).send("error al acceder a la base de datos");
+                }
+                //eliminar _id 
+                const ow = ownerships.map(({ _id, ...rest }) => rest);
+
+                res.send(JSON.stringify(ow));
+            });
 
         });
 
+
+    //Post todo 
+    app.post( BASE_API + "/ownerships-changes-stats", (req,res) => 
+        {
+            const{autonomous_community,province,truck,van,bus,car,motocycle,other_vehicle,year} = req.body;
+
+            if(
+                autonomous_community == undefined ||province== undefined ||truck== undefined ||van== undefined ||
+                bus== undefined||car== undefined||motocycle== undefined||other_vehicle== undefined||year== undefined
+            ){
+                return res.send(400);
+            }
+            database.findOne({province:province}, (err,existingDoc) => {
+                if(err)
+                {
+                    return res.status(500).send("Error al acceder la base de datos");
+                }
+                if (existingDoc) 
+                {
+                    return res.sendStatus(409); // Conflict
+                }
+                database.insert(req.body, (err,newDoc)=>{
+                    if(err)
+                        {
+                            return res.status(500).send("Error al introducir el dato");
+                        }
+                    res.sendStatus(201);
+                    
+                });
+
+            });
+        });
 
     //FALLO DE PUT Todo
     app.put(BASE_API + "/ownerships-changes-stats/", (req,res) => 
@@ -136,12 +225,65 @@ function loadBackendJVF( app ){
             res.sendStatus(200);
         });
 
-    //Fallo Post especifico
+   //get especifico
+   app.get(BASE_API + "/ownerships-changes-stats/:province", (req,res) =>{
+        const parametro=req.params.province;
+        database.findOne({province:parametro} , (err,own)=>{
+            if(err){
+                return res.sendStatus(500).send("error al buscar");
+            }
+            if(!own){
+               return res.sendStatus(500).send("error al acceder a la base de datos");
+            }
+            const { _id, ...ownWithoutId } = own;
+            res.status(200).json(ownWithoutId);
+        });
+   });     
+
+   //post reseteo a base
+   app.post( BASE_API + "/ownerships-changes-stats/reset", (req,res) =>{
+        database.remove({}, {multi:true}, (err) => {
+            if(err){
+                return res.sendStatus(500).send("error al restaurar");
+            }
+            database.insert(ChangesData,(err)=>{
+                if(err){
+                    return res.sendStatus(500).send("error al restaurar");
+                }
+                res.sendStatus(200).send("base restaurada");
+                        });
+
+
+        });
+   });
+
+   //Fallo Post especifico
     app.post(BASE_API + "/ownerships-changes-stats/:province" , (req,res)=>
         {
             res.sendStatus(405);
         });
+    
+    // PUT dato especifico
+    app.put(BASE_API + "/ownerships-changes-stats/:province" , (req,res)=>{
+        const parametro= req.params.province
+        const actu=req.body
+        
+        
+        if(actu !== parametro ){
+            return res.sendStatus(400);
+        }
+        database.update({province:parametro} , actu, {}, (err,remplazado)=>{
+            if (err)   
+                {
+                    res.status(500).send("error al actualizar el dato");
+                }
+            if(remplazado === 0){
+                return res.sendStatus(404);
+            }
+            res.sendStatus(200);
 
+        });
+    });
     //DELETE dato especifico
     app.delete(BASE_API + "/ownerships-changes-stats/:province", (req,res) =>
         {
