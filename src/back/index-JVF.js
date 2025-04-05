@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 
 const TARGET_REGION = "Andalucia";
-const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad.csv');
+const File_path =path.join(__dirname, '../data/EstadisticasCambioTitularidad.csv');F
 
 
 function CsvToArray(csvFile,delimiter =';' ){
