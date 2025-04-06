@@ -1,0 +1,556 @@
+{
+	"info": {
+		"_postman_id": "9084e17a-86a1-4c51-aa72-84c739116157",
+		"name": "api-MRC-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42375041"
+	},
+	"item": [
+		{
+			"name": "Acceder a todas las estadísticas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}",
+					"host": [
+						"{{BASE-URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Acceder a una estadística concreta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/1001",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"1001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Acceder a todas las estadísticas de la comunidad valenciana",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}?ccaa=Comunitat Valenciana",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"query": [
+						{
+							"key": "ccaa",
+							"value": "Comunitat Valenciana"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Acceder a las estadísticas de la provincia de Zaragoza",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}?province=Zaragoza",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"query": [
+						{
+							"key": "province",
+							"value": "Zaragoza"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Acceder a las estadísticas del municipio de Puendeluna",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}?municipality=Puendeluna",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"query": [
+						{
+							"key": "municipality",
+							"value": "Puendeluna"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Acceder a todas las estadísticas de un año",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}?year=2023",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2023"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Acceder datos periodo de tiempo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}?from=2020&to=2023",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2020"
+						},
+						{
+							"key": "to",
+							"value": "2023"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Array vacio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}?from=2020&to=2022",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2020"
+						},
+						{
+							"key": "to",
+							"value": "2022"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear una nueva estadística",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"ine_code\": 100001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2023, \"deceased\": 1, \"injured_hospitalized\": 1, \"injured_not_hospitalized\": 1 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}",
+					"host": [
+						"{{BASE-URL}}"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar una estadística",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"ine_code\": 100001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2022, \"deceased\": 1, \"injured_hospitalized\": 1, \"injured_not_hospitalized\": 1}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/100001",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"100001"
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar un objeto concreto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/100001",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"100001"
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Error 400 1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"ine_code\": 1000001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2023, \"deceased\": 0, \"injured_hospitalized\": 0, \"injured_not_hospitalized\": 0 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/100001",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"100001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Error 400 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"ine_code\": 10000000001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2023, \"deceased\": 0, \"injured_not_hospitalized\": 0 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}",
+					"host": [
+						"{{BASE-URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Error 409",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"ine_code\": 1001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2023, \"deceased\": 1, \"injured_hospitalized\": 0, \"injured_not_hospitalized\": 0 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}",
+					"host": [
+						"{{BASE-URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Error 404",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"ine_code\": 100000001000, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2023, \"deceased\": 0, \"injured_hospitalized\": 0, \"injured_not_hospitalized\": 0 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/100000001000",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"100000001000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Error 405 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/100001",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"100001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Error 405 2",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}",
+					"host": [
+						"{{BASE-URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoadInitialData Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/loadInitialData",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar todos los datos",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}",
+					"host": [
+						"{{BASE-URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoadInitialData",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/loadInitialData",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE-URL}}/reset",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Acceder a todas las estadisticas",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}",
+					"host": [
+						"{{BASE-URL}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}

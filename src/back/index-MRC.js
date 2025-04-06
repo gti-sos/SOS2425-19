@@ -143,7 +143,7 @@ function loadBackendMRC(app) {
 
     // Documentación
     app.get(`${BASE_API}/accident-rate-2023-stats/docs`, (_, res) => {
-        res.redirect("https://documenter.getpostman.com/view/42375041/2sB2cUC3sG");
+        res.redirect("https://documenter.getpostman.com/view/42375041/2sB2cUC3wj");
     });
 
     // Cargar datos iniciales si BD está vacía
