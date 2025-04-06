@@ -68,6 +68,11 @@ function InitialData(){
 
 const BASE_API= "/api/v1";
 
+database.insert(ChangesData,(err,newDocs)=> {
+    if (err) {
+        return res.status(500).send("error al insertar datos");
+    }
+})
 
 function loadBackendJVF( app ){
     //APIs
