@@ -78,11 +78,9 @@ function loadBackendJVF( app ){
     //APIs
     //DOC POSTMAN
 
-    /*app.get( BASE_API + "/ownerships-changes-stats/docs", (req,res) => 
-        { 
-            res.redirect();
-        });
-    */  
+    app.get(BASE_API + "/ownerships-changes-stats/docs", (req, res) => {
+        res.redirect("https://documenter.getpostman.com/view/43356508/2sB2cUCP3Z"); 
+    });
 
     //load initial data
     app.get(BASE_API + "/ownerships-changes-stats/loadInitialData", (req,res) => 
