@@ -12,7 +12,11 @@
     
     "test-api-ownerships-changes-stats": "npx newman run tests/back/api-JVF-test.json -e tests/back/local-jvf.postman_collection.json ",
     "test-ownerships-changes-stats": "start-server-and-test start http://localhost:16078 test-api-ownerships-changes-stats",
-    "test-": "npm run test-ownerships-changes-stats"
+    "test-": "npm run test-ownerships-changes-stats",
+
+    "test-api-accident-rate-2023-stats":"npx newman run tests/back/api-MRC-test.postman_collection.json -e tests/back/local-MRC.postman_environment.json",
+    "test-accident-rate-2023-stats": "start-server-and-test start http://localhost:16078 test-api-accident-rate-2023-stats",
+    "test-MRC": "npm run test-accident-rate-2023-stats"
   },
   "author": "",
   "license": "ISC",
