@@ -66,7 +66,7 @@ function InitialData(){
     return Data;
 }
 
-const BASE_API= "api/v1";
+const BASE_API= "/api/v1";
 
 
 function loadBackendJVF( app ){
