@@ -186,10 +186,25 @@ function loadBackendMRC(app) {
         });
     });
 
+    // Resetear base de datos
+    console.log("POST /reset alcanzado");
+    app.post(`${BASE_API}/accident-rate-2023-stats/reset`, (_, res) => {
+        console.log("POST /reset alcanzado"); // Para ver si se alcanza la ruta
+        db.remove({}, { multi: true }, (err) => {
+            if (err) return res.status(500).send("Error al limpiar BD.");
+            db.insert(siniestralidadData, (err) => {
+                if (err) return res.status(500).send("Error al restaurar.");
+                res.status(200).send("Base de datos restaurada.");
+            });
+        });
+    });
+    
+
+
     // Añadir nuevo dato
     app.post(`${BASE_API}/accident-rate-2023-stats`, (req, res) => {
         const newEntry = req.body;
-        const required = ["ine_code","municipality", "province", "ccaa", "year", "total_sanctions_with_points", "total_points_deducted"];
+        const required = ["ine_code","municipality", "province", "ccaa", "year", "deceased","injured_hospitalized","injured_not_hospitalized"];
         if (required.some(k => newEntry[k] === undefined)) return res.sendStatus(400);
 
         db.findOne({ ine_code: newEntry.ine_code }, (err, found) => {
@@ -219,16 +234,7 @@ function loadBackendMRC(app) {
     });
 
     // Resetear base de datos
-    app.post(`${BASE_API}/accident-rate-2023-stats/reset`, (_, res) => {
-        db.remove({}, { multi: true }, (err) => {
-            if (err) return res.status(500).send("Error al limpiar BD.");
-            db.insert(siniestralidadData, (err) => {
-                if (err) return res.status(500).send("Error al restaurar.");
-                res.status(200).send("Base de datos restaurada.");
-            });
-        });
-    });
-
+    
     // POST a recurso específico no permitido
     app.post(`${BASE_API}/accident-rate-2023-stats/:ine_code`, (_, res) => res.sendStatus(405));
 
