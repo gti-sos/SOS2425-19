@@ -1,6 +1,8 @@
 import express from "express";
 import path from "path";
 import {loadBackendDLC} from "./src/back/index-DLC.js";
+import {loadBackendMRC} from "./src/back/index-MRC.js";
+import { loadBackendJVF } from "./src/back/index-JVF.js";
 import { fileURLToPath } from 'url';
 
 
@@ -35,6 +37,11 @@ app.get("/about", (req, res) => {
 });
 
 loadBackendDLC(app);
+
+loadBackendJVF(app);
+
+loadBackendMRC(app);
+
 
 
 /*
