@@ -8,7 +8,11 @@
     "start": "node index.js",
     "test-api-sanctions-and-points-stats": "npx newman run tests/back/api-DLC-test.json -e tests/back/api-env-local.json ",
     "test-sanctions-and-points-stats": "start-server-and-test start http://localhost:16078 test-api-sanctions-and-points-stats",
-    "test": "npm run test-sanctions-and-points-stats"
+    "test": "npm run test-sanctions-and-points-stats",
+    
+    "test-api-ownerships-changes-stats": "npx newman run tests/back/api-JVF-test.json -e tests/back/local-jvf.postman_collection.json ",
+    "test-ownerships-changes-stats": "start-server-and-test start http://localhost:16078 test-api-ownerships-changes-stats",
+    "test-": "npm run test-ownerships-changes-stats"
   },
   "author": "",
   "license": "ISC",
