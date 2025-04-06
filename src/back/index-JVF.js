@@ -73,11 +73,12 @@ function loadBackendJVF( app ){
     //APIs
     //DOC POSTMAN
 
-    app.get( BASE_API + "/ownerships-changes-stats/docs", (req,res) => 
+    /*app.get( BASE_API + "/ownerships-changes-stats/docs", (req,res) => 
         { 
             res.redirect();
         });
-        
+    */  
+
     //load initial data
     app.get(BASE_API + "/ownerships-changes-stats/loadInitialData", (req,res) => 
         {
@@ -135,15 +136,16 @@ function loadBackendJVF( app ){
             if(van) {
                 query.van= Number(van);
             }
+            if(bus) {
+                query.bus= Number(bus);
+            }
             if(car) {
                 query.car= Number(car);
             }
             if(motocycle) {
                 query.motocycle= Number(motocycle);
             }
-            if(bus) {
-                query.bus= Number(bus);
-            }
+            
             if(other_vehicle) {
                 query.other_vehicle= Number(other_vehicle);
             }
