@@ -276,7 +276,7 @@ function loadBackendJVF( app ){
         const actu=req.body
         
         
-        if(actu !== parametro ){
+        if(actu.province !== parametro ){
             return res.sendStatus(400);
         }
         database.update({province:parametro} , actu, {}, (err,remplazado)=>{
