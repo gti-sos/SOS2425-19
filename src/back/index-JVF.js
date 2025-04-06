@@ -310,5 +310,5 @@ function loadBackendJVF( app ){
         });
 }
 
-//module.exports = {CalculateChanges,InitialData,ChangesData};
+export {loadBackendJVF,InitialData,ChangesData};
 
