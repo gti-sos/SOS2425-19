@@ -220,6 +220,22 @@ function loadBackendMRC(app) {
         });
     });
 
+    app.get(`${BASE_API}/accident-rate-stats/:ine_code/:year`, (req, res) => {
+        const ine_code = Number(req.params.ine_code);
+        const year= Number(req.params.year);
+        db.find({ 
+            ine_code:ine_code,
+            year: year,
+            
+        }, (err, docs) => {
+            if (err) return res.status(500).send("Error al acceder a la base de datos.");
+            if (!docs || docs.length === 0) return res.sendStatus(404);
+    
+            const sanitized = docs.map(({ _id, ...rest }) => rest);
+            res.status(200).json(sanitized);
+        });
+    });
+
     app.post(`${BASE_API}/accident-rate-stats/reset`, (_, res) => {
         
         db.remove({}, { multi: true }, (err) => {
