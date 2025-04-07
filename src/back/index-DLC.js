@@ -199,6 +199,23 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
         res.status(200).json(sanctionWithoutId);
         });
     });
+    //GET de un dato especifico doble busqueda
+    app.get(BASE_API + "/sanctions-and-points-stats/:ine_code/:year", (req, res) => {
+        const paramIneCode = Number(req.params.ine_code);
+        const paramYear = Number(req.params.year);
+    
+        database.findOne({ ine_code: paramIneCode, year: paramYear }, (err, sanction) => {
+            if (err) {
+                return res.status(500).send("Error al acceder a la base de datos.");
+            }
+            if (!sanction) {
+                return res.sendStatus(404);
+            }
+            // Eliminar la propiedad _id antes de enviar
+        const { _id, ...sanctionWithoutId } = sanction;
+        res.status(200).json(sanctionWithoutId);
+        });
+    });
 
 //POST para resetear la base de datos a la version original
 app.post(BASE_API + "/sanctions-and-points-stats/reset", (req, res) => {
