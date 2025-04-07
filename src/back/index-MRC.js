@@ -142,12 +142,12 @@ function loadBackendMRC(app) {
     
 
     // Documentación
-    app.get(`${BASE_API}/accident-rate-2023-stats/docs`, (_, res) => {
+    app.get(`${BASE_API}/accident-rate-stats/docs`, (_, res) => {
         res.redirect("https://documenter.getpostman.com/view/42375041/2sB2cUC3wj");
     });
 
     // Cargar datos iniciales si BD está vacía
-    app.get(`${BASE_API}/accident-rate-2023-stats/loadInitialData`, (_, res) => {
+    app.get(`${BASE_API}/accident-rate-stats/loadInitialData`, (_, res) => {
         db.count({}, (err, count) => {
             if (err) return res.status(500).send("Error al comprobar la BD.");
             if (count > 0) return res.status(400).json({ message: "Ya tiene datos" });
@@ -161,7 +161,7 @@ function loadBackendMRC(app) {
     });
 
     // Obtener datos con filtros y paginación
-    app.get(`${BASE_API}/accident-rate-2023-stats`, (req, res) => {
+    app.get(`${BASE_API}/accident-rate-stats`, (req, res) => {
         const { ine_code,municipality, province, ccaa, year, from, to, limit, offset } = req.query;
         let query = {};
 
@@ -189,7 +189,7 @@ function loadBackendMRC(app) {
     
 
     // Añadir nuevo dato
-    app.post(`${BASE_API}/accident-rate-2023-stats`, (req, res) => {
+    app.post(`${BASE_API}/accident-rate-stats`, (req, res) => {
         const newEntry = req.body;
         const required = ["ine_code","municipality", "province", "ccaa", "year", "deceased","injured_hospitalized","injured_not_hospitalized"];
         if (required.some(k => newEntry[k] === undefined)) return res.sendStatus(400);
@@ -202,15 +202,15 @@ function loadBackendMRC(app) {
     });
 
     // PUT no permitido a todos
-    app.put(`${BASE_API}/accident-rate-2023-stats`, (_, res) => res.sendStatus(405));
+    app.put(`${BASE_API}/accident-rate-stats`, (_, res) => res.sendStatus(405));
 
     // Eliminar todos los datos
-    app.delete(`${BASE_API}/accident-rate-2023-stats`, (_, res) => {
+    app.delete(`${BASE_API}/accident-rate-stats`, (_, res) => {
         db.remove({}, { multi: true }, () => res.sendStatus(200));
     });
 
     // Obtener dato específico
-    app.get(`${BASE_API}/accident-rate-2023-stats/:ine_code`, (req, res) => {
+    app.get(`${BASE_API}/accident-rate-stats/:ine_code`, (req, res) => {
         const code = Number(req.params.ine_code);
         db.findOne({ ine_code: code }, (err, doc) => {
             if (err) return res.status(500).send("Error en la base de datos.");
@@ -220,7 +220,7 @@ function loadBackendMRC(app) {
         });
     });
 
-    app.post(`${BASE_API}/accident-rate-2023-stats/reset`, (_, res) => {
+    app.post(`${BASE_API}/accident-rate-stats/reset`, (_, res) => {
         
         db.remove({}, { multi: true }, (err) => {
             if (err) return res.status(500).send("Error al limpiar BD.");
@@ -232,10 +232,10 @@ function loadBackendMRC(app) {
     });
     
     // POST a recurso específico no permitido
-    app.post(`${BASE_API}/accident-rate-2023-stats/:ine_code`, (_, res) => res.sendStatus(405));
+    app.post(`${BASE_API}/accident-rate-stats/:ine_code`, (_, res) => res.sendStatus(405));
 
     // Actualizar recurso específico
-    app.put(`${BASE_API}/accident-rate-2023-stats/:ine_code`, (req, res) => {
+    app.put(`${BASE_API}/accident-rate-stats/:ine_code`, (req, res) => {
         const code = Number(req.params.ine_code);
         if (req.body.ine_code !== code) return res.sendStatus(400);
 
@@ -247,7 +247,7 @@ function loadBackendMRC(app) {
     });
 
     // Eliminar recurso específico
-    app.delete(`${BASE_API}/accident-rate-2023-stats/:ine_code`, (req, res) => {
+    app.delete(`${BASE_API}/accident-rate-stats/:ine_code`, (req, res) => {
         const code = Number(req.params.ine_code);
         db.remove({ ine_code: code }, {}, (err, count) => {
             if (err) return res.status(500).send("Error al eliminar.");
