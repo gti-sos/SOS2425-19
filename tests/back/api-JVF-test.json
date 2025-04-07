@@ -26,11 +26,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -61,11 +59,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/Segovia",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/Segovia",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -97,11 +93,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats?province=jaen",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats?province=jaen",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -138,11 +132,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats?autonomous_community=Andalucia",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats?autonomous_community=Andalucia",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -179,11 +171,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats?year=2023",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats?year=2023",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -229,11 +219,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -274,11 +262,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -319,11 +305,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -355,11 +339,9 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -391,11 +373,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/loadInitialData",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/loadInitialData",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -436,11 +416,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -480,11 +458,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/almeria",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -516,11 +492,9 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/almeria",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -561,11 +535,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -605,11 +577,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -649,11 +619,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/segobia",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/segobia",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -694,11 +662,9 @@
 					}
 				},
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/almeria",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
@@ -730,11 +696,9 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "sos2425-19-fach.onrender.com/api/v1/ownerships-changes-stats/reset",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/reset",
 					"host": [
-						"sos2425-19-fach",
-						"onrender",
-						"com"
+						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
