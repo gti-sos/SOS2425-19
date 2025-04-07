@@ -289,6 +289,22 @@ function loadBackendJVF( app ){
 
         });
     });
+    app.get(BASE_API + "/ownerships-changes-stats/:province/:year", (req, res) => {
+        const year = Number(req.params.year);
+        const province = req.params.province;
+    
+        database.find({ 
+            year: year, 
+            province: new RegExp("^" + province + "$", "i") 
+        }, (err, docs) => {
+            if (err) return res.status(500).send("Error al acceder a la base de datos.");
+            if (!docs || docs.length === 0) return res.sendStatus(404);
+    
+            const sanitized = docs.map(({ _id, ...rest }) => rest);
+            res.status(200).json(sanitized);
+        });
+    });
+
     //DELETE dato especifico
     app.delete(BASE_API + "/ownerships-changes-stats/:province", (req,res) =>
         {
