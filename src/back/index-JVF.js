@@ -289,7 +289,7 @@ function loadBackendJVF( app ){
 
         });
     });
-    app.get(BASE_API + "/ownerships-changes-stats//:province/:year", (req, res) => {
+    app.get(BASE_API + "/ownerships-changes-stats/:province/:year", (req, res) => {
         const year = Number(req.params.year);
         const province = req.params.province;
     
