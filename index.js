@@ -285,7 +285,7 @@ app.delete(BASE_API + "/accident-rate-2023-stats/:ine_code", (req, res) => {
     res.sendStatus(200);
 });
 
-*/
+
 
 
 // Nueva ruta "samples/JVF" para ejecutar el algoritmo y devolver el resultado 
@@ -299,7 +299,7 @@ app.get("/samples/MRC", (req,res) => {
         res.send(`<h1>Resultado del calculo</h1><p>${resp}</p>`);
     
 });
-
+*/
 // Iniciar el servidor
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}!`);
