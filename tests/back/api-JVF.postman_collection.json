@@ -15,7 +15,10 @@
 						"exec": [
 							"pm.test(\"status is 200\", function (){\r",
 							"    pm.response.to.have.status(200);\r",
-							"})"
+							"});\r",
+							"pm.test(\"Response is an array of objects\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('array').and.to.satisfy((arr) => arr.every(item => typeof item === 'object'));\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -48,7 +51,11 @@
 						"exec": [
 							"pm.test(\"status is 200\", function (){\r",
 							"    pm.response.to.have.status(200);\r",
-							"})"
+							"})\r",
+							"pm.test(\"response body is an object\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('object');\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -82,7 +89,10 @@
 						"exec": [
 							"pm.test(\"status is 200\", function (){\r",
 							"    pm.response.to.have.status(200);\r",
-							"})"
+							"});\r",
+							"pm.test(\"Response is an array of objects\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('array').and.to.satisfy((arr) => arr.every(item => typeof item === 'object'));\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -121,7 +131,10 @@
 						"exec": [
 							"pm.test(\"status is 200\", function (){\r",
 							"    pm.response.to.have.status(200);\r",
-							"})"
+							"})\r",
+							"pm.test(\"Response is an array of objects\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('array').and.to.satisfy((arr) => arr.every(item => typeof item === 'object'));\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -132,7 +145,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats?autonomous_community=Andalucia",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats?autonomous_community=Andalucia?province=Jaen",
 					"host": [
 						"{{BASE-URL}}"
 					],
@@ -144,7 +157,7 @@
 					"query": [
 						{
 							"key": "autonomous_community",
-							"value": "Andalucia"
+							"value": "Andalucia?province=Jaen"
 						}
 					]
 				}
@@ -160,7 +173,10 @@
 						"exec": [
 							"pm.test(\"status is 200\", function (){\r",
 							"    pm.response.to.have.status(200);\r",
-							"})"
+							"});\r",
+							"pm.test(\"Response is an array of objects\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('array').and.to.satisfy((arr) => arr.every(item => typeof item === 'object'));\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
