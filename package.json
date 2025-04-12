@@ -15,8 +15,8 @@
     "test-api-accident-rate-stats":"npx newman run tests/back/api-MRC-test.postman_collection.json -e tests/back/local-MRC.postman_environment.json",
     "test-accident-rate-stats": "start-server-and-test start http://localhost:16078 test-api-accident-rate-stats",
 
-    "test": "npm run test-sanctions-and-points-stats && npm run test-ownerships-changes-stats && npm run test-accident-rate-stats"
-    
+    "test": "npm run test-sanctions-and-points-stats && npm run test-ownerships-changes-stats && npm run test-accident-rate-stats",
+    "build": "cd src/front; npm install; npm run build"
   },
   "author": "",
   "license": "ISC",

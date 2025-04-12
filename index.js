@@ -4,6 +4,7 @@ import {loadBackendDLC} from "./src/back/index-DLC.js";
 import {loadBackendMRC} from "./src/back/index-MRC.js";
 import { loadBackendJVF } from "./src/back/index-JVF.js";
 import { fileURLToPath } from 'url';
+import {handler} from "./src/front/build/handler.js"
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,9 +25,10 @@ const PORT = process.env.PORT || 16078;
 //let siniestralidadData2023 = siniestralidadData;
 
 // Servir archivos estáticos desde la carpeta "public"
-app.use(express.static(path.join(__dirname, "/public")));
-app.use(express.json())
 
+//app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.json());
+/*
 // Ruta para servir "about.html" en "/about"
 app.get("/about", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/about.html"));
@@ -35,12 +37,13 @@ app.get("/about", (req, res) => {
 app.get("/about", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
-
+*/
 loadBackendDLC(app);
 
 loadBackendJVF(app);
 
 loadBackendMRC(app);
+app.use(handler);
 
 
 // Iniciar el servidor
