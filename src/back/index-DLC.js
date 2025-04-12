@@ -53,7 +53,7 @@ function loadInitialDataDLC(){
 
 const BASE_API = "/api/v1"
 
-database.insert(sanctionsData, (err, newDocs) => {
+database.insert(sanctionsData, (err, res) => {
     if (err) {
         return res.status(500).send("Error al insertar los datos.");
     }
