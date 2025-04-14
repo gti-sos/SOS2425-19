@@ -68,11 +68,14 @@ function InitialData(){
 
 const BASE_API= "/api/v1";
 
-database.insert(ChangesData,(err,newDocs)=> {
+database.insert(ChangesData, (err, newDoc) => {
     if (err) {
-        return res.status(500).send("error al insertar datos");
+        console.error("Error al insertar los datos:", err);
+    } else {
+        console.log("Datos insertados correctamente");
     }
-})
+});
+
 
 function loadBackendJVF( app ){
     //APIs

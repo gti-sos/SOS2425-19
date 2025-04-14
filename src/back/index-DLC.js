@@ -53,11 +53,14 @@ function loadInitialDataDLC(){
 
 const BASE_API = "/api/v1"
 
-database.insert(sanctionsData, (err, res) => {
+database.insert(sanctionsData, (err, newDoc) => {
     if (err) {
-        return res.status(500).send("Error al insertar los datos.");
+        console.error("Error al insertar los datos:", err);
+    } else {
+        console.log("Datos insertados correctamente");
     }
-})
+});
+
 
 function loadBackendDLC(app){
     

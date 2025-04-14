@@ -133,11 +133,14 @@ const BASE_API = "/api/v1"
 const siniestralidadData = csvToArray(csvContent);
 const db=new dataStore();
 
-db.insert(siniestralidadData, (err, newDocs) => {
+db.insert(siniestralidadData, (err, newDoc) => {
     if (err) {
-        return res.status(500).send("Error al insertar los datos,");
+        console.error("Error al insertar los datos:", err);
+    } else {
+        console.log("Datos insertados correctamente");
     }
 });
+
 function loadBackendMRC(app) {
     
 
