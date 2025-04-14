@@ -1,5 +1,5 @@
 <script>
-    import {dev} from "$app/environment"
+    
 </script>
 
 <h1>About Our Project</h1>
