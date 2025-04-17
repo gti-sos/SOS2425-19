@@ -115,7 +115,7 @@
                 newSanctionYear = "";
                 newSanctionTotalSanctions = "";
                 newSanctionTotalPoints = "";
-                let searchIneCode = "";
+                searchIneCode = "";
                 searchProvince = "";
                 searchAutonomousCommunity = "";
                 searchYear = "";
@@ -161,8 +161,8 @@
     const params = [];
 
     if (searchIneCode) params.push(`ine_code=${searchIneCode}`);
-    if (searchProvince) params.push(`province=${encodeURIComponent(searchProvince)}`);
-    if (searchAutonomousCommunity) params.push(`autonomous_community=${encodeURIComponent(searchAutonomousCommunity)}`);
+    if (searchProvince && !searchAutonomousCommunity)params.push(`province=${encodeURIComponent(searchProvince)}`);
+    if (searchAutonomousCommunity && !searchProvince)params.push(`autonomous_community=${encodeURIComponent(searchAutonomousCommunity)}`);
     if (searchYear) params.push(`year=${searchYear}`);
     if (searchFrom) params.push(`from=${searchFrom}`);
     if (searchTo) params.push(`to=${searchTo}`);
@@ -180,18 +180,29 @@
     }
 }
 
-
     onMount(async () => {
         getSanctions();
-        try {
-        const res = await fetch(`${API}`); // Trae todos los datos
-        const data = await res.json();
+        // Intenta cargar desde localStorage
+    const savedProvinces = localStorage.getItem('provinces');
+    const savedCommunities = localStorage.getItem('autonomousCommunities');
 
-        // Extraer valores únicos
-        provinces = Array.from(new Set(data.map(d => d.province).filter(Boolean))).sort();
-        autonomousCommunities = Array.from(new Set(data.map(d => d.autonomous_community).filter(Boolean))).sort();
-    } catch (error) {
-        console.error("Error al cargar provincias y comunidades:", error);
+    if (savedProvinces && savedCommunities) {
+        provinces = JSON.parse(savedProvinces);
+        autonomousCommunities = JSON.parse(savedCommunities);
+    } else {
+        try {
+            const res = await fetch(`${API}`);
+            const data = await res.json();
+
+            provinces = Array.from(new Set(data.map(d => d.province).filter(Boolean))).sort();
+            autonomousCommunities = Array.from(new Set(data.map(d => d.autonomous_community).filter(Boolean))).sort();
+
+            // Guardar en localStorage
+            localStorage.setItem('provinces', JSON.stringify(provinces));
+            localStorage.setItem('autonomousCommunities', JSON.stringify(autonomousCommunities));
+        } catch (error) {
+            console.error("Error al cargar provincias y comunidades:", error);
+        }
     }
     })
 </script>
@@ -199,13 +210,13 @@
 <h3>Buscar sanciones</h3>
 <div>
     <input placeholder="INE code" bind:value={searchIneCode} />
-    <select bind:value={searchProvince}>
+    <select bind:value={searchProvince} disabled={searchAutonomousCommunity}>
         <option value="">-- Provincia --</option>
         {#each provinces as province}
             <option value={province}>{province}</option>
         {/each}
     </select>
-    <select bind:value={searchAutonomousCommunity}>
+    <select bind:value={searchAutonomousCommunity} disabled={searchProvince}>
         <option value="">-- Comunidad Autónoma --</option>
         {#each autonomousCommunities as community}
             <option value={community}>{community}</option>
