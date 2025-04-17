@@ -39,7 +39,6 @@
             result = JSON.stringify(data,null,2);
             
             sanctionsData = data;
-            console.log(`Response Received: \n${JSON.stringify(sanctionsData,null,2)}`);
         } catch (error) {
             console.log(`ERROR: GET data from ${API}: ${error}`)
         }
@@ -137,48 +136,48 @@
     }
 
     async function loadInitialData() {
-    try {
-        const res = await fetch(API + "loadInitialData");
-        const status = await res.status;
-        resultStatus=status
-        if (status==200) {
-            const data = await res.json();
-            console.log("Datos iniciales cargados");
-            getSanctions();
-        } else {
-            const errorText = await res.text();
-            console.error("Error:", errorText);
-            alert(`No se pudieron cargar los datos: ${errorText}`);
+        try {
+            const res = await fetch(API + "loadInitialData");
+            const status = await res.status;
+            resultStatus=status
+            if (status==200) {
+                const data = await res.json();
+                console.log("Datos iniciales cargados");
+                getSanctions();
+            } else {
+                const errorText = await res.text();
+                console.error("Error:", errorText);
+                alert(`No se pudieron cargar los datos: ${errorText}`);
+            }
+        } catch (error) {
+            console.error("Error de red:", error);
+            alert(`Error de red al cargar los datos: ${error}`);
         }
-    } catch (error) {
-        console.error("Error de red:", error);
-        alert(`Error de red al cargar los datos: ${error}`);
-    }
     }
 
     async function searchSanctions() {
-    let url = `${API}?`;
-    const params = [];
+        let url = `${API}?`;
+        const params = [];
+            console.log(searchAutonomousCommunity);
+        if (searchIneCode) params.push(`ine_code=${searchIneCode}`);
+        if (searchProvince && !searchAutonomousCommunity)params.push(`province=${encodeURIComponent(searchProvince)}`);
+        if (searchAutonomousCommunity && !searchProvince)params.push(`autonomous_community=${encodeURIComponent(searchAutonomousCommunity)}`);
+        if (searchYear) params.push(`year=${searchYear}`);
+        if (searchFrom) params.push(`from=${searchFrom}`);
+        if (searchTo) params.push(`to=${searchTo}`);
+        if (searchLimit) params.push(`limit=${searchLimit}`);
+        if (searchOffset) params.push(`offset=${searchOffset}`);
 
-    if (searchIneCode) params.push(`ine_code=${searchIneCode}`);
-    if (searchProvince && !searchAutonomousCommunity)params.push(`province=${encodeURIComponent(searchProvince)}`);
-    if (searchAutonomousCommunity && !searchProvince)params.push(`autonomous_community=${encodeURIComponent(searchAutonomousCommunity)}`);
-    if (searchYear) params.push(`year=${searchYear}`);
-    if (searchFrom) params.push(`from=${searchFrom}`);
-    if (searchTo) params.push(`to=${searchTo}`);
-    if (searchLimit) params.push(`limit=${searchLimit}`);
-    if (searchOffset) params.push(`offset=${searchOffset}`);
+        url += params.join("&");
 
-    url += params.join("&");
-
-    try {
-        const res = await fetch(url);
-        const data = await res.json();
-        sanctionsData = data // actualizar el array con los resultados
-    } catch (error) {
-        console.error("Error al buscar sanciones:", error);
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            sanctionsData = data // actualizar el array con los resultados
+        } catch (error) {
+            console.error("Error al buscar sanciones:", error);
+        }
     }
-}
 
     onMount(async () => {
         getSanctions();
@@ -196,7 +195,6 @@
 
             provinces = Array.from(new Set(data.map(d => d.province).filter(Boolean))).sort();
             autonomousCommunities = Array.from(new Set(data.map(d => d.autonomous_community).filter(Boolean))).sort();
-
             // Guardar en localStorage
             localStorage.setItem('provinces', JSON.stringify(provinces));
             localStorage.setItem('autonomousCommunities', JSON.stringify(autonomousCommunities));

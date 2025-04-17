@@ -98,6 +98,10 @@ function loadBackendDLC(app){
         });
     });
 
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    
     // GET todos los datos con paginación
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     let { ine_code, province, autonomous_community, year, from, to, limit, offset } = req.query;
@@ -105,10 +109,10 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     let query = {};
 
     if (province) {
-        query.province = new RegExp("^" + province + "$", "i");
+        query.province = new RegExp("^" + escapeRegExp(province) + "$", "i");
     }
     if (autonomous_community) {
-        query.autonomous_community = new RegExp("^" + autonomous_community + "$", "i");
+        query.autonomous_community = new RegExp("^" + escapeRegExp(autonomous_community) + "$", "i");
     }
     if (year) {
         query.year = Number(year);
