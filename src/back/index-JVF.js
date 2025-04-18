@@ -198,25 +198,22 @@ function loadBackendJVF( app ){
             ){
                 return res.send(400);
             }
-            database.findOne({province:province}, (err,existingDoc) => {
-                if(err)
-                {
+            database.findOne({ province: province, year: year }, (err, existingDoc) => {
+                if (err) {
                     return res.status(500).send("Error al acceder la base de datos");
                 }
-                if (existingDoc) 
-                {
+                if (existingDoc) {
                     return res.sendStatus(409); // Conflict
                 }
-                database.insert(req.body, (err,newDoc)=>{
-                    if(err)
-                        {
-                            return res.status(500).send("Error al introducir el dato");
-                        }
+            
+                database.insert(req.body, (err, newDoc) => {
+                    if (err) {
+                        return res.status(500).send("Error al introducir el dato");
+                    }
                     res.sendStatus(201);
-                    
                 });
-
             });
+            
         });
 
     //FALLO DE PUT Todo
