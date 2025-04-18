@@ -306,11 +306,13 @@ function loadBackendJVF( app ){
     });
 
     //DELETE dato especifico
-    app.delete(BASE_API + "/ownerships-changes-stats/:province", (req,res) =>
-        {
-            let parametro= req.params.province;
+    app.delete(BASE_API + "/ownerships-changes-stats/:province/:year", (req,res) =>
+        
 
-            database.remove({province: parametro }, {},(err,numRemoved) =>
+    {
+        const paramProvince= req.params.province;
+        const paramYear=Number(req.params.year);
+            database.remove({province: paramProvince, year: paramYear }, {},(err,numRemoved) =>
             {
                 if (err)   
                 {
@@ -318,12 +320,10 @@ function loadBackendJVF( app ){
                 }
                 else
                 {
-                    if (numRemoved==0)
-                    {
+                    if (numRemoved==0){
                         res.sendStatus(404);
                     }
-                    else 
-                    {
+                    else {
                         res.sendStatus(200);   
                     }
                 }

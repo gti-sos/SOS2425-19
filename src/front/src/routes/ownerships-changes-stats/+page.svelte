@@ -5,7 +5,7 @@
     import {Table,Button} from '@sveltestrap/sveltestrap';
 
     let DEVEL_HOST= "http://localhost:16078";
-    let API= "/api/v1/ownerships-changes-stats";
+    let API= "/api/v1/ownerships-changes-stats/";
 
     if (dev){
         API= DEVEL_HOST + API;
@@ -41,18 +41,18 @@
     }
 
 
-    async function deleteExchanges(){
+    async function deleteExchanges(province,year){
         resultStatus=result="";
         try{
-            const res = await fetch(API+province+"/" + year,{method:"DELETE"});
+            const res = await fetch(API+province+"/"+ year,{method:"DELETE"});
             const status= await res.status;
             resultStatus=status;
             if(status==200){
-                console.log(`Dato province ${province}, año$ ${year} borrado`);
+                console.log(`Dato province: ${province}, año: ${year} borrado`);
                 getExchanges();
             }else{
                 if(status==404){
-                    alert(`No se ha encontrado el dato province ${province}, año$ ${year} `)
+                    alert(`No se ha encontrado el dato province: ${province}, año: ${year} `)
                 } 
                 console.log(`ERROR, status ${status}`)
             }
