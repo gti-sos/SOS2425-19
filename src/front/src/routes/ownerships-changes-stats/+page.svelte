@@ -22,10 +22,10 @@
     let newExchangeBus;
     let newExchangeCar;
     let newExchangeMotocycle;
-    let neExchangeOther;
+    let newExchangeOther;
     let newExchangeYear;
 
-    async function getChanges(){
+    async function getExchanges(){
         resultStatus = result = "";
         try{
             const res = await fetch(API,{method:"GET"});
@@ -41,10 +41,27 @@
 
 
     async function deleteExchanges(){
+        resultStatus=result="";
+        try{
+            const res = await fetch(API+province+"/" + year,{method:"DELETE"});
+            const status= await res.status;
+            resultStatus=status;
+            if(status==200){
+                console.log(`Dato province ${province}, año$ ${year} borrado`);
+                getExchanges();
+            }else{
+                if(status==404){
+                    alert(`No se ha encontrado el dato province ${province}, año$ ${year} `)
+                } 
+                console.log(`ERROR, status ${status}`)
+            }
 
+        } catch (error){
+            console.log(`ERROR: DELETE data from ${API}: ${error}`);
+        }
     }
 
-    async function createChanges(){
+    async function createExchanges(){
         resultStatus = result = "";
         try{
             const res = await fetch(API,{
@@ -54,14 +71,32 @@
                 },
                 body:JSON.stringify({
 
+                    "autonomous_community" : newExchangeAC.trim(),
+                    "province" : newExchangeProvince.trim(),
+                    "truck" :Number(newExchangeTruck),
+                    "van":Number(newExchangeVan),
+                    "bus" :Number(newExchangeBus),
+                    "car" : Number(newExchangeCar),
+                    "motocycle":Number(newExchangeMotocycle),
+                    "other_vehicle" :Number(newExchangeOther),
+                    "year":Number(newExchangeYear)
 
- 
                 })
             });
             const status= await res.status;
             resultStatus=status;
             if (status == 201){
                 console.log(`contact created`);
+                getExchanges();
+                newExchangeAC="";
+                newExchangeProvince="";
+                newExchangeTruck="";
+                newExchangeVan="";
+                newExchangeBus="";
+                newExchangeCar="";
+                newExchangeMotocycle="";
+                newExchangeOther="";
+                newExchangeYear="";
             } else {
                 console.log(`ERROR: status received \ ${status}`);
             }
@@ -71,7 +106,7 @@
     }
    
     onMount(async () =>  {
-        getChanges()
+        getExchanges()
     });
 
 
