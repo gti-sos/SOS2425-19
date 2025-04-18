@@ -234,6 +234,9 @@ function loadBackendMRC(app) {
         });
     });
     
+    
+    
+    
 
     // PUT no permitido a todos
     app.put(`${BASE_API}/accident-rate-stats`, (_, res) => res.sendStatus(405));
@@ -248,19 +251,21 @@ function loadBackendMRC(app) {
 
     app.get(`${BASE_API}/accident-rate-stats/:ine_code/:year`, (req, res) => {
         const ine_code = Number(req.params.ine_code);
-        const year= Number(req.params.year);
-        db.find({ 
-            ine_code:ine_code,
+        const year = Number(req.params.year);
+        
+        db.findOne({ 
+            ine_code: ine_code,
             year: year,
-            
-        }, (err, docs) => {
+        }, (err, doc) => {
             if (err) return res.status(500).send("Error al acceder a la base de datos.");
-            if (!docs || docs.length === 0) return res.sendStatus(404);
-    
-            const sanitized = docs.map(({ _id, ...rest }) => rest);
-            res.status(200).json(sanitized);
+            if (!doc) return res.sendStatus(404);
+            
+            // Eliminar _id directamente y enviar el objeto sin él
+            const { _id, ...rest } = doc;
+            res.status(200).json(rest);
         });
     });
+    
 
     app.post(`${BASE_API}/accident-rate-stats/reset`, (_, res) => {
         
@@ -283,7 +288,7 @@ function loadBackendMRC(app) {
         const updatedData = req.body;
     
         // Verificar que el ine_code en el body coincida con el de la URL
-        if (updatedData.ine_code !== paramIneCode) {
+        if (updatedData.ine_code !== paramIneCode || updatedData.year !== paramYear) {
             return res.sendStatus(400); // Bad Request
         }
     
@@ -307,19 +312,25 @@ function loadBackendMRC(app) {
         const paramIneCode = Number(req.params.ine_code);
         const paramYear = Number(req.params.year);
     
+        // Verificamos que los parámetros sean válidos
+        if (isNaN(paramIneCode) || isNaN(paramYear)) {
+            return res.status(400).send("Parámetros inválidos");
+        }
+    
         db.remove({ ine_code: paramIneCode, year: paramYear }, {}, (err, count) => {
             if (err) {
-                res.status(500).send("Error al eliminar el recurso.");
-                console.error(`ERROR: ${err}`);
-            } else {
-                if (count === 0) {
-                    res.sendStatus(404); // No encontrado
-                } else {
-                    res.sendStatus(200); // OK
-                }
-            }    
+                console.error(`Error al eliminar el recurso: ${err}`);
+                return res.status(500).send("Error al eliminar el recurso.");
+            }
+            
+            if (count === 0) {
+                return res.sendStatus(404); // No encontrado
+            }
+            
+            res.sendStatus(200); // OK
         });
     });
+    
     
 }
 
