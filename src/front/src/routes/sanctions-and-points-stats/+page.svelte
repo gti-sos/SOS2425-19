@@ -229,7 +229,11 @@
     <Button on:click={searchSanctions}>Buscar</Button>
 </div>
 
-
+<svelte:head>
+    <title>
+        Sanctions Manager
+    </title>
+</svelte:head>
 
 <h2>sanctions-and-points-stats</h2>
 <Table>
