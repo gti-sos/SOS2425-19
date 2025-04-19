@@ -41,9 +41,10 @@
             const res = await fetch(`${API}${province}/${year}`,{method:"GET"});
             const data= await res.json();
 
-			exChangesData=[data];
+			exChangesData=data;
 			const x= exChangesData[0];
 
+            console.log(x);
 			editExchangeAC=x.autonomous_community;
 			editExchangeProvince=x.province ;
 			editExchangeTruck=x.truck;
