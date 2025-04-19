@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { dev } from "$app/environment";
     import { Table, Button } from '@sveltestrap/sveltestrap';
+    import { goto } from '$app/navigation';
 
     let DEVEL_HOST = "http://localhost:16078";
     let API = "/api/v1/accident-rate-stats/";
@@ -48,6 +49,48 @@
             console.log(`ERROR: GET data from ${API}: ${error}`);
         }
     }
+
+    // Crear nuevo registro
+async function createAccident() {
+    resultStatus = result = "";
+
+    const newAccident = {
+        ine_code: Number(newAccidentIneCode),
+        municipality: newAccidentMunicipality?.trim(),
+        province: newAccidentProvince?.trim(),
+        ccaa: newAccidentCCAA?.trim(),
+        year: Number(newAccidentYear),
+        deceased: Number(newAccidentDeceased),
+        injured_hospitalized: Number(newAccidentInjuredHospitalized),
+        injured_not_hospitalized: Number(newAccidentInjuredNotHospitalized)
+    };
+
+    console.log("Nuevo accidente:", newAccident);
+
+    try {
+        const res = await fetch(API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newAccident)
+        });
+
+        resultStatus = res.status;
+        result = await res.text();
+
+        if (res.status === 201 || res.status === 200) {
+            alert("Registro creado con éxito");
+            getAccidents(); // Recargar la tabla
+        } else {
+            alert(`Error al crear el registro: ${res.status}\n${result}`);
+        }
+    } catch (error) {
+        alert("Error de red al crear el registro");
+        console.error(error);
+    }
+}
+
 
     // Eliminar un accidente
     async function deleteAccident(ine_code, year) {
@@ -225,6 +268,7 @@
             <td>{accident.injured_hospitalized}</td>
             <td>{accident.injured_not_hospitalized}</td>
             <td>
+                <Button color="warning" on:click={() => goto(`/accident-rate-stats/${accident.ine_code}/${accident.year}/editar`)}>Editar</Button>
                 <Button color="danger" on:click={() => { deleteAccident(accident.ine_code, accident.year) }} >Borrar</Button>
             </td>
         </tr>
