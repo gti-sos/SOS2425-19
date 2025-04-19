@@ -1,3 +1,6 @@
+<svelte:head>
+    <title> Edit Sanctions Info</title>
+</svelte:head>
 <script>
     //@ts-nocheck
     import { onMount } from "svelte";
@@ -6,6 +9,7 @@
     import { page } from "$app/stores";
     import { get } from "svelte/store";
     import { goto } from '$app/navigation';
+	import { title } from "process";
 
 
     let DEVEL_HOST = "http://localhost:16078";

@@ -104,7 +104,7 @@
             
             const status = await res.status;
             resultStatus=status
-            console.log(status)
+            console.log(newSanctionTotalSanctions)
             if (status==201){
                 console.log(`Sanction created: \n${JSON.stringify(sanctionsData,null,2)}`);
                 getSanctions();
@@ -288,7 +288,7 @@
                 {sanction.year}
             </td>
             <td>
-                {sanction.total_sanctions_with_points_code}
+                {sanction.total_sanctions_with_points}
             </td>
             <td>
                 {sanction.total_points_deducted}
