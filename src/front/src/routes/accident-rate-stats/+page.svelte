@@ -185,18 +185,8 @@ async function createAccident() {
 <div>
     <input placeholder="INE code" bind:value={searchIneCode} />
     <input placeholder="Municipio" bind:value={searchMunicipality} />
-    <select bind:value={searchProvince}>
-        <option value="">-- Provincia --</option>
-        {#each provinces as province}
-            <option value={province}>{province}</option>
-        {/each}
-    </select>
-    <select bind:value={searchCCAA}>
-        <option value="">-- Comunidad Autónoma --</option>
-        {#each autonomousCommunities as community}
-            <option value={community}>{community}</option>
-        {/each}
-    </select>
+    <input placeholder="Provincia" bind:value={searchProvince} />
+    <input placeholder="CCAA" bind:value={searchCCAA} />
     <input placeholder="Año" bind:value={searchYear} />
     <input placeholder="Desde (año)" bind:value={searchFrom} />
     <input placeholder="Hasta (año)" bind:value={searchTo} />
