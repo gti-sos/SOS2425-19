@@ -337,6 +337,7 @@
                 </td>
                 <td>
                     <Button color="danger" on:click={() => {deleteExchanges(exchange.province,exchange.year)}}>Delete</Button>
+                    <a href={`/ownerships-changes-stats/editar/${exchange.province}/${exchange.year}`}> <Button color="secondary">Editar</Button></a>                  
 
                 </td>
 

@@ -32,6 +32,7 @@
 		"vite": "^6.2.5"
 	},
 	"dependencies": {
-		"@sveltestrap/sveltestrap": "^7.1.0"
+		"@sveltestrap/sveltestrap": "^7.1.0",
+		"process": "^0.11.10"
 	}
 }

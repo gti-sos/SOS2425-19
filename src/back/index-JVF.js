@@ -269,15 +269,16 @@ function loadBackendJVF( app ){
         });
     
     // PUT dato especifico
-    app.put(BASE_API + "/ownerships-changes-stats/:province" , (req,res)=>{
+    app.put(BASE_API + "/ownerships-changes-stats/:province/:year" , (req,res)=>{
         const parametro= req.params.province
         const actu=req.body
+        const paramYear=Number(req.params.year);
         
         
         if(actu.province !== parametro ){
             return res.sendStatus(400);
         }
-        database.update({province:parametro} , actu, {}, (err,remplazado)=>{
+        database.update({province:parametro, year :paramYear} , actu, {}, (err,remplazado)=>{
             if (err)   
                 {
                     res.status(500).send("error al actualizar el dato");
