@@ -3,7 +3,8 @@
     import {dev} from "$app/environment";
     import {onMount} from "svelte";
     import {Table,Button} from '@sveltestrap/sveltestrap';
-	import { status } from "express/lib/response";
+	import { param } from "express/lib/request";
+
 
     let DEVEL_HOST= "http://localhost:16078";
     let API= "/api/v1/ownerships-changes-stats/";
@@ -26,6 +27,21 @@
     let newExchangeMotocycle;
     let newExchangeOther;
     let newExchangeYear;
+
+    let searchExchangeAC;
+    let searchExchangeProvince;
+    let searchExchangeTruck;
+    let searchExchangeVan;
+    let searchExchangeBus;
+    let searchExchangeCar;
+    let searchExchangeMotocycle;
+    let searchExchangeOther;
+    let searchExchangeYear;
+    let searchExchangeTo;
+    let searchExchangeFrom;
+    let searchExchangeLimit;
+    let searchExchangeOffset;
+
 
     async function getExchanges(){
         resultStatus = result = "";
@@ -64,13 +80,12 @@
     }
 
     async function deleteAllExchanges(){
-        
         try{
             const res = await fetch(API, {method:"DELETE"});
             const status = await res.status;
             resultStatus=status;
             if(status==200){
-                console.log(`Dato province: ${province}, año: ${year} borrado`);
+                console.log("Todos los datos se han borrado");
                 getExchanges();
             }else{
                 console.log(`ERROR, status ${status}`)
@@ -84,6 +99,7 @@
         const num = Number(value);
         return isNaN(num) ? undefined : num;
     }
+
 
     async function createExchanges(){
         resultStatus = result = "";
@@ -136,6 +152,56 @@
         }
     }
    
+    async function loadInitialData() {
+        try {
+            const res = await fetch(API + "loadInitialData");
+            const status = await res.status;
+            resultStatus=status;
+            if (status==200){
+                const data= await res.json();
+                console.log("datos iniciales cargados ");
+                getExchanges();
+            }else{
+                const errorText=await res.text();
+                console.error("Error",errorText);
+                alert(`no se pudieron cargar los datos: ${errorText}`)
+            }
+        } catch (error) {
+            console.error("Error de red", error);
+            alert(`Eror de red : ${error}`);
+        }
+    }
+
+    async function searchExchanges() {
+        let url=`${API}?`;
+        const params=[];
+        console.log(searchExchangeAC);
+        if (searchExchangeAC) params.push(`autonomous_community=${encodeURIComponent(searchExchangeAC)}`);
+        if (searchExchangeProvince) params.push(`province=${encodeURIComponent(searchExchangeProvince)}`);
+        if (searchExchangeTruck) params.push(`truck=${searchExchangeTruck}`);
+        if (searchExchangeVan) params.push(`van=${searchExchangeVan}`);
+        if (searchExchangeBus) params.push(`bus=${searchExchangeBus}`);
+        if (searchExchangeCar) params.push(`car=${searchExchangeCar}`);
+        if (searchExchangeMotocycle) params.push(`motocycle=${searchExchangeMotocycle}`);
+        if (searchExchangeOther) params.push(`other_vehicle=${searchExchangeOther}`)
+        if (searchExchangeYear) params.push(`year=${searchExchangeYear}`);
+
+        if (searchExcahngeFrom) params.push(`from=${searchExcahngeFrom}`);
+        if (searchExcahngeTo) params.push(`to=${searchExcahngeTo}`);
+        if (searchExcahngeLimit) params.push(`limit=${searchExcahngeLimit}`);
+        if (searchExcahngeOffset) params.push(`offset=${searchExcahngeOffset}`);
+
+        url += params.join("&");
+
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            exChangesData = data; // Actualizar el array con los resultados
+        } catch (error) {
+            console.error("Error al buscar accidentes:", error);
+        }
+    }
+
     onMount(async () =>  {
         getExchanges()
     });
@@ -145,7 +211,28 @@
 </script>
 
 <h2>Exchange List</h2>
+<div>
 
+    <select bind:value={searchExchangeProvince}>
+        <option value="">-- Provincia --</option>
+        {#each provinces as province}
+            <option value={province}>{province}</option>
+        {/each}
+    </select>
+    <select bind:value={searchExchangeAC}>
+        <option value="">-- Comunidad Autónoma --</option>
+        {#each autonomousCommunities as community}
+            <option value={community}>{community}</option>
+        {/each}
+    </select>
+    <input placeholder="Año" bind:value={searchExchangeYear} />
+    <input placeholder="Desde (año)" bind:value={searchExchangeFrom} />
+    <input placeholder="Hasta (año)" bind:value={searchExchangeTo} />
+    <input placeholder="Cantidad de resultados a mostrar" bind:value={searchExchangeLimit} />
+    <input placeholder="Saltar los primeros resultados" bind:value={searchExchangeOffset} />
+
+    <Button on:click={searchExchanges}>Buscar</Button>
+</div>
 <Table>
     <thead>
         <tr>
@@ -193,7 +280,7 @@
             <td>
                 <Button color="secondary" on:click={createExchanges}>Crear registro</Button>
             </td>
-
+        <Button color = "danger" on:click={()=>{deleteAllExchanges()} }> Borrar todo</Button>
         </tr>
         {#each exChangesData.slice().sort((a, b) => a.autonomous_community.localeCompare(b.autonomous_community)) as exchange}
 
@@ -233,6 +320,6 @@
             </tr>
         {/each}
     </tbody>
-    <Button color="danger" on:click={() => {deleteAllExchanges()}}>Borrar los datos</Button>
+
 </Table>
 
