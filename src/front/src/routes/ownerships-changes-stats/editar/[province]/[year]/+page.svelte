@@ -38,7 +38,7 @@
 		let year=$page.params.year;
 
         try{
-            const res = await fetch(API,{method:"GET"});
+            const res = await fetch(`${API}${province}/${year}`,{method:"GET"});
             const data= await res.json();
 
 			exChangesData=[data];
@@ -83,7 +83,7 @@
         }
 	}
 
-	async function updateFromInput(){
+	function updateFromInput(){
 		const up={
 		autonomous_community : editExchangeAC,
 		province : editExchangeProvince,
