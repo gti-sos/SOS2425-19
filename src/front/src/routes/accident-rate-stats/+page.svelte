@@ -268,7 +268,7 @@ async function createAccident() {
             <td>{accident.injured_hospitalized}</td>
             <td>{accident.injured_not_hospitalized}</td>
             <td>
-                <Button color="warning" on:click={() => goto(`/accident-rate-stats/${accident.ine_code}/${accident.year}/editar`)}>Editar</Button>
+                <Button color="warning" on:click={() => goto(`/accident-rate-stats/${accident.ine_code}/${accident.year}`)}>Editar</Button>
                 <Button color="danger" on:click={() => { deleteAccident(accident.ine_code, accident.year) }} >Borrar</Button>
             </td>
         </tr>
