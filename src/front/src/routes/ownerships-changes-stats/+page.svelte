@@ -3,6 +3,7 @@
     import {dev} from "$app/environment";
     import {onMount} from "svelte";
     import {Table,Button} from '@sveltestrap/sveltestrap';
+	import { status } from "express/lib/response";
 
     let DEVEL_HOST= "http://localhost:16078";
     let API= "/api/v1/ownerships-changes-stats/";
@@ -62,6 +63,23 @@
         }
     }
 
+    async function deleteAllExchanges(){
+        
+        try{
+            const res = await fetch(API, {method:"DELETE"});
+            const status = await res.status;
+            resultStatus=status;
+            if(status==200){
+                console.log(`Dato province: ${province}, año: ${year} borrado`);
+                getExchanges();
+            }else{
+                console.log(`ERROR, status ${status}`)
+            }
+
+        }catch(error){
+            console.log(`ERROR: DELETE data from ${API}: ${error}`);
+        }
+    }
     function toValidNumber(value) {
         const num = Number(value);
         return isNaN(num) ? undefined : num;
@@ -127,6 +145,7 @@
 </script>
 
 <h2>Exchange List</h2>
+
 <Table>
     <thead>
         <tr>
@@ -214,4 +233,6 @@
             </tr>
         {/each}
     </tbody>
+    <Button color="danger" on:click={() => {deleteAllExchanges()}}>Borrar los datos</Button>
 </Table>
+
