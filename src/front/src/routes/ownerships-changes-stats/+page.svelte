@@ -3,8 +3,7 @@
     import {dev} from "$app/environment";
     import {onMount} from "svelte";
     import {Table,Button} from '@sveltestrap/sveltestrap';
-	import { param } from "express/lib/request";
-
+	
 
     let DEVEL_HOST= "http://localhost:16078";
     let API= "/api/v1/ownerships-changes-stats/";
@@ -28,19 +27,22 @@
     let newExchangeOther;
     let newExchangeYear;
 
-    let searchExchangeAC;
-    let searchExchangeProvince;
-    let searchExchangeTruck;
-    let searchExchangeVan;
-    let searchExchangeBus;
-    let searchExchangeCar;
-    let searchExchangeMotocycle;
-    let searchExchangeOther;
-    let searchExchangeYear;
-    let searchExchangeTo;
-    let searchExchangeFrom;
-    let searchExchangeLimit;
-    let searchExchangeOffset;
+    let provinces =[];
+    let AC=[];
+
+    let searchExchangeAC = "";
+    let searchExchangeProvince= "";
+    let searchExchangeTruck= "";
+    let searchExchangeVan= "";
+    let searchExchangeBus= "";
+    let searchExchangeCar= "";
+    let searchExchangeMotocycle= "";
+    let searchExchangeOther= "";
+    let searchExchangeYear= "";
+    let searchExchangeTo= "";
+    let searchExchangeFrom= "";
+    let searchExchangeLimit= "";
+    let searchExchangeOffset= "";
 
 
     async function getExchanges(){
@@ -186,10 +188,10 @@
         if (searchExchangeOther) params.push(`other_vehicle=${searchExchangeOther}`)
         if (searchExchangeYear) params.push(`year=${searchExchangeYear}`);
 
-        if (searchExcahngeFrom) params.push(`from=${searchExcahngeFrom}`);
-        if (searchExcahngeTo) params.push(`to=${searchExcahngeTo}`);
-        if (searchExcahngeLimit) params.push(`limit=${searchExcahngeLimit}`);
-        if (searchExcahngeOffset) params.push(`offset=${searchExcahngeOffset}`);
+        if (searchExchangeFrom) params.push(`from=${searchExchangeFrom}`);
+        if (searchExchangeTo) params.push(`to=${searchExchangeTo}`);
+        if (searchExchangeLimit) params.push(`limit=${searchExchangeLimit}`);
+        if (searchExchangeOffset) params.push(`offset=${searchExchangeOffset}`);
 
         url += params.join("&");
 
@@ -204,6 +206,27 @@
 
     onMount(async () =>  {
         getExchanges()
+
+        const savedProvinces = localStorage.getItem('provinces');
+    const savedCommunities = localStorage.getItem('autonomousCommunities');
+
+    if (savedProvinces && savedCommunities) {
+        provinces = JSON.parse(savedProvinces);
+        autonomousCommunities = JSON.parse(savedCommunities);
+    } else {
+        try {
+            const res = await fetch(`${API}`);
+            const data = await res.json();
+
+            provinces = Array.from(new Set(data.map(d => d.province).filter(Boolean))).sort();
+            autonomousCommunities = Array.from(new Set(data.map(d => d.autonomous_community).filter(Boolean))).sort();
+            // Guardar en localStorage
+            localStorage.setItem('provinces', JSON.stringify(provinces));
+            localStorage.setItem('autonomousCommunities', JSON.stringify(autonomousCommunities));
+        } catch (error) {
+            console.error("Error al cargar provincias y comunidades:", error);
+        }
+    }
     });
 
 
@@ -221,7 +244,7 @@
     </select>
     <select bind:value={searchExchangeAC}>
         <option value="">-- Comunidad Autónoma --</option>
-        {#each autonomousCommunities as community}
+        {#each AC as community}
             <option value={community}>{community}</option>
         {/each}
     </select>
@@ -280,7 +303,7 @@
             <td>
                 <Button color="secondary" on:click={createExchanges}>Crear registro</Button>
             </td>
-        <Button color = "danger" on:click={()=>{deleteAllExchanges()} }> Borrar todo</Button>
+       
         </tr>
         {#each exChangesData.slice().sort((a, b) => a.autonomous_community.localeCompare(b.autonomous_community)) as exchange}
 
@@ -322,4 +345,5 @@
     </tbody>
 
 </Table>
-
+<Button color = "danger" on:click={()=>{deleteAllExchanges()} }> Borrar todo</Button>
+<Button color="primary" on:click={() => { loadInitialData() }} >Cargar datos de prueba</Button>
