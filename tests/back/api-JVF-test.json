@@ -81,6 +81,45 @@
 			"response": []
 		},
 		{
+			"name": "Get dato especifico 2 variables",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 200\", function (){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"pm.test(\"response body is an object\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('object');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/Segovia/2023",
+					"host": [
+						"{{BASE-URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ownerships-changes-stats",
+						"Segovia",
+						"2023"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get dato filtro: provincia",
 			"event": [
 				{
@@ -474,7 +513,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria/2022",
 					"host": [
 						"{{BASE-URL}}"
 					],
@@ -482,7 +521,8 @@
 						"api",
 						"v1",
 						"ownerships-changes-stats",
-						"almeria"
+						"almeria",
+						"2022"
 					]
 				}
 			},
@@ -508,7 +548,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria",
+					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria/2022",
 					"host": [
 						"{{BASE-URL}}"
 					],
@@ -516,7 +556,8 @@
 						"api",
 						"v1",
 						"ownerships-changes-stats",
-						"almeria"
+						"almeria",
+						"2022"
 					]
 				}
 			},
