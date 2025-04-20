@@ -60,7 +60,11 @@ test ("borrar, cargar,editar",async ({page})=>{
   //editar
   await page.getByRole("button", {name: "Editar"}).nth(0).click();
 
-  //await expect(page).toHaveTitle(//);
+  const inputs = page.locator("input");
+  await inputs.nth(6).fill("99999");
+  await page.getByRole("button", {name: "Actualizar"}).click();
+  await expect(page).toHaveURL(/ownerships-changes-stats/);
+  await expect(page.locator("table")).toContainText("99999")
 
 });
   
