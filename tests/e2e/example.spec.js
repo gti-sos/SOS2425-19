@@ -21,6 +21,7 @@ test('create and delete', async ({ page }) => {
   const testExchangeYear="2024";
 
   await page.goto('localhost:16078/ownerships-changes-stats');
+  await page.getByRole("button", {name : "Borrar Todo"}).click();
 
   await page.getByRole('textbox').nth(5).fill(testExchangeAC);
   await page.getByRole('textbox').nth(6).fill(testExchangeProvince);
@@ -32,9 +33,11 @@ test('create and delete', async ({ page }) => {
   await page.getByRole('textbox').nth(12).fill(testExchangeOther);
   await page.getByRole('textbox').nth(13).fill(testExchangeYear);
 
+  await page.getByRole("button", {name:"Crear Registro"}).click();
+
   const row= `${testExchangeAC} ${testExchangeProvince} ${testExchangeTruck} ${testExchangeVan} ${testExchangeBus} ${testExchangeCar} ${testExchangeMoto} ${testExchangeOther} ${testExchangeYear}`;
   const playRow= page.getByRole("row", {name :row});
-
+  
   await expect(playRow).toContainText(testExchangeAC);
   await expect(playRow).toContainText(testExchangeProvince);
   await expect(playRow).toContainText(testExchangeTruck);
@@ -45,7 +48,7 @@ test('create and delete', async ({ page }) => {
   await expect(playRow).toContainText(testExchangeOther);
   await expect(playRow).toContainText(testExchangeYear);
 
-  await playRow.getByRole("button", {name:"Borrar"}).click();
+  await playRow.getByRole("button", {name:"Delete"}).click();
   await expect(page.getByRole("row", {name :row})).toHaveCount(0);
 
 });
@@ -65,16 +68,5 @@ test ("borrar, cargar,editar",async ({page})=>{
   await page.getByRole("button", {name: "Actualizar"}).click();
   await expect(page).toHaveURL(/ownerships-changes-stats/);
   await expect(page.locator("table")).toContainText("99999")
-
-});
-  
-
-
-
-
-test ("edit" , async({page}) =>{
-
-  await page.goto('http://localhost:16078/ownerships-changes-stats/');
-
 
 });

@@ -311,7 +311,6 @@
        
         </tr>
         {#each exChangesData.slice().sort((a, b) => a.autonomous_community.localeCompare(b.autonomous_community)) as exchange}
-
             <tr>
                 <td>
                     {exchange.autonomous_community}
@@ -343,9 +342,7 @@
                 <td>
                     <Button color="danger" on:click={() => {deleteExchanges(exchange.province,exchange.year)}}>Delete</Button>
                     <a href={`/ownerships-changes-stats/editar/${exchange.province}/${exchange.year}`}> <Button color="secondary">Editar</Button></a>                  
-
                 </td>
-
             </tr>
         {/each}
     </tbody>

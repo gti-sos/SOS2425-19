@@ -73,14 +73,14 @@
 
             status = await res.status
             if (status ==200) {
-                console.log("Sanction updated successfully");
+                console.log(" updated successfully");
                 console.log("Dato actualizado correctamente")
-                goto("/sanctions-and-points-stats"); // recarga el dato actualizado
+                goto("/ownerships-changes-stats/"); // recarga el dato actualizado
             } else {
-                console.error("Failed to update sanction", res.status);
+                console.error("Failed to update", res.status);
             }
         } catch (error) {
-            console.error("Error updating sanction", error);
+            console.error("Error updating ", error);
         }
 	}
 
