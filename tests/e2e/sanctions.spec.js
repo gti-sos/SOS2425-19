@@ -20,7 +20,7 @@ test('create and delete sanction', async ({ page }) => {
   const testTotalSanctions = "1";
   const testTotalPoints = "2";
   console.log(testProvince)
-  await page.goto('localhost:16078/sanctions-and-points-stats/');
+  await page.goto('localhost:16078/sanctions-and-points-stats');
   await page.getByRole('button', { name: 'Borrar datos' }).click();
 
   await page.getByRole('textbox').nth(6).fill(testIneCode);
