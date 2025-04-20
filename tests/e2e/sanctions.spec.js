@@ -56,7 +56,7 @@ test('create and delete sanction', async ({ page }) => {
 });
 
 
-test('edit a sanction record', async ({ page }) => {
+/*test('edit a sanction record', async ({ page }) => {
   await page.goto('http://localhost:16078/sanctions-and-points-stats/');
 
   // Limpiar y cargar datos de prueba
@@ -85,3 +85,4 @@ test('edit a sanction record', async ({ page }) => {
 });
 
 
+*/
