@@ -90,8 +90,10 @@
 							"pm.test(\"status is 200\", function (){\r",
 							"    pm.response.to.have.status(200);\r",
 							"})\r",
-							"pm.test(\"response body is an object\", function () {\r",
-							"    pm.expect(pm.response.json()).to.be.an('object');\r",
+							"pm.test(\"response body is an array or object\", function () {\r",
+							"    pm.expect(pm.response.json()).to.satisfy(function (value) {\r",
+							"        return Array.isArray(value) || typeof value === 'object';\r",
+							"    });\r",
 							"});\r",
 							""
 						],
@@ -129,11 +131,9 @@
 							"pm.test(\"status is 200\", function (){\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(\"response body is an array or object\", function () {\r",
-								"pm.expect(pm.response.json()).to.satisfy(function (value) {\r",
-									"return Array.isArray(value) || typeof value === 'object';\r",
-								"});\r",
-							"});\r"
+							"pm.test(\"Response is an array of objects\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('array').and.to.satisfy((arr) => arr.every(item => typeof item === 'object'));\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -709,7 +709,7 @@
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -729,7 +729,8 @@
 						"api",
 						"v1",
 						"ownerships-changes-stats",
-						"almeria"
+						"almeria",
+						"2022"
 					]
 				}
 			},
