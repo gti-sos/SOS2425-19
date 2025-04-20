@@ -1,9 +1,9 @@
 // @ts-check
-import { test, expect } from '@playwright/test';
+import { test, expect,request as playwrightRequest  } from '@playwright/test';
 
 //Pruebas DLC
 
-test('has title', async ({ page }) => {
+test('has title', async ({ page,request }) => {
   await page.goto('localhost:16078/sanctions-and-points-stats');
 
   // Expect a title "to contain" a substring.
@@ -19,31 +19,40 @@ test('create and delete sanction', async ({ page }) => {
   const testYear = "2024";
   const testTotalSanctions = "1";
   const testTotalPoints = "2";
-
+  console.log(testProvince)
   await page.goto('localhost:16078/sanctions-and-points-stats/');
+  await page.getByRole('button', { name: 'Borrar datos' }).click();
 
   await page.getByRole('textbox').nth(6).fill(testIneCode);
   await page.getByRole('textbox').nth(7).fill(testProvince);
   await page.getByRole('textbox').nth(8).fill(testAutonomousCommunity);
   await page.getByRole('textbox').nth(9).fill(testYear);
   await page.getByRole('textbox').nth(10).fill(testTotalSanctions);
-  await page.getByRole('textbox').nth(11).fill(testTotalPoints);
-  
+  await page.getByRole('textbox').nth(11).fill(testTotalPoints); 
+
+  console.log(testProvince)
+
   await page.getByRole('button', { name: 'Crear registro' }).click();
 
   
   const fullRowText = `${testIneCode} ${testProvince} ${testAutonomousCommunity} ${testYear} ${testTotalSanctions} ${testTotalPoints}`;
   const sanctionRow = page.getByRole('row', { name: fullRowText });
-
+  console.log(sanctionRow);
   await expect(sanctionRow).toContainText(testProvince);
   await expect(sanctionRow).toContainText(testAutonomousCommunity);
   await expect(sanctionRow).toContainText(testYear);
   await expect(sanctionRow).toContainText(testTotalSanctions);
   await expect(sanctionRow).toContainText(testTotalPoints);
 
-  await sanctionRow.getByRole('button', { name: 'Borrar' }).click();
-
+  await sanctionRow.getByRole('button', { name: 'Borrar' },).click({ timeout: 60000 });
   await expect(page.getByRole('row', { name: fullRowText })).toHaveCount(0);
+
+  const apiContext = await playwrightRequest.newContext({
+    baseURL: 'http://localhost:16078'
+  });
+
+  const response = await apiContext.post(`/api/v1/sanctions-and-points-stats/reset`);
+  expect(response.status()).toBe(200);
 });
 
 
