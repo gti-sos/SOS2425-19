@@ -80,11 +80,10 @@
             if (res.status === 201 || res.status === 200) {
                 successMessage = "Registro creado con éxito.";
                 getAccidents();
-            }else if (res.status ===409){
-                errorMessage = `Error al crear el registro, conflicto de datos. ${res.status} - ${result}`
-            }
-             else {
-                errorMessage = `Error al crear el registro: ${res.status} - ${result}`;
+            } else if (res.status === 409) {
+                errorMessage = `Error al crear el registro, conflicto de datos.`;
+            } else {
+                errorMessage = `Error al crear el registro:`;
             }
         } catch (error) {
             errorMessage = "Error de red al crear el registro";
@@ -209,7 +208,7 @@
     <Button on:click={searchAccidents}>Buscar</Button>
 </div>
 
-<Table>
+<Table style="table-layout: fixed; width: 100%;">
     <thead>
         <tr>
             <th>ine_code</th>
@@ -224,14 +223,14 @@
     </thead>
     <tbody>
         <tr>
-            <td><input bind:value={newAccidentIneCode}></td>
-            <td><input bind:value={newAccidentMunicipality}></td>
-            <td><input bind:value={newAccidentProvince}></td>
-            <td><input bind:value={newAccidentCCAA}></td>
-            <td><input bind:value={newAccidentYear}></td>
-            <td><input bind:value={newAccidentDeceased}></td>
-            <td><input bind:value={newAccidentInjuredHospitalized}></td>
-            <td><input bind:value={newAccidentInjuredNotHospitalized}></td>
+            <td><input bind:value={newAccidentIneCode} style="width: 100%;"></td>
+            <td><input bind:value={newAccidentMunicipality} style="width: 100%;"></td>
+            <td><input bind:value={newAccidentProvince} style="width: 100%;"></td>
+            <td><input bind:value={newAccidentCCAA} style="width: 100%;"></td>
+            <td><input bind:value={newAccidentYear} style="width: 100%;"></td>
+            <td><input bind:value={newAccidentDeceased} style="width: 100%;"></td>
+            <td><input bind:value={newAccidentInjuredHospitalized} style="width: 100%;"></td>
+            <td><input bind:value={newAccidentInjuredNotHospitalized} style="width: 100%;"></td>
             <td><Button color="primary" on:click={createAccident}>Crear registro</Button></td>
         </tr>
 
@@ -255,4 +254,4 @@
 </Table>
 
 <Button color="danger" on:click={deleteAllAccidents}>Borrar todos los datos</Button>
-<Button color="primary" on:click={loadInitialData}>Cargar datos de prueba</Button>
+<Button color="primary" on:click={loadInitialData}>Cargar datos iniciales</Button>
