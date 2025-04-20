@@ -53,11 +53,14 @@ function loadInitialDataDLC(){
 
 const BASE_API = "/api/v1"
 
-database.insert(sanctionsData, (err, newDocs) => {
+database.insert(sanctionsData, (err, newDoc) => {
     if (err) {
-        return res.status(500).send("Error al insertar los datos.");
+        console.error("Error al insertar los datos:", err);
+    } else {
+        console.log("Datos insertados correctamente");
     }
-})
+});
+
 
 function loadBackendDLC(app){
     
@@ -95,6 +98,10 @@ function loadBackendDLC(app){
         });
     });
 
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    
     // GET todos los datos con paginación
 app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     let { ine_code, province, autonomous_community, year, from, to, limit, offset } = req.query;
@@ -102,10 +109,10 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
     let query = {};
 
     if (province) {
-        query.province = new RegExp("^" + province + "$", "i");
+        query.province = new RegExp("^" + escapeRegExp(province) + "$", "i");
     }
     if (autonomous_community) {
-        query.autonomous_community = new RegExp("^" + autonomous_community + "$", "i");
+        query.autonomous_community = new RegExp("^" + escapeRegExp(autonomous_community) + "$", "i");
     }
     if (year) {
         query.year = Number(year);
@@ -153,7 +160,7 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
             return res.sendStatus(400); // Bad Request
         }
         // Comprobar si ya existe un registro con mismo ine_code (puedes añadir year si es clave compuesta)
-        database.findOne({ ine_code: ine_code }, (err, existingDoc) => {
+        database.findOne({ ine_code: ine_code,year:year }, (err, existingDoc) => {
             if (err) {
                 return res.status(500).send("Error al acceder a la base de datos.");
             }
@@ -183,23 +190,8 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
         res.sendStatus(200); 
     });
 
-    //GET de un dato especifico
-    app.get(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
-        const paramIneCode = Number(req.params.ine_code);
     
-        database.findOne({ ine_code: paramIneCode }, (err, sanction) => {
-            if (err) {
-                return res.status(500).send("Error al acceder a la base de datos.");
-            }
-            if (!sanction) {
-                return res.sendStatus(404);
-            }
-            // Eliminar la propiedad _id antes de enviar
-        const { _id, ...sanctionWithoutId } = sanction;
-        res.status(200).json(sanctionWithoutId);
-        });
-    });
-    //GET de un dato especifico doble busqueda
+    //GET de un dato especifico y doble busqueda
     app.get(BASE_API + "/sanctions-and-points-stats/:ine_code/:year", (req, res) => {
         const paramIneCode = Number(req.params.ine_code);
         const paramYear = Number(req.params.year);
@@ -233,21 +225,22 @@ app.post(BASE_API + "/sanctions-and-points-stats/reset", (req, res) => {
 });
 
     //FALLO DE POST de un dato especifico
-    app.post(BASE_API + "/sanctions-and-points-stats/:ine_code",(req,res)=>{    
+    app.post(BASE_API + "/sanctions-and-points-stats/:ine_code/:year",(req,res)=>{    
         
         res.sendStatus(405);
     });
 
     //PUT de un dato especifico
-    app.put(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
-        const paramIneCode = Number(req.params.ine_code);
+    app.put(BASE_API + "/sanctions-and-points-stats/:ine_code/:year", (req, res) => {
+        const paramIneCode = Number(req.params.ine_code);        
+        const paramYear = Number(req.params.year);
         const updatedData = req.body;
 
         // Verificar que el ine_code en el body coincida con el de la URL
         if (updatedData.ine_code !== paramIneCode) {
             return res.sendStatus(400); // Bad Request
         }    
-        database.update({ ine_code: paramIneCode }, updatedData, {}, (err, numReplaced) => {
+        database.update({ ine_code: paramIneCode,year:paramYear }, updatedData, {}, (err, numReplaced) => {
             if (err) {
                 return res.status(500).send("Error al actualizar el recurso.");
             }
@@ -262,10 +255,11 @@ app.post(BASE_API + "/sanctions-and-points-stats/reset", (req, res) => {
 
 
     //DELETE de un dato especifico
-    app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code", (req, res) => {
+    app.delete(BASE_API + "/sanctions-and-points-stats/:ine_code/:year", (req, res) => {
         const paramIneCode = Number(req.params.ine_code);
+        const paramYear = Number(req.params.year);
     
-        database.remove({ ine_code: paramIneCode }, {}, (err, numRemoved) => {
+        database.remove({ ine_code: paramIneCode,year:paramYear }, {}, (err, numRemoved) => {
             if (err) {
                 res.status(500).send("Error al eliminar el recurso.");
                 console.error(`ERROR: ${err}`)

@@ -65,12 +65,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/1001",
+					"raw": "{{BASE-URL}}/1001/2023",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
-						"1001"
+						"1001",
+						"2023"
 					]
 				}
 			},
@@ -381,7 +382,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"ine_code\": 100001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2022, \"deceased\": 1, \"injured_hospitalized\": 1, \"injured_not_hospitalized\": 1}",
+					"raw": "{ \"ine_code\": 100001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2023, \"deceased\": 1, \"injured_hospitalized\": 1, \"injured_not_hospitalized\": 10}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -389,12 +390,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/100001",
+					"raw": "{{BASE-URL}}/100001/2023",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
-						"100001"
+						"100001",
+						"2023"
 					]
 				},
 				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -431,12 +433,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/100001",
+					"raw": "{{BASE-URL}}/100001/2023",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
-						"100001"
+						"100001",
+						"2023"
 					]
 				},
 				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -464,7 +467,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"ine_code\": 1000001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2023, \"deceased\": 0, \"injured_hospitalized\": 0, \"injured_not_hospitalized\": 0 }",
+					"raw": "{ \"ine_code\": 1000001, \"municipality\": \"Alegría-Dulantzi\", \"province\": \"Araba/Álava\", \"ccaa\": \"País Vasco\", \"year\": 2022, \"deceased\": 0, \"injured_hospitalized\": 10, \"injured_not_hospitalized\": 0 }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -472,12 +475,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/100001",
+					"raw": "{{BASE-URL}}/100001/2023",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
-						"100001"
+						"100001",
+						"2023"
 					]
 				}
 			},
@@ -586,12 +590,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/100000001000",
+					"raw": "{{BASE-URL}}/100000001000/2023",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
-						"100000001000"
+						"100000001000",
+						"2023"
 					]
 				}
 			},
@@ -617,12 +622,13 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/100001",
+					"raw": "{{BASE-URL}}/100001/2023",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
-						"100001"
+						"100001",
+						"2023"
 					]
 				}
 			},

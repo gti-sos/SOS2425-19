@@ -12,7 +12,7 @@ const csvPath = path.join(__dirname, '../../data/DatosMunicipalesSiniestralidad_
 function loadInitialDataMRC(){
     const datos = [
         {
-            "ine-code": "1001",
+            "ine_code": "1001",
             "municipality": "Alegría-Dulantzi",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -22,7 +22,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1002",
+            "ine_code": "1002",
             "municipality": "Amurrio",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -32,7 +32,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "1"
         },
         {
-            "ine-code": "1003",
+            "ine_code": "1003",
             "municipality": "Aramaio",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -42,7 +42,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1004",
+            "ine_code": "1004",
             "municipality": "Artziniega",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -52,7 +52,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1006",
+            "ine_code": "1006",
             "municipality": "Armiñón",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -62,7 +62,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1008",
+            "ine_code": "1008",
             "municipality": "Arratzua-Ubarrundia",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -72,7 +72,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "2"
         },
         {
-            "ine-code": "1009",
+            "ine_code": "1009",
             "municipality": "Asparrena",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -82,7 +82,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1010",
+            "ine_code": "1010",
             "municipality": "Ayala/Aiara",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -92,7 +92,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "1"
         },
         {
-            "ine-code": "1011",
+            "ine_code": "1011",
             "municipality": "Baños de Ebro/Mañueta",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -102,7 +102,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1013",
+            "ine_code": "1013",
             "municipality": "Barrundia",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -133,11 +133,14 @@ const BASE_API = "/api/v1"
 const siniestralidadData = csvToArray(csvContent);
 const db=new dataStore();
 
-db.insert(siniestralidadData, (err, newDocs) => {
+db.insert(siniestralidadData, (err, newDoc) => {
     if (err) {
-        return res.status(500).send("Error al insertar los datos,");
+        console.error("Error al insertar los datos:", err);
+    } else {
+        console.log("Datos insertados correctamente");
     }
 });
+
 function loadBackendMRC(app) {
     
 
@@ -151,14 +154,26 @@ function loadBackendMRC(app) {
         db.count({}, (err, count) => {
             if (err) return res.status(500).send("Error al comprobar la BD.");
             if (count > 0) return res.status(400).json({ message: "Ya tiene datos" });
-
+    
             const data = loadInitialDataMRC();
             db.insert(data, (err) => {
                 if (err) return res.status(500).send("Error al insertar");
-                res.status(200).json(data);
+    
+                db.find({}, (err, docs) => {
+                    if (err) return res.status(500).send("Error al recuperar los datos.");
+                    res.send(JSON.stringify(
+                        docs.map((doc) => {
+                            delete doc._id;
+                            return doc;
+                        }),
+                        null,
+                        2
+                    ));
+                });
             });
         });
     });
+    
 
     // Obtener datos con filtros y paginación
     app.get(`${BASE_API}/accident-rate-stats`, (req, res) => {
@@ -190,16 +205,38 @@ function loadBackendMRC(app) {
 
     // Añadir nuevo dato
     app.post(`${BASE_API}/accident-rate-stats`, (req, res) => {
-        const newEntry = req.body;
-        const required = ["ine_code","municipality", "province", "ccaa", "year", "deceased","injured_hospitalized","injured_not_hospitalized"];
-        if (required.some(k => newEntry[k] === undefined)) return res.sendStatus(400);
-
-        db.findOne({ ine_code: newEntry.ine_code }, (err, found) => {
-            if (err) return res.status(500).send("Error en la base de datos.");
-            if (found) return res.sendStatus(409);
-            db.insert(newEntry, err => err ? res.status(500).send("Error al insertar") : res.sendStatus(201));
+        const { ine_code, municipality, province, ccaa, year, deceased, injured_hospitalized, injured_not_hospitalized } = req.body;
+    
+        // Validar campos obligatorios
+        if (
+            ine_code === undefined || municipality === undefined || province === undefined || ccaa === undefined ||
+            year === undefined || deceased === undefined || injured_hospitalized === undefined || injured_not_hospitalized === undefined
+        ) {
+            return res.sendStatus(400); // Bad Request
+        }
+    
+        // Comprobar si ya existe un registro con el mismo ine_code y year
+        db.findOne({ ine_code: ine_code, year: year }, (err, existingDoc) => {
+            if (err) {
+                return res.status(500).send("Error al acceder a la base de datos.");
+            }
+            if (existingDoc) {
+                return res.sendStatus(409); // Conflict
+            }
+    
+            // Insertar el nuevo registro
+            db.insert(req.body, (err, newDoc) => {
+                if (err) {
+                    return res.status(500).send("Error al insertar el recurso.");
+                }
+                res.sendStatus(201); // Created
+            });
         });
     });
+    
+    
+    
+    
 
     // PUT no permitido a todos
     app.put(`${BASE_API}/accident-rate-stats`, (_, res) => res.sendStatus(405));
@@ -210,31 +247,25 @@ function loadBackendMRC(app) {
     });
 
     // Obtener dato específico
-    app.get(`${BASE_API}/accident-rate-stats/:ine_code`, (req, res) => {
-        const code = Number(req.params.ine_code);
-        db.findOne({ ine_code: code }, (err, doc) => {
-            if (err) return res.status(500).send("Error en la base de datos.");
-            if (!doc) return res.sendStatus(404);
-            const { _id, ...cleanDoc } = doc;
-            res.status(200).json(cleanDoc);
-        });
-    });
+    
 
     app.get(`${BASE_API}/accident-rate-stats/:ine_code/:year`, (req, res) => {
         const ine_code = Number(req.params.ine_code);
-        const year= Number(req.params.year);
-        db.find({ 
-            ine_code:ine_code,
+        const year = Number(req.params.year);
+        
+        db.findOne({ 
+            ine_code: ine_code,
             year: year,
-            
-        }, (err, docs) => {
+        }, (err, doc) => {
             if (err) return res.status(500).send("Error al acceder a la base de datos.");
-            if (!docs || docs.length === 0) return res.sendStatus(404);
-    
-            const sanitized = docs.map(({ _id, ...rest }) => rest);
-            res.status(200).json(sanitized);
+            if (!doc) return res.sendStatus(404);
+            
+            // Eliminar _id directamente y enviar el objeto sin él
+            const { _id, ...rest } = doc;
+            res.status(200).json(rest);
         });
     });
+    
 
     app.post(`${BASE_API}/accident-rate-stats/reset`, (_, res) => {
         
@@ -248,28 +279,59 @@ function loadBackendMRC(app) {
     });
     
     // POST a recurso específico no permitido
-    app.post(`${BASE_API}/accident-rate-stats/:ine_code`, (_, res) => res.sendStatus(405));
+    app.post(`${BASE_API}/accident-rate-stats/:ine_code/:year`, (_, res) => res.sendStatus(405));
 
     // Actualizar recurso específico
-    app.put(`${BASE_API}/accident-rate-stats/:ine_code`, (req, res) => {
-        const code = Number(req.params.ine_code);
-        if (req.body.ine_code !== code) return res.sendStatus(400);
-
-        db.update({ ine_code: code }, req.body, {}, (err, count) => {
-            if (err) return res.status(500).send("Error al actualizar.");
-            if (count === 0) return res.sendStatus(404);
-            res.sendStatus(200);
+    app.put(`${BASE_API}/accident-rate-stats/:ine_code/:year`, (req, res) => {
+        const paramIneCode = Number(req.params.ine_code);
+        const paramYear = Number(req.params.year);
+        const updatedData = req.body;
+    
+        // Verificar que el ine_code en el body coincida con el de la URL
+        if (updatedData.ine_code !== paramIneCode || updatedData.year !== paramYear) {
+            return res.sendStatus(400); // Bad Request
+        }
+    
+        // Actualizar en la base de datos usando ine_code y year
+        db.update({ ine_code: paramIneCode, year: paramYear }, updatedData, {}, (err, numReplaced) => {
+            if (err) {
+                return res.status(500).send("Error al actualizar el recurso.");
+            }
+    
+            if (numReplaced === 0) {
+                return res.sendStatus(404); // No encontrado
+            }
+    
+            res.sendStatus(200); // OK
         });
     });
+    
 
     // Eliminar recurso específico
-    app.delete(`${BASE_API}/accident-rate-stats/:ine_code`, (req, res) => {
-        const code = Number(req.params.ine_code);
-        db.remove({ ine_code: code }, {}, (err, count) => {
-            if (err) return res.status(500).send("Error al eliminar.");
-            res.sendStatus(count === 0 ? 404 : 200);
+    app.delete(`${BASE_API}/accident-rate-stats/:ine_code/:year`, (req, res) => {
+        const paramIneCode = Number(req.params.ine_code);
+        const paramYear = Number(req.params.year);
+    
+        // Verificamos que los parámetros sean válidos
+        if (isNaN(paramIneCode) || isNaN(paramYear)) {
+            return res.status(400).send("Parámetros inválidos");
+        }
+    
+        db.remove({ ine_code: paramIneCode, year: paramYear }, {}, (err, count) => {
+            if (err) {
+                console.error(`Error al eliminar el recurso: ${err}`);
+                return res.status(500).send("Error al eliminar el recurso.");
+            }
+            
+            if (count === 0) {
+                return res.sendStatus(404); // No encontrado
+            }
+            
+            res.sendStatus(200); // OK
         });
     });
+    
+    
 }
 
 //console.log(siniestralidadData);

@@ -68,11 +68,14 @@ function InitialData(){
 
 const BASE_API= "/api/v1";
 
-database.insert(ChangesData,(err,newDocs)=> {
+database.insert(ChangesData, (err, newDoc) => {
     if (err) {
-        return res.status(500).send("error al insertar datos");
+        console.error("Error al insertar los datos:", err);
+    } else {
+        console.log("Datos insertados correctamente");
     }
-})
+});
+
 
 function loadBackendJVF( app ){
     //APIs
@@ -195,25 +198,22 @@ function loadBackendJVF( app ){
             ){
                 return res.send(400);
             }
-            database.findOne({province:province}, (err,existingDoc) => {
-                if(err)
-                {
+            database.findOne({ province: province, year: year }, (err, existingDoc) => {
+                if (err) {
                     return res.status(500).send("Error al acceder la base de datos");
                 }
-                if (existingDoc) 
-                {
+                if (existingDoc) {
                     return res.sendStatus(409); // Conflict
                 }
-                database.insert(req.body, (err,newDoc)=>{
-                    if(err)
-                        {
-                            return res.status(500).send("Error al introducir el dato");
-                        }
+            
+                database.insert(req.body, (err, newDoc) => {
+                    if (err) {
+                        return res.status(500).send("Error al introducir el dato");
+                    }
                     res.sendStatus(201);
-                    
                 });
-
             });
+            
         });
 
     //FALLO DE PUT Todo
@@ -269,15 +269,16 @@ function loadBackendJVF( app ){
         });
     
     // PUT dato especifico
-    app.put(BASE_API + "/ownerships-changes-stats/:province" , (req,res)=>{
+    app.put(BASE_API + "/ownerships-changes-stats/:province/:year" , (req,res)=>{
         const parametro= req.params.province
         const actu=req.body
+        const paramYear=Number(req.params.year);
         
         
         if(actu.province !== parametro ){
             return res.sendStatus(400);
         }
-        database.update({province:parametro} , actu, {}, (err,remplazado)=>{
+        database.update({province:parametro, year :paramYear} , actu, {}, (err,remplazado)=>{
             if (err)   
                 {
                     res.status(500).send("error al actualizar el dato");
@@ -306,11 +307,13 @@ function loadBackendJVF( app ){
     });
 
     //DELETE dato especifico
-    app.delete(BASE_API + "/ownerships-changes-stats/:province", (req,res) =>
-        {
-            let parametro= req.params.province;
+    app.delete(BASE_API + "/ownerships-changes-stats/:province/:year", (req,res) =>
+        
 
-            database.remove({province: parametro }, {},(err,numRemoved) =>
+    {
+        const paramProvince= req.params.province;
+        const paramYear=Number(req.params.year);
+            database.remove({province: paramProvince, year: paramYear }, {},(err,numRemoved) =>
             {
                 if (err)   
                 {
@@ -318,12 +321,10 @@ function loadBackendJVF( app ){
                 }
                 else
                 {
-                    if (numRemoved==0)
-                    {
+                    if (numRemoved==0){
                         res.sendStatus(404);
                     }
-                    else 
-                    {
+                    else {
                         res.sendStatus(200);   
                     }
                 }
