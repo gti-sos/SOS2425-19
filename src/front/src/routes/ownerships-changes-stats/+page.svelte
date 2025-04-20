@@ -256,6 +256,11 @@
 
     <Button on:click={searchExchanges}>Buscar</Button>
 </div>
+<svelte:head>
+    <title>
+        Exchanges Data
+    </title>
+</svelte:head>
 <Table>
     <thead>
         <tr>
