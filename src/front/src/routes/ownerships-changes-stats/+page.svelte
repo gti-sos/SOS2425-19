@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    import {dev} from "$app/environment";
+    import {dev} from "$app/environment"
     import {onMount} from "svelte";
     import {Table,Button} from '@sveltestrap/sveltestrap';
 	
@@ -9,7 +9,7 @@
     let API= "/api/v1/ownerships-changes-stats/";
 
     if (dev){
-        API= DEVEL_HOST + API;
+        API= DEVEL_HOST + API
     }
 
    
