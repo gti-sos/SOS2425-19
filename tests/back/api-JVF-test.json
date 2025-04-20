@@ -709,7 +709,7 @@
 				}
 			],
 			"request": {
-				"method": "DELETE",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
