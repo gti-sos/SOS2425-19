@@ -73,7 +73,9 @@
         }
     }
 </script>
-
+<svelte:head>
+    <title>Editar registro de accidente</title>
+</svelte:head>
 <h2>Editar registro de accidente</h2>
 
 {#if message}

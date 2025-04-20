@@ -12,7 +12,7 @@ const csvPath = path.join(__dirname, '../../data/DatosMunicipalesSiniestralidad_
 function loadInitialDataMRC(){
     const datos = [
         {
-            "ine-code": "1001",
+            "ine_code": "1001",
             "municipality": "Alegría-Dulantzi",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -22,7 +22,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1002",
+            "ine_code": "1002",
             "municipality": "Amurrio",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -32,7 +32,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "1"
         },
         {
-            "ine-code": "1003",
+            "ine_code": "1003",
             "municipality": "Aramaio",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -42,7 +42,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1004",
+            "ine_code": "1004",
             "municipality": "Artziniega",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -52,7 +52,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1006",
+            "ine_code": "1006",
             "municipality": "Armiñón",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -62,7 +62,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1008",
+            "ine_code": "1008",
             "municipality": "Arratzua-Ubarrundia",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -72,7 +72,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "2"
         },
         {
-            "ine-code": "1009",
+            "ine_code": "1009",
             "municipality": "Asparrena",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -82,7 +82,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1010",
+            "ine_code": "1010",
             "municipality": "Ayala/Aiara",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -92,7 +92,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "1"
         },
         {
-            "ine-code": "1011",
+            "ine_code": "1011",
             "municipality": "Baños de Ebro/Mañueta",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
@@ -102,7 +102,7 @@ function loadInitialDataMRC(){
             "injured-not-hospitalized": "0"
         },
         {
-            "ine-code": "1013",
+            "ine_code": "1013",
             "municipality": "Barrundia",
             "province": "Araba/Álava",
             "ccaa": "País Vasco",
