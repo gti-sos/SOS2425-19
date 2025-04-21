@@ -10,5 +10,6 @@
     
     <p><a href="https://sos2425-19.onrender.com/api/v1/sanctions-and-points-stats/docs">https://sos2425-19.onrender.com/api/v1/sanctions-and-points-stats/docs</a> (developed by Daniel Lebrero Carcela)</p>
     <p><a href="https://sos2425-19.onrender.com/api/v1/ownerships-changes-stats/docs">https://sos2425-19.onrender.com/api/v1/ownerships-changes-stats/docs</a> (developed by Julián Villaescusa Fernández)</p>
+    <p><a href="https://sos2425-19.onrender.com/api/v2/ownerships-changes-stats/docs">https://sos2425-19.onrender.com/api/v2/ownerships-changes-stats/docs</a> (developed by Julián Villaescusa Fernández)</p>
     <p><a href="https://sos2425-19.onrender.com/api/v1/accident-rate-stats/docs"> https://sos2425-19.onrender.com/api/v1/accident-rate-stats/docs</a> (developed by Mario Rodriguez Carrillo)
     </p>

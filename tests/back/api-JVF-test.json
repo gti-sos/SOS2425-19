@@ -29,13 +29,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats"
 					]
 				}
@@ -66,13 +66,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/Segovia",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/Segovia",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						"Segovia"
 					]
@@ -106,13 +106,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/Segovia/2023",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/Segovia/2023",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						"Segovia",
 						"2023"
@@ -144,13 +144,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats?province=jaen",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats?province=jaen",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats"
 					],
 					"query": [
@@ -186,13 +186,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats?autonomous_community=Andalucia?province=Jaen",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats?autonomous_community=Andalucia?province=Jaen",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats"
 					],
 					"query": [
@@ -228,13 +228,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats?year=2023",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats?year=2023",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats"
 					],
 					"query": [
@@ -276,13 +276,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						""
 					]
@@ -319,13 +319,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						""
 					]
@@ -362,13 +362,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						""
 					]
@@ -396,13 +396,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						""
 					]
@@ -430,13 +430,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/loadInitialData",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/loadInitialData",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						"loadInitialData"
 					]
@@ -473,13 +473,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats"
 					]
 				}
@@ -515,13 +515,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria/2022",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/almeria/2022",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						"almeria",
 						"2022"
@@ -550,13 +550,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria/2022",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/almeria/2022",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						"almeria",
 						"2022"
@@ -594,13 +594,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats"
 					]
 				}
@@ -636,13 +636,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats"
 					]
 				}
@@ -678,13 +678,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/segobia",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/segobia",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						"segobia"
 					]
@@ -721,13 +721,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/almeria/2022",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/almeria/2022",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						"almeria",
 						"2022"
@@ -756,13 +756,13 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v1/ownerships-changes-stats/reset",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/reset",
 					"host": [
 						"{{BASE-URL}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"ownerships-changes-stats",
 						"reset"
 					]
