@@ -49,7 +49,7 @@
             editProvince = s.province;
             editAutonomousCommunity = s.autonomous_community;
             editYear = s.year;
-            editTotalSanctions = s.total_sanctions_with_points_code;
+            editTotalSanctions = s.total_sanctions_with_points;
             editTotalPoints = s.total_points_deducted;
 
         } catch (error) {
@@ -57,6 +57,7 @@
         }
     }
 
+    
     async function updateSanction(sanction) {
         const url = `${API}${sanction.ine_code}/${sanction.year}`;
         try {
@@ -83,12 +84,12 @@
 
     function updateSanctionFromInputs() {
         const updatedSanction = {
-            ine_code: Number(editIneCode),
-            province: editProvince,
-            autonomous_community: editAutonomousCommunity,
-            year: Number(editYear),
-            total_sanctions_with_points_code: Number(editTotalSanctions),
-            total_points_deducted: Number(editTotalPoints)
+            "ine_code": Number(editIneCode),
+            "province": editProvince,
+            "autonomous_community": editAutonomousCommunity,
+            "year": Number(editYear),
+            "total_sanctions_with_points": Number(editTotalSanctions),
+            "total_points_deducted": Number(editTotalPoints)
         };
 
         updateSanction(updatedSanction);
