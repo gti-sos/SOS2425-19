@@ -444,42 +444,6 @@
 			"response": []
 		},
 		{
-			"name": "Delete de todos los datos",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats",
-					"host": [
-						"{{BASE-URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"sanctions-and-points-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Cargar todos los datos Copy",
 			"event": [
 				{
@@ -924,43 +888,6 @@
 						"sanctions-and-points-stats",
 						"41907",
 						"2022"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Resetear datos acomo al inicio",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{BASE-URL}}/api/v1/sanctions-and-points-stats/reset",
-					"host": [
-						"{{BASE-URL}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"sanctions-and-points-stats",
-						"reset"
 					]
 				}
 			},
