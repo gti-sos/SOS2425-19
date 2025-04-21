@@ -75,6 +75,7 @@
             if (status ==200) {
                 console.log(" updated successfully");
                 console.log("Dato actualizado correctamente")
+                alert("dato actulizado");
                 goto("/ownerships-changes-stats/"); // recarga el dato actualizado
             } else {
                 console.error("Failed to update", res.status);
