@@ -199,6 +199,7 @@
             const res = await fetch(url);
             const data = await res.json();
             exChangesData = data; // Actualizar el array con los resultados
+            alert(`busqueda realizada`);
         } catch (error) {
             console.error("Error al buscar accidentes:", error);
         }
@@ -248,6 +249,12 @@
             <option value={community}>{community}</option>
         {/each}
     </select>
+
+    <input placeholder="truck" bind:value={searchExchangeTruck} />
+    <input placeholder="van" bind:value={searchExchangeVan} />
+    <input placeholder="bus" bind:value={searchExchangeBus} />
+    <input placeholder="car" bind:value={searchExchangeCar} />
+
     <input placeholder="Año" bind:value={searchExchangeYear} />
     <input placeholder="Desde (año)" bind:value={searchExchangeFrom} />
     <input placeholder="Hasta (año)" bind:value={searchExchangeTo} />
