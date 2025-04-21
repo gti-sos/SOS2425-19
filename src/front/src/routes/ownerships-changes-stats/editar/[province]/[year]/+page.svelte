@@ -9,7 +9,7 @@
 	import {title} from "process";
 
 	let DEVEL_HOST= "http://localhost:16078";
-	let API="/api/v1/ownerships-changes-stats/";
+	let API="/api/v2/ownerships-changes-stats/";
 	if(dev){
 		API=DEVEL_HOST + API
 	}

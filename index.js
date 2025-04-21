@@ -3,7 +3,7 @@ import cors from "cors";
 import path from "path";
 import {loadBackendDLC} from "./src/back/index-DLC.js";
 import {loadBackendMRC} from "./src/back/index-MRC.js";
-import { loadBackendJVF } from "./src/back/index-JVF.js";
+import { loadBackendJVF } from "./src/back/index-JVF_2.js";
 import { fileURLToPath } from 'url';
 import {handler} from "./src/front/build/handler.js"
 
