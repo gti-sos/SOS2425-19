@@ -81,10 +81,7 @@ function loadBackendJVF( app ){
                     return res.status(500).send("Error al comprobar la base de datos");
                 }
 
-                if(count>0)
-                {
-                    return res.status(400).json( {message: "Ya hay datos"});
-                }
+            
             
                 const cargaDatos= InitialData();
                 database.insert( cargaDatos, (err,newDocs) =>  
