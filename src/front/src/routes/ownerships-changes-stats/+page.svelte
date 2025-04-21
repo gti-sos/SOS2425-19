@@ -68,6 +68,7 @@
             resultStatus=status;
             if(status==200){
                 console.log(`Dato province: ${province}, año: ${year} borrado`);
+                alert("borrado");
                 getExchanges();
             }else{
                 if(status==404){
@@ -88,6 +89,7 @@
             resultStatus=status;
             if(status==200){
                 console.log("Todos los datos se han borrado");
+                alert("todo borrado")
                 getExchanges();
             }else{
                 console.log(`ERROR, status ${status}`)
@@ -162,6 +164,7 @@
             if (status==200){
                 const data= await res.json();
                 console.log("datos iniciales cargados ");
+                alert("datos cargados")
                 getExchanges();
             }else{
                 const errorText=await res.text();
