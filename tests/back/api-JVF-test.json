@@ -377,40 +377,6 @@
 			"response": []
 		},
 		{
-			"name": "Eliminar todos los datos",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"status is 200\", function (){\r",
-							"    pm.response.to.have.status(200);\r",
-							"})"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/",
-					"host": [
-						"{{BASE-URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"ownerships-changes-stats",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "cargar datos iniciales",
 			"event": [
 				{
@@ -731,40 +697,6 @@
 						"ownerships-changes-stats",
 						"almeria",
 						"2022"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Reset",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"status is 200\", function (){\r",
-							"    pm.response.to.have.status(200);\r",
-							"})"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/reset",
-					"host": [
-						"{{BASE-URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"ownerships-changes-stats",
-						"reset"
 					]
 				}
 			},
