@@ -268,7 +268,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"autonomous_community\": \"andalucia\",\r\n    \"province\": \"almeria\",\r\n    \"truck\": 500,\r\n    \"van\": 500,\r\n    \"bus\": 500,\r\n    \"car\": 500,\r\n    \"motocycle\": 500,\r\n    \"other_vehicle\": 500,\r\n    \"year\": 2022\r\n}",
+					"raw": "{\r\n    \"autonomous_community\": \"cual\",\r\n    \"province\": \"cualquiera\",\r\n    \"truck\": 500,\r\n    \"van\": 500,\r\n    \"bus\": 500,\r\n    \"car\": 500,\r\n    \"motocycle\": 500,\r\n    \"other_vehicle\": 500,\r\n    \"year\": 2022\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -311,7 +311,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"autonomous_community\": \"andalucia\",\r\n    \"province\": \"almeria\",\r\n    \"truck\": 500,\r\n    \"van\": 500,\r\n    \"bus\": 500,\r\n    \"car\": 500,\r\n    \"motocycle\": 500,\r\n    \"other_vehicle\": 500,\r\n    \"year\": 2022\r\n}",
+					"raw": "{\r\n    \"autonomous_community\": \"cual\",\r\n    \"province\": \"cualquiera\",\r\n    \"truck\": 500,\r\n    \"van\": 500,\r\n    \"bus\": 500,\r\n    \"car\": 500,\r\n    \"motocycle\": 500,\r\n    \"other_vehicle\": 500,\r\n    \"year\": 2022\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -411,48 +411,6 @@
 			"response": []
 		},
 		{
-			"name": "Post de todos los datos Copy",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"status is 201\", function (){\r",
-							"    pm.response.to.have.status(201);\r",
-							"})"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"autonomous_community\": \"andalucia\",\r\n    \"province\": \"almeria\",\r\n    \"truck\": 500,\r\n    \"van\": 500,\r\n    \"bus\": 500,\r\n    \"car\": 500,\r\n    \"motocycle\": 500,\r\n    \"other_vehicle\": 500,\r\n    \"year\": 2022\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats",
-					"host": [
-						"{{BASE-URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"ownerships-changes-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "put a dato especifico",
 			"event": [
 				{
@@ -473,7 +431,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"autonomous_community\": \"andalucia\",\r\n    \"province\": \"almeria\",\r\n    \"truck\": 600,\r\n    \"van\": 600,\r\n    \"bus\": 500,\r\n    \"car\": 500,\r\n    \"motocycle\": 500,\r\n    \"other_vehicle\": 500,\r\n    \"year\": 2022\r\n}",
+					"raw": "{\r\n    \"autonomous_community\":\"cual\",\r\n    \"province\": \"cualquiera\",\r\n    \"truck\": 600,\r\n    \"van\": 600,\r\n    \"bus\": 500,\r\n    \"car\": 500,\r\n    \"motocycle\": 500,\r\n    \"other_vehicle\": 500,\r\n    \"year\": 2022\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -481,7 +439,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/almeria/2022",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/cualquiera/2022",
 					"host": [
 						"{{BASE-URL}}"
 					],
@@ -489,7 +447,7 @@
 						"api",
 						"v2",
 						"ownerships-changes-stats",
-						"almeria",
+						"cualquiera",
 						"2022"
 					]
 				}
@@ -516,7 +474,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/almeria/2022",
+					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats/cualquiera/2022",
 					"host": [
 						"{{BASE-URL}}"
 					],
@@ -524,50 +482,8 @@
 						"api",
 						"v2",
 						"ownerships-changes-stats",
-						"almeria",
+						"cualquiera",
 						"2022"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Post de todos los datos Copy 2",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"status is 201\", function (){\r",
-							"    pm.response.to.have.status(201);\r",
-							"})"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"autonomous_community\": \"andalucia\",\r\n    \"province\": \"almeria\",\r\n    \"truck\": 500,\r\n    \"van\": 500,\r\n    \"bus\": 500,\r\n    \"car\": 500,\r\n    \"motocycle\": 500,\r\n    \"other_vehicle\": 500,\r\n    \"year\": 2022\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{BASE-URL}}/api/v2/ownerships-changes-stats",
-					"host": [
-						"{{BASE-URL}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"ownerships-changes-stats"
 					]
 				}
 			},
