@@ -106,6 +106,43 @@ function loadBackendJVF( app ){
             });
         });
 
+        //Data para los graficos
+    app.get(BASE_API + "/ownerships-changes-stats/summary", (req,res)=>{
+        database.find({}, (err, data) => {
+            if (err) {
+                return res.status(500).send("Error al acceder a la base de datos");
+            }
+    
+            const summary = {};
+    
+            data.forEach(record => {
+                const region = record.autonomous_community.toLowerCase();
+    
+                if (!summary[region]) {
+                    summary[region] = {
+                        autonomous_community: region,
+                        total_truck: 0,
+                        total_van: 0,
+                        total_bus: 0,
+                        total_car: 0,
+                        total_motocycle: 0,
+                        total_other_vehicle: 0
+                    };
+                }
+    
+                summary[region].total_truck += record.truck || 0;
+                summary[region].total_van += record.van || 0;
+                summary[region].total_bus += record.bus || 0;
+                summary[region].total_car += record.car || 0;
+                summary[region].total_motocycle += record.motocycle || 0;
+                summary[region].total_other_vehicle += record.other_vehicle || 0;
+            });
+    
+            // Convertir a lista
+            const summaryList = Object.values(summary);
+            res.status(200).json(summaryList);
+        });
+    });
     //GET todos los datos con paginación
     app.get(BASE_API + "/ownerships-changes-stats" , (req,res) => 
         {
