@@ -130,24 +130,7 @@
         }
     }
 
-    async function loadInitialData() {
-        successMessage = errorMessage = "";
-        try {
-            const res = await fetch(API + "loadInitialData");
-            const status = await res.status;
-            resultStatus = status;
-
-            if (status == 200) {
-                successMessage = "Datos iniciales cargados correctamente.";
-                getAccidents();
-            } else {
-                const errorText = await res.text();
-                errorMessage = `No se pudieron cargar los datos: ${errorText}`;
-            }
-        } catch (error) {
-            errorMessage = `Error de red al cargar los datos: ${error}`;
-        }
-    }
+    
 
     async function searchAccidents() {
         successMessage = errorMessage = "";
@@ -167,13 +150,18 @@
         url += params.join("&");
 
         try {
-            const res = await fetch(url);
-            const data = await res.json();
-            accidentData = data;
+        const res = await fetch(url);
+        const data = await res.json();
+        accidentData = data;
+
+        if (data.length === 0) {
+            errorMessage = "No se encontraron accidentes con los filtros aplicados.";
+        } else {
             successMessage = "Búsqueda completada con éxito.";
-        } catch (error) {
-            errorMessage = "Error al buscar accidentes.";
         }
+    } catch (error) {
+        errorMessage = "Error al buscar accidentes.";
+    }
     }
 
     onMount(() => getAccidents());
@@ -254,4 +242,3 @@
 </Table>
 
 <Button color="danger" on:click={deleteAllAccidents}>Borrar todos los datos</Button>
-<Button color="primary" on:click={loadInitialData}>Cargar datos iniciales</Button>
