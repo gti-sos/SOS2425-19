@@ -1,3 +1,4 @@
+
 <svelte:head>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -65,7 +66,7 @@
     import{dev} from "$app/environment";
 
     let DEVEL_HOST= "http://localhost:16078";
-    let API= "/api/v2/ownerships-changes-stats/data";
+    let API= "/api/v2/ownerships-changes-stats/summary";
 
     if (dev){
         API= DEVEL_HOST + API
@@ -75,7 +76,7 @@
     let result="";
     let resultStatus="";
 
-    async function getData(){
+    async function getSummary(){
         resultStatus = result = "";
         try{
             const res = await fetch(API,{method:"GET"});
@@ -92,21 +93,36 @@
     
 
     onMount(async() =>{
+        await getSummary();
+        
+        const carTotalsByCommunity = {};
 
+        exChangesData.forEach(entry => {
+            const community = entry.autonomous_community;
+            const cars = entry.total_car || 0;
+
+            if (carTotalsByCommunity[community]) {
+                carTotalsByCommunity[community] += cars;
+            } else {
+                carTotalsByCommunity[community] = cars;
+                }
+            });
+
+        // Extraer las categorías (comunidades) y los valores (total de coches)
+        const categories = Object.keys(carTotalsByCommunity);
+        const carData = Object.values(carTotalsByCommunity);
+        
+        
         Highcharts.chart('container', {
         chart: {
             type: 'column'
         },
         title: {
-            text: 'car & truck changes in 2023'
+            text: 'Total car by community'
         },
-        subtitle: {
-            text:
-                'Source: <a target="_blank" ' +
-                'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>'
-        },
+        
         xAxis: {
-            categories: ['USA', 'China', 'Brazil', 'EU', 'Argentina', 'India'],
+            categories: categories,
             crosshair: true,
             accessibility: {
                 description: 'comunidades autonomas'
@@ -115,7 +131,7 @@
         yAxis: {
             min: 0,
             title: {
-                text: '1000 metric tons (MT)'
+                text: 'total cars '
             }
         },
         tooltip: {
@@ -127,16 +143,10 @@
                 borderWidth: 0
             }
         },
-        series: [
-            {
-                name: 'Corn',
-                data: [387749, 280000, 129000, 64300, 54000, 34300]
-            },
-            {
-                name: 'Wheat',
-                data: [45321, 140000, 10000, 140500, 19500, 113500]
-            }
-        ]
+        series: [{
+            name: 'Cars',
+            data: carData
+        }]
     });
     });
 
