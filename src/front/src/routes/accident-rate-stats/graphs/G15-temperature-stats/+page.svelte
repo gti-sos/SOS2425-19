@@ -84,14 +84,18 @@
         const responseAccidents = await fetch(API);
         const apiData = await responseAccidents.json();
 
-        const responsePrecipitation = await fetch("https://sos2425-15.onrender.com/api/v1/precipitation-stats/");
-        const precipitationData = await responsePrecipitation.json();
+        const responseTemperature = await fetch("https://sos2425-15.onrender.com/api/v1/temperature-stats/");
+        const temperatureData = await responseTemperature.json();
+
 
         // Filtrar y agrupar los datos por provincias (en este caso solo Andalucía)
         const communityMap = {};
         apiData.forEach(entry => {
             const province = entry.province;
-            const injured = Number(entry.injured_hospitalized) + Number(entry.injured_not_hospitalized) || 0;
+            const injured_hosp = parseInt(entry.injured_hospitalized) || 0;
+            const injured_nohosp = parseInt(entry.injured_not_hospitalized) || 0;
+            const injured = injured_hosp + injured_nohosp;
+
             if (entry.ccaa === "Andalucía") {
                 if (communityMap[province]) {
                     communityMap[province] += injured;
@@ -101,28 +105,32 @@
             }
         });
 
-        const precipitationGrouped = {};
-        precipitationData.forEach(item => {
-            const province = item.province;
-            const precipitation = Number(item.annual_precipitation) || 0;
-            if (!precipitationGrouped[province]) {
-                precipitationGrouped[province] = 0;
+        const temperatureGrouped = {};
+        temperatureData.forEach(item => {
+        const province = item.province;
+        const maxAvg = Number(item.maximum_average) || 0;
+        if(item.year===2023){
+            if (!temperatureGrouped[province]) {
+                temperatureGrouped[province] = 0;
             }
-            precipitationGrouped[province] += precipitation;
-        });
+            temperatureGrouped[province] += maxAvg;
+        }
+});
+
 
         // Organizar los datos para el gráfico
         const chartData = Object.entries(communityMap).map(([province, injured]) => ({
             province,
             injured,
-            annual_precipitation: precipitationGrouped[province] || 0
+            maximum_average: temperatureGrouped[province] || 0
+
         }));
 
         // Definir la serie de datos
         const series = [{
             name: 'Heridos',
             id: 'heridos',
-            data: chartData.map(item => [item.injured, item.annual_precipitation]),
+            data: chartData.map(item => [item.injured, item.maximum_average]),
             marker: {
                 symbol: 'circle'
             }
@@ -149,10 +157,10 @@
             },
             yAxis: {
                 title: {
-                    text: 'Precipitación Anual (mm)'
+                    text: 'Temperatura Máxima Media (°C)'
                 },
                 labels: {
-                    format: '{value} mm'
+                    format: '{value} °C'
                 }
             },
             legend: {
@@ -180,7 +188,7 @@
                 }
             },
             tooltip: {
-                pointFormat: 'Heridos: {point.x} personas <br/> Precipitación: {point.y} mm'
+                pointFormat: 'Heridos: {point.x} personas <br/> Temp. Máxima Media: {point.y} °C'
             },
             series
         });
