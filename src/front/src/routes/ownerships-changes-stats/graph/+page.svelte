@@ -66,7 +66,7 @@
     import{dev} from "$app/environment";
 
     let DEVEL_HOST= "http://localhost:16078";
-    let API= "/api/v2/ownerships-changes-stats/summary";
+    let API= "/api/v2/ownerships-changes-stats";
 
     if (dev){
         API= DEVEL_HOST + API
@@ -76,7 +76,7 @@
     let result="";
     let resultStatus="";
 
-    async function getSummary(){
+    async function getData(){
         resultStatus = result = "";
         try{
             const res = await fetch(API,{method:"GET"});
@@ -93,25 +93,23 @@
     
 
     onMount(async() =>{
-        await getSummary();
+        await getData();
         
         const carTotalsByCommunity = {};
 
         exChangesData.forEach(entry => {
             const community = entry.autonomous_community;
-            const cars = entry.total_car || 0;
+            const cars = entry.car || 0;
 
             if (carTotalsByCommunity[community]) {
                 carTotalsByCommunity[community] += cars;
             } else {
                 carTotalsByCommunity[community] = cars;
-                }
-            });
+            }
+        });
 
-        // Extraer las categorías (comunidades) y los valores (total de coches)
         const categories = Object.keys(carTotalsByCommunity);
-        const carData = Object.values(carTotalsByCommunity);
-        
+        const carData = Object.values(carTotalsByCommunity);    
         
         Highcharts.chart('container', {
         chart: {
