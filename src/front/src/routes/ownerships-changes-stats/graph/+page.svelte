@@ -96,9 +96,11 @@
         await getData();
         
         const carTotalsByCommunity = {};
+        const trucksByCommunity={};
 
         exChangesData.forEach(entry => {
             const community = entry.autonomous_community;
+            const trucks= entry.truck || 0 ;
             const cars = entry.car || 0;
 
             if (carTotalsByCommunity[community]) {
@@ -106,34 +108,47 @@
             } else {
                 carTotalsByCommunity[community] = cars;
             }
+
+            if (trucksByCommunity[community]) {
+                trucksByCommunity[community] += trucks;
+            } else {
+                trucksByCommunity[community] = trucks;
+            }
         });
 
-        const categories = Object.keys(carTotalsByCommunity);
-        const carData = Object.values(carTotalsByCommunity);    
+        const categories = Object.keys(carTotalsByCommunity); // Las comunidades
+        const carData = categories.map(c => carTotalsByCommunity[c]);
+        const truckData = categories.map(c => trucksByCommunity[c]);
         
-        Highcharts.chart('container', {
+    Highcharts.chart('container', {
         chart: {
-            type: 'column'
+        type: 'column',
+        zooming: {
+            type: 'xy',
+            mouseWheel: {
+                enabled: true,
+                sensitivity: 1.1
+                }
+            }
         },
         title: {
-            text: 'Total car by community'
+            text: 'Total cars and trucks by autonomous community (2023)'
         },
-        
         xAxis: {
             categories: categories,
             crosshair: true,
             accessibility: {
-                description: 'comunidades autonomas'
+                description: 'Comunidades autónomas'
             }
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'total cars '
+                text: 'Número de vehículos'
             }
         },
         tooltip: {
-            valueSuffix: ' (1000 MT)'
+            followTouchMove: false
         },
         plotOptions: {
             column: {
@@ -141,11 +156,17 @@
                 borderWidth: 0
             }
         },
-        series: [{
-            name: 'Cars',
-            data: carData
-        }]
-    });
+        series: [
+            {
+                name: 'Cars',
+                data: carData
+            },
+                {
+                name: 'Trucks',
+                data: truckData
+                }
+            ]
+        });
     });
 
 </script>
