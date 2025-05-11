@@ -34,7 +34,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="/accident-rate-stats/graphs/apiexterna1">Integración API externa 2</a>
+                    <a href="/accident-rate-stats/graphs/apiexterna1">Integración API externa 1 MRC</a>
                 </td>
                 <td>
                     <!-- Espacio para AMG -->
@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="/integrations/graphs-JMRL/ext3">Integración API externa 3</a>
+                    
                 </td>
                 <td>
                     <!-- Espacio para AMG -->
