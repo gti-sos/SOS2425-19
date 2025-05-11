@@ -36,7 +36,6 @@
 <main>
     <h1>Listado de Integraciones</h1>
 
-    <a href="sanctions-and-points-stats/integrations">Integrations DLC</a>
     <table>
         <thead>
             <tr>
