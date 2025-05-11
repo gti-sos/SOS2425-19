@@ -170,15 +170,7 @@ function loadBackendJVF( app ){
 
         });
 
-    //proxy
-    var paths='/api/harry';
-    var apiServerHost = 'https://hp-api.onrender.com/api/characters';
-
-    app.use(paths, function(req, res) {
-    var url = apiServerHost + req.url;
-    console.log('piped: ' + req.url);
-    req.pipe(request(url)).pipe(res);
-    });
+   
 
     //Post todo 
     app.post( BASE_API + "/ownerships-changes-stats", (req,res) => 
@@ -323,6 +315,16 @@ function loadBackendJVF( app ){
                 }
             });
         });
+
+         //proxy
+    var paths='/proxy/harry';
+    var apiServerHost = 'https://hp-api.onrender.com/api/characters';
+
+    app.use(paths, function(req, res) {
+    var url = apiServerHost + req.url;
+    console.log('piped: ' + req.url);
+    req.pipe(request(url)).pipe(res);
+    });
 }
 
 export {loadBackendJVF,InitialData,ChangesData};

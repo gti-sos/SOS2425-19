@@ -13,7 +13,7 @@
     
 
     onMount(async() =>{
-        const resExt= await fetch('/api/harry');
+        const resExt= await fetch('/proxy/harry');
         const data = await resExt.json();
 
         characters = data;
