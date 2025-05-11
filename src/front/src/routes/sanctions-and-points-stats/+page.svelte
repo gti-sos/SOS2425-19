@@ -205,6 +205,8 @@
     })
 </script>
 
+<a href={`/sanctions-and-points-stats/graphs`}> <Button color="primary">Gráfico de los datos</Button></a>
+
 <h3>Buscar sanciones</h3>
 <div>
     <input placeholder="INE code" bind:value={searchIneCode} />

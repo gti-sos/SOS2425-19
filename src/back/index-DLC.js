@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from 'url';
 import dataStore from "nedb";
+import request from "request";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -62,8 +63,79 @@ database.insert(sanctionsData, (err, newDoc) => {
 });
 
 
+
 function loadBackendDLC(app){
     
+    //Proxy
+
+    const EXTERNAL_API = "https://restcountries.com/v3.1/name/Spain"; // o tu API externa real
+
+    app.use("/api/v1/sanctions-and-points-stats/proxy", (req, res) => {
+        const externalUrl = EXTERNAL_API + req.url; // conserva parámetros
+        console.log("Proxying to external:", externalUrl);
+        req.pipe(request(externalUrl)).pipe(res);
+    });
+
+    //Consumo de APIs sin proxy
+    app.get(BASE_API + "/sanctions-and-points-stats/spain", async (req, res) => {
+        try {
+            const response = await fetch("https://www.apicountries.com/name/Spain");
+            const data = await response.json();
+            res.status(200).json(data);
+        } catch (error) {
+            console.error("Error al acceder a la API externa:", error);
+            res.status(500).send("Error al obtener los datos.");
+        }
+    });
+    app.get(BASE_API + "/sanctions-and-points-stats/aacc", async (req, res) => {
+        try {
+            const response = await fetch("http://api.geonames.org/childrenJSON?geonameId=2510769&username=sos2425");
+        const data = await response.json();
+            res.status(200).json(data);
+        } catch (error) {
+            console.error("Error al acceder a la API externa:", error);
+            res.status(500).send("Error al obtener los datos.");
+        }
+    });
+    
+    // APIs de alumnos de SOS
+    //API g15-ocupied-grand-stats
+    app.get(BASE_API + "/sanctions-and-points-stats/g15", async (req, res) => {
+        try {
+            const response = await fetch("https://sos2425-15.onrender.com/api/v1/ocupied-grand-stats");
+        const data = await response.json();
+            res.status(200).json(data);
+        } catch (error) {
+            console.error("Error al acceder a la API externa:", error);
+            res.status(500).send("Error al obtener los datos.");
+        }
+    });
+
+    //API g17-university-academic-performance
+    app.get(BASE_API + "/sanctions-and-points-stats/g17", async (req, res) => {
+        try {
+            const response = await fetch("https://sos2425-17.onrender.com/api/v2/university-academic-performance");
+        const data = await response.json();
+            res.status(200).json(data);
+        } catch (error) {
+            console.error("Error al acceder a la API externa:", error);
+            res.status(500).send("Error al obtener los datos.");
+        }
+    });
+
+    //API g10-accidents-stats
+    app.get(BASE_API + "/sanctions-and-points-stats/g10", async (req, res) => {
+        try {
+            const response = await fetch("https://sos2425-10.onrender.com/api/v2/accidents-stats");
+        const data = await response.json();
+            res.status(200).json(data);
+        } catch (error) {
+            console.error("Error al acceder a la API externa:", error);
+            res.status(500).send("Error al obtener los datos.");
+        }
+    });
+    
+
     // APIs de DLC
     app.get(BASE_API + "/sanctions-and-points-stats/docs", (req, res) => {
         res.redirect("https://documenter.getpostman.com/view/42153958/2sAYkLncz8"); 
@@ -205,20 +277,7 @@ app.get(BASE_API + "/sanctions-and-points-stats", (req, res) => {
         });
     });
 
-//POST para resetear la base de datos a la version original
-app.post(BASE_API + "/sanctions-and-points-stats/reset", (req, res) => {
-    database.remove({}, { multi: true }, (err) => {
-        if (err) {
-            return res.status(500).send("Error al limpiar la base de datos.");
-        }    
-        database.insert(sanctionsData, (err) => {
-            if (err) {
-                return res.status(500).send("Error al restaurar los datos iniciales.");
-            }    
-            res.status(200).send("Base de datos restaurada.");
-        });
-    });
-});
+
 
     //FALLO DE POST de un dato especifico
     app.post(BASE_API + "/sanctions-and-points-stats/:ine_code/:year",(req,res)=>{    
