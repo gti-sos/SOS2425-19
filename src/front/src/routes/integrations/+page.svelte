@@ -45,7 +45,7 @@
         <tbody>
             <tr>
                 <td>
-                    <a href="/accident-rate-stats/graphs/G15-precipitation-stats">Integración G15</a>
+                    <a href="/accident-rate-stats/graphs/G15-temperature-stats">Integración G15</a>
                 </td>
                 <td>
                     <!-- Aquí irían las integraciones AMG cuando existan -->

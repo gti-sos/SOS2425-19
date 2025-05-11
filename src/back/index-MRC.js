@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from 'url';
 import dataStore from "nedb";
+import request from 'request';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -330,6 +331,16 @@ function loadBackendMRC(app) {
             res.sendStatus(200); // OK
         });
     });
+
+    const proxyPath = '/api/dj';
+    const apiServerHost = 'https://dummyjson.com/products';
+
+    app.use(proxyPath, (req, res) => {
+        const url = apiServerHost + req.url;
+        console.log('Proxy pipe to:', url);
+        req.pipe(request(url)).pipe(res);
+});
+
     
     
 }
