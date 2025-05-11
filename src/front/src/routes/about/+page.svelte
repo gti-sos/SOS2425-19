@@ -25,3 +25,5 @@
         </ul>
     </ul>
 </ul>
+
+<a href="/videos">Videos</a>
