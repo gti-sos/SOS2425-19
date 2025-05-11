@@ -23,6 +23,11 @@
                 <li><a href="https://sos2425-19.onrender.com/api/v1/accident-rate-2023-stats/docs"> https://sos2425-19.onrender.com/api/v1/accident-rate-stats/docs</a> (developed by Mario Rodriguez Carrillo)</li>
             </ul>
         </ul>
+        <li><strong>Videos</strong>:<ul>
+            <ul>
+                <li><a href="https://www.youtube.com/watch?v=qjLntJPxAko"> Vídeo entregable D03</a> (developed by Mario Rodriguez Carrillo)</li>
+            </ul>
+        </ul>
     </ul>
 </ul>
 
