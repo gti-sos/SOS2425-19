@@ -10,6 +10,19 @@
     <table>
         <thead>
             <tr>
+                <th>Integración Conjunta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <a href="/analytics">Integración conjunta G19</a>
+                </td>
+                
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
                 <th>Integraciones MRC</th>
             </tr>
         </thead>
