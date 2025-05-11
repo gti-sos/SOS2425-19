@@ -84,6 +84,44 @@
                 </td>
             </tr>
         </tbody>
+        <thead>
+            <tr>
+                <th>Integraciones JVF</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <a href="/ownerships-changes-stats/graph">Integrations JVF</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="/ownerships-changes-stats/graph/G15-precipitation-stats">Integration con G15</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/ownerships-changes-stats/graph/G17-students-satisfaction">Integration con G17</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/ownerships-changes-stats/graph/G14-cybercrime-data">Integration con G14</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/ownerships-changes-stats/graph/apiExterna1">Integracion externa 1</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/ownerships-changes-stats/graph/apiExterna2">Integracion externa 2</a>
+                </td>
+            </tr>
+        </tbody>
         <thead> 
             <tr>
                 <th>Integraciones DLC</th>

@@ -20,7 +20,9 @@
         let exChangesData = await api1.json();
     
         //datos api externa
-        const api2 = await fetch("https://sos2425-17.onrender.com/api/v2/students_satisfaction");
+        
+        const api2 = await fetch("https://sos2425-17.onrender.com/api/v2/students_satisfaction/");
+
         const studentsData = await api2.json();
 
         let totalSatisfaction = 0;

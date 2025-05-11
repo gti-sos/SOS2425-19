@@ -28,8 +28,8 @@
         let exchangeData = await api1.json();
     
         //datos api externa
-        const api2 = await fetch("https://sos2425-17.onrender.com/api/v1/cyber-crimestats");
-        const studentsData = await api2.json();
+        const api2 = await fetch("https://sos2425-14.onrender.com/api/v1/cybercrime-data");
+        const crimeData = await api2.json();
     
     const result = [];
 
@@ -39,8 +39,8 @@
         const arrested = entry.arrested_investigated || 0;
 
         // Busca intercambios de vehículos en esa comunidad
-        const match = exchangeData.find(e => e.community === comunidad);
-
+        const match = exchangeData.find(e => e.autonomous_community === comunidad);
+        if (!match) return null;
         const motorcycles = match?.motocycle || 0;
         const cars = match?.car || 0;
 
@@ -52,7 +52,7 @@
         cars
         });
     });
-
+    const comunidades = result.map(r => r.comunidad);
     // Preparamos los datos para el gráfico tipo scatter
     const columns = [
         ['criminal_ofense', ...result.map(r => r.criminal_ofense)],
@@ -62,12 +62,13 @@
     ];
 
   // Dibujamos el gráfico
-        chart = c3.generate({
+        var chart = c3.generate({
             bindto: '#chart',
             data: {
             xs: {
                 motorcycles: 'criminal_ofense',
-                cars: 'criminal_ofense'
+                cars: 'criminal_ofense',
+                arrested: 'criminal_ofense'
             },
             columns: columns,
             type: 'scatter'
@@ -83,6 +84,14 @@
                 label: 'Vehículos intercambiados'
             }
             },
+            tooltip: {
+            contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+                const index = d[0].index; // posición del punto
+                const comunidad = comunidades[index];
+                return `<strong>${comunidad}</strong><br/>
+                        ${d.map(p => `${p.name}: ${p.value}`).join("<br/>")}`;
+            }
+            },
             point: {
             r: 5
             }
@@ -91,3 +100,4 @@
 
 
 </script>
+<div id="chart"></div>

@@ -1,12 +1,5 @@
 <svelte:head>
-    <!-- Carga de estilos de C3 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" rel="stylesheet">
-
-    <!-- Carga de D3.js (requerido por C3) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
-
-    <!-- Carga de C3.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </svelte:head>
 
 <script>
@@ -30,7 +23,57 @@
         const api2 = await fetch("https://sos2425-15.onrender.com/api/v1/precipitation-stats/");
         const precipitacionData = await api2.json();
 
-        
-    });
+        // Agrupar por provincia y preparar los datos
+            const grouped = {};
 
+            precipitacionData.forEach(entry => {
+            const provincia = entry.province;
+            if (!grouped[provincia]) grouped[provincia] = [];
+            grouped[provincia].push({
+                x: entry.historical_average,
+                y: entry.annual_precipitation,
+                year: entry.year
+            });
+            });
+
+            // Convertir al formato que usa ApexCharts
+            const series = Object.entries(grouped).map(([provincia, data]) => ({
+            name: provincia,
+            data: data
+            }));
+
+            // Crear el gráfico
+            const options = {
+            chart: {
+                type: 'scatter',
+                height: 450,
+                zoom: { enabled: true, type: 'xy' }
+            },
+            title: {
+                text: 'Precipitación anual vs Promedio histórico por provincia'
+            },
+            xaxis: {
+                title: { text: "Promedio histórico (mm)" }
+            },
+            yaxis: {
+                title: { text: "Precipitación anual (mm)" }
+            },
+            tooltip: {
+                custom: ({ series, seriesIndex, dataPointIndex, w }) => {
+                const d = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                return `<b>${w.globals.initialSeries[seriesIndex].name}</b><br>
+                        Año: ${d.year}<br>
+                        Histórica: ${d.x} mm<br>
+                        Anual: ${d.y} mm`;
+                }
+            },
+            series: series
+            };
+
+            const chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        });
 </script>
+
+<!-- Contenedor para el gráfico -->
+<div id="chart"></div>
