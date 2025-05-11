@@ -606,15 +606,28 @@ input[type="number"] {
 
     async function getCombinedChartData2() {
     try {
-        const eduRes = await fetch(`${API}/g17`);
-        if (!eduRes.ok) {
+        // Primer intento: obtener datos académicos
+        let eduRes = await fetch(`${API}/g17`);
+        let educationData = [];
+
+        if (eduRes.ok) {
+            educationData = await eduRes.json();
+        } else {
             console.error('Error al cargar datos académicos', eduRes.status);
-            return;
         }
 
-        const educationData = await eduRes.json();
+        // Si educationData está vacío, intenta con la API alternativa
+        if (!educationData || educationData.length === 0) {
+            console.warn("Datos académicos vacíos, usando API alternativa...");
+            const uniRes = await fetch("https://sos2425-17.onrender.com/api/v2/university-academic-performance/loadInitialData");
+            if (!uniRes.ok) {
+                console.error('Error al cargar datos alternativos', uniRes.status);
+                return;
+            }
+            educationData = await uniRes.json();
+        }
 
-        // Agrupar datos por año
+        // Agrupar sanciones por año
         const sancByYear = {};
         sanctionsData.forEach(d => {
             const year = d.year.toString();
@@ -625,8 +638,8 @@ input[type="number"] {
         const bubbleData = [];
 
         educationData.forEach((d, index) => {
-            const year = d.academicYear?.split("-")[0];
-            const successRate = parseFloat(d.successRate || 0);
+            const year = d.academicYear?.split("-")[0] || d.year?.toString(); // Usamos año según estructura
+            const successRate = parseFloat(d.successRate || d.passRate || 0); // Usamos successRate o passRate
             if (!year || !(year in sancByYear)) return;
 
             const avgSanctions = sancByYear[year].reduce((a, b) => a + b, 0) / sancByYear[year].length;
@@ -672,6 +685,8 @@ input[type="number"] {
         console.error("Error de red:", error);
     }
 }
+
+
 
 
 
