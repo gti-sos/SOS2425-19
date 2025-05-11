@@ -129,6 +129,11 @@
                     <a href="/ownerships-changes-stats/graph/apiExterna2">Integracion externa 2</a>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <a href="/ownerships-changes-stats/graph/apiExterna3">Integracion externa 3</a>
+                </td>
+            </tr>
         </tbody>
         <thead> 
             <tr>
