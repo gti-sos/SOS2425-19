@@ -4,7 +4,7 @@
 
     let DEVEL_HOST= "http://localhost:16078";
     let API= "/api/v2/ownerships-changes-stats";
-    const RemoteApi= "http://universities.hipolabs.com/search?country=spain";
+    const RemoteApi= "https://the-trivia-api.com/api/questions";
     
     /**
 	 * @type {string | any[]}
@@ -24,9 +24,10 @@
     });
 </script>
 
-<h2>Universidades de españa</h2>
+<h2>categorias y preguntas de trivia</h2>
 <ul>
   {#each uniSpain as uni}
-    <li>{uni.name}</li>
+    <li>{uni.category}</li>
+      <li>{uni.question}</li>
   {/each}
 </ul>
