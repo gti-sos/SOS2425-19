@@ -145,7 +145,7 @@
                 }
             },
             title: {
-                text: 'Comparativa Heridos vs Precipitación Anual'
+                text: 'Comparativa Heridos vs Temperatura Maxima'
             },
             xAxis: {
                 title: {
