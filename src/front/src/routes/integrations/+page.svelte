@@ -32,7 +32,7 @@
 });
 
 </script>
-=======
+
 <main>
     <h1>Listado de Integraciones</h1>
 
@@ -83,6 +83,19 @@
                 <td>
                     <!-- Espacio para AMG -->
                 </td>
+            </tr>
+        </tbody>
+        <thead> 
+            <tr>
+                <th>Integraciones DLC</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <a href="sanctions-and-points-stats/integrations">Integrations DLC</a>
+                </td>
+                
             </tr>
         </tbody>
     </table>
