@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  let city = "Madrid"; // Ciudad a buscar
+  let city = "Sevilla"; // Ciudad a buscar
   /**
 	 * @type {{ formatted: any; geometry: { lat: any; lng: any; }; components: { country: any; state: any; }; } | null}
 	 */

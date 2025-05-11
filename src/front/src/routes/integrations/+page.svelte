@@ -40,7 +40,31 @@
             </tr>
             <tr>
                 <td>
-                    <a href="/accident-rate-stats/graphs/apiexterna1">Integración API externa 1 MRC</a>
+                    <a href="/accident-rate-stats/graphs/apiexterna1">Integración API externa 1 MRC (se cayo la página)</a>
+                </td>
+                <td>
+                    <!-- Espacio para AMG -->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/accident-rate-stats/graphs/apiexterna2">Integración API externa 2 MRC</a>
+                </td>
+                <td>
+                    <!-- Espacio para AMG -->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/accident-rate-stats/graphs/apiexterna3">Integración API externa 3 MRC</a>
+                </td>
+                <td>
+                    <!-- Espacio para AMG -->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/accident-rate-stats/graphs/apiexterna4">Integración API externa 4 MRC</a>
                 </td>
                 <td>
                     <!-- Espacio para AMG -->

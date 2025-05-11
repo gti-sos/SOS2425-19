@@ -10,13 +10,13 @@
    * @type {null}
    */
   let error = null;
-  let teamName = ''; // Nuevo campo para almacenar el nombre del equipo ingresado
+  let teamName = ''; 
 
   /**
    * Función para hacer la petición a la API con el nombre del equipo ingresado
    */
   const obtenerDatosEquipo = async () => {
-    if (!teamName) return; // Si no se ha ingresado un equipo, no hacer nada
+    if (!teamName) return; 
     loading = true;
     try {
       const response = await fetch(`https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${teamName}`);

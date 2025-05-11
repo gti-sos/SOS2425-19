@@ -332,14 +332,14 @@ function loadBackendMRC(app) {
         });
     });
 
-    const proxyPath = '/api/dj';
-    const apiServerHost = 'https://dummyjson.com/products';
+    var paths='/api';
+    var apiServerHost = 'https://dummyjson.com/products';
 
-    app.use(proxyPath, (req, res) => {
-        const url = apiServerHost + req.url;
-        console.log('Proxy pipe to:', url);
+    app.use(paths, function(req, res) {
+        var url = apiServerHost + req.url;
+        console.log('piped: ' + req.url);
         req.pipe(request(url)).pipe(res);
-});
+    });
 
     
     
