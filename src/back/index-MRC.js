@@ -332,7 +332,7 @@ function loadBackendMRC(app) {
         });
     });
 
-    var paths='/api';
+    var paths='/api/dummy-products';
     var apiServerHost = 'https://dummyjson.com/products';
 
     app.use(paths, function(req, res) {
