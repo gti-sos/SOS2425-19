@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from 'url';
 import dataStore from "nedb";
+import request from 'request';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -169,6 +170,15 @@ function loadBackendJVF( app ){
 
         });
 
+    //proxy
+    var paths='/api/harry';
+    var apiServerHost = 'https://hp-api.onrender.com/api/characters';
+
+    app.use(paths, function(req, res) {
+    var url = apiServerHost + req.url;
+    console.log('piped: ' + req.url);
+    req.pipe(request(url)).pipe(res);
+    });
 
     //Post todo 
     app.post( BASE_API + "/ownerships-changes-stats", (req,res) => 
