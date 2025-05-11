@@ -16,6 +16,7 @@
 
     onMount(async() =>{
         //datos mi api
+        let llamada_anterior= await fetch("https://sos2425-17.onrender.com/api/v2/students_satisfaction/loadInitialData");
         let api1 = await fetch(API);
         let exChangesData = await api1.json();
     
