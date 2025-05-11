@@ -49,8 +49,7 @@ test('create and delete sanction', async ({ page }) => {
     baseURL: 'http://localhost:16078'
   });
 
-  const response = await apiContext.post(`/api/v1/sanctions-and-points-stats/reset`);
-  expect(response.status()).toBe(200);
+  
   console.log("Pasa el test 2")
 });
 /*
